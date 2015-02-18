@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy import sessionmaker, scoped_session, relationship, backref
+from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
 
 #db set-up, connection requiring explicit inclusion of adds and commits
@@ -14,38 +14,40 @@ session = scoped_session(sessionmaker (bind=engine,
 Base = declarative_base()
 Base.query = session.query_property()
 
-#table definition
-class Archetype(Base):
-	__tablename__ = "Archetypes"
-	id = Column(Integer, primary_key = True)
-	#the next two fields in caps are identifiers in the original ATUS dataset
-	age = Column(Integer(3))
-	age_range = Column(Integer(2), nullable = True)
-	sex = Column(Integer(1))
-	occupation = Column(Integer(2))
-	state = Column(Integer(2))
-	education = Column(Integer(2))
-	income = Column(Integer(2))
-
-	def __repr__(self):
-		return "<id=%d age=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
 
 class MappingID(Base):
 	__tablename__ = "MappingIDs"
 	id = Column(Integer, primary_key = True)
-	primary_source_id = (Integer(20), nullable=False)
-	secondary_source_id = (Integer(2), nullable=False)
-	archetype_id = Column(Integer(ForeignKey('Archetypes.id')))
+	primary_source_id = Column(Integer)
+	secondary_source_id = Column(Integer)
+	# archetype_id = Column(Integer, ForeignKey('Archetypes.id'), nullable=True)
 
 	def __repr__(self):
-		return "<id=%d primary_source_id=%s secondary_source_id=%s archetype_id=%d>"
+		return "<id=%d primary_source_id=%d secondary_source_id=%d>"
 
-	archetype = relationship("Archetype",
-				backref=backref("Archetypes", order_by=id))
+	# archetype = relationship("Archetype",
+	# 			backref=backref("Archetypes", order_by=id))
 
 
 # 	spending = relationship("Spending_habits",
 # 				backref=backref("Archetypes", order_by=id))
+
+#*************************************************************
+#earlier code -- in progress!
+# class Archetype(Base):
+# 	__tablename__ = "Archetypes"
+# 	id = Column(Integer, primary_key = True)
+# 	#the next two fields in caps are identifiers in the original ATUS dataset
+# 	age = Column(Integer)
+# 	age_range = Column(Integer, nullable = True)
+# 	sex = Column(Integer)
+# 	occupation = Column(Integer)
+# 	state = Column(Integer)
+# 	education = Column(Integer)
+# 	income = Column(Integer)
+
+# 	def __repr__(self):
+# 		return "<id=%d age=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
 
 # class Spending(Base):
 # 	__tablename__ = "Spending_habits"
