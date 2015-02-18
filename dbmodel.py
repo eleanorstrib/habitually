@@ -37,7 +37,6 @@ class MappingID(Base):
 # class Archetype(Base):
 # 	__tablename__ = "Archetypes"
 # 	id = Column(Integer, primary_key = True)
-# 	#the next two fields in caps are identifiers in the original ATUS dataset
 # 	age = Column(Integer)
 # 	age_range = Column(Integer, nullable = True)
 # 	sex = Column(Integer)
