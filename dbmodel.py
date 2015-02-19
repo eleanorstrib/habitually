@@ -25,28 +25,29 @@ class MappingID(Base):
 	def __repr__(self):
 		return "<id=%d primary_source_id=%d secondary_source_id=%d>"
 
-	# archetype = relationship("Archetype",
-	# 			backref=backref("Archetypes", order_by=id))
+	archetype = relationship("Archetype",
+				backref=backref("Archetypes", order_by=id))
 
 
 # 	spending = relationship("Spending_habits",
 # 				backref=backref("Archetypes", order_by=id))
 
+class Archetype(Base):
+	__tablename__ = "Archetypes"
+	id = Column(Integer, primary_key = True)
+	sex = Column(Integer)
+	occupation = Column(Integer)
+	state = Column(Integer)
+	education = Column(Integer)
+	income = Column(Integer)
+  age_range = Column(Integer, nullable = True)
+
+	def __repr__(self):
+		return "<id=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
+
+
 #*************************************************************
 #earlier code -- in progress!
-# class Archetype(Base):
-# 	__tablename__ = "Archetypes"
-# 	id = Column(Integer, primary_key = True)
-# 	age = Column(Integer)
-# 	age_range = Column(Integer, nullable = True)
-# 	sex = Column(Integer)
-# 	occupation = Column(Integer)
-# 	state = Column(Integer)
-# 	education = Column(Integer)
-# 	income = Column(Integer)
-
-# 	def __repr__(self):
-# 		return "<id=%d age=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
 
 # class Spending(Base):
 # 	__tablename__ = "Spending_habits"
