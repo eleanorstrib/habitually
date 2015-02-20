@@ -15,35 +15,33 @@ Base = declarative_base()
 Base.query = session.query_property()
 
 
+class Archetype(Base):
+	__tablename__ = "Archetypes"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	occupation = Column(String)
+	state = Column(String)
+	education = Column(String)
+	income = Column(String)
+  	age_range = Column(String, nullable = True)
+  	hash_id = Column(Integer, nullable = False)
+
+	def __repr__(self):
+		return "<id=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
+
 class MappingID(Base):
 	__tablename__ = "MappingIDs"
-	id = Column(Integer, primary_key = True)
-	primary_source_id = Column(Integer)
-	secondary_source_id = Column(Integer)
+	id = Column(Integer, primary_key=True)
+	subject_id = Column(String, nullable=False)
 	# archetype_id = Column(Integer, ForeignKey('Archetypes.id'), nullable=True)
 
 	def __repr__(self):
 		return "<id=%d primary_source_id=%d secondary_source_id=%d>"
 
-	archetype = relationship("Archetype",
-				backref=backref("Archetypes", order_by=id))
+	# archetype = relationship("Archetype",
+	# 			backref=backref("Archetypes", order_by=id))
 
 
-# 	spending = relationship("Spending_habits",
-# 				backref=backref("Archetypes", order_by=id))
-
-class Archetype(Base):
-	__tablename__ = "Archetypes"
-	id = Column(Integer, primary_key = True)
-	sex = Column(Integer)
-	occupation = Column(Integer)
-	state = Column(Integer)
-	education = Column(Integer)
-	income = Column(Integer)
-  age_range = Column(Integer, nullable = True)
-
-	def __repr__(self):
-		return "<id=%d age_range=%d sex=%d occupation=%d state=%s education=%d income=%d>"
 
 
 #*************************************************************
