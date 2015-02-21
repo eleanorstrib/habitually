@@ -205,6 +205,90 @@ def load_mapping(session, user_dict_archid):
 	session.commit()
 
 
+def load_sleeping(session):
+	"""
+	This function populates the sleeping table
+	"""
+	sleeping_raw = {}
+	sleeping_data = {}
+	with open('./data/atussum_2013/atussum_2013.dat','rb') as atus_sum_file:
+		reader = csv.reader(atus_sum_file, delimiter=',')
+		for row in reader:
+			if reader.line_num == 1:
+				continue
+				# get age and convert to range
+			age = row[3] #TEAGE
+			try:
+				age = int(age)
+				if age < 20:
+					age_range = '1'
+				elif age >= 20 and age < 30:
+					age_range = '2'
+				elif age >= 30 and age < 40:
+					age_range = '3'
+				elif age >= 40 and age < 50:
+					age_range = '4'
+				elif age >= 50 and age < 60:
+					age_range = '5'
+				elif age >=60 and age < 70:
+					age_range = '6'
+				else:
+					age_range = '7'
+			except:
+				print "didn't work", row[0], row[1]
+			
+			sex = row[4] #TESEX
+			
+			education_raw = row[5] #PEEDUCA
+			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
+				education = '10'
+			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+				education = '11'
+			if education_raw == '39':
+				education = '12'
+			if education_raw =='40':
+				education = '13'
+			if education_raw == '41' or education_raw == '42':
+				education = '14'
+			if education_raw == '43':
+				eduation = '15'
+			if education_raw == '45' or education_raw == '46':
+				education = '16'
+
+			#create a dictionary with all of the values for each combo of demos available
+			if (sex, education, age_range) not in sleeping_data:
+				sleeping_raw[(sex, education, age_range)] = []
+
+			time_sleep = int(row[24]) #t010101
+			sleeping_raw[(sex, education, age_range)].append(time_sleep)
+
+			for key, value in sleeping_raw.iteritems():
+				sleeping_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
+
+	atus_sum_file.close()
+	print sleeping_data
+
+	for key, value in sleeping_data.iteritems():
+		sex = key[0]
+		education = key[1]
+		age_range = key[2]
+		min_minutes = value[0]
+		max_minutes = value[1]
+		avg_minutes = value[2]
+		sleeping = m.Sleeping(sex=sex, education=education, age_range=age_range, min_minutes=min_minutes, 
+			max_minutes=max_minutes, avg_minutes=avg_minutes)
+		session.add(sleeping)
+		print "right before commit"
+	session.commit()
+	print "commit ran"
+
+
+
+
+
+
+
+
 
 def main(session):
 	# load the mapping table with out the archetype keys
@@ -216,7 +300,8 @@ def main(session):
     load_archetype_table(session, archetype_dict)
     print user_dict_archid
     load_mapping(session, user_dict_archid)
-    # add_arch_ids(session, user_dict)
+    load_sleeping(session)
+
 
 if __name__ == "__main__":
     go = m.session

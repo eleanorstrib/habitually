@@ -37,6 +37,18 @@ class MappingID(Base):
 	def __repr__(self):
 		return "<id=%d primary_source_id=%d secondary_source_id=%d>"
 
+class Sleeping(Base):
+	__tablename__ = "Sleeping_habit"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	education = Column(String)
+	age_range = Column(String, nullable = True)
+	min_minutes = Column(Integer)
+	max_minutes = Column(Integer)
+	avg_minutes = Column(Integer)
+
+	def __repr__(self):
+		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
 
 
 
