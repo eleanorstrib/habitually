@@ -23,10 +23,27 @@ def create_user_dict(session):
 			idA2 = row[1]
 			sex = str(row[136])
 			region = str(row[4])
-			education = str(row[68])
+
+			#standardizing education codes for both studies by reorganizing ATUS codes to match CEX
+			education_raw = row[68]
+			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
+				education = '10'
+			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+				education = '11'
+			if education_raw == '39':
+				education = '12'
+			if education_raw =='40':
+				education = '13'
+			if education_raw == '41' or education_raw == '42':
+				education = '14'
+			if education_raw == '43':
+				eduation = '15'
+			if education_raw == '45' or education_raw == '46':
+				education = '16'
+
 
 			# standardizing income for both studies by recategorizing ATUS codes to match CEX
-			income_raw = str(row[8])
+			income_raw = row[8]
 			if income_raw == '1':
 				income = '1'
 			if income_raw == '2' or income_raw == '3':
