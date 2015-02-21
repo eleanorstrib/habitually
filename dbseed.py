@@ -71,66 +71,72 @@ def create_user_dict(session):
 			user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
 		atus_cps_file.close()
 
-	# demo data from CEX file
-	# cex_temp = {}
-	# with open('./data/cex_interview_2013/memi141.csv', 'rb') as cex_mem_file:
-	# 	reader = csv.reader(cex_mem_file, delimiter=',')
-	# 	for row in reader:
-	# 		if reader.line_num == 1:
-	# 			continue
-	# 		idA1 = row[0]
-	# 		idA2 = row[49]
-	# 		sex = str(row[64])
-	# 		occupation = str(row[50])
-	# 		education = str(row[22])
-	# 		print idA1
-	# 		cex_temp[idA1]['idA2'] = idA2
-	# 		cex_temp[idA1]['sex'] = sex
-	# 		cex_temp[idA1]['occupation'] = occupation
-	# 		cex_temp[idA1]['education'] = education
-	# 		age = row[1]
+	temp = {}
 
-	# 		try:
-	# 			age = int(age)
-	# 			if age < 20:
-	# 				cex_temp[idA1]['age_range'] = '1'
-	# 			elif age >= 20 and age < 30:
-	# 				cex_temp[idA1]['age_range'] = '2'
-	# 			elif age >= 30 and age < 40:
-	# 				cex_temp[idA1]['age_range'] = '3'
-	# 			elif age >= 40 and age < 50:
-	# 				cex_temp[idA1]['age_range'] = '4'
-	# 			elif age >= 50 and age < 60:
-	# 				cex_temp[idA1]['age_range'] = '5'
-	# 			elif age >=60 and age < 70:
-	# 				cex_temp[idA1]['age_range'] = '6'
-	# 			else:
-	# 				cex_temp[idA1]['age_range'] = '7'
-	# 		except:
-	# 			print "didn't work", row[0], row[1]
+# demo data from CEX file
+	with open('./data/cex_interview_2013/memi141.csv', 'rb') as cex_mem_file:
+		reader_mem = csv.reader(cex_mem_file, delimiter=',')
+		for row_mem in reader_mem:
+			if reader_mem.line_num == 1:
+				continue
+				
+			idA1 = row_mem[0]
+			idA2 = row_mem[49]
+			sex = row_mem[64]
+			occupation = row_mem[50]
+			education = row_mem[22]
 
-	# 	cex_mem_file.close()
-			
-	# with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_fml_file:
-	# 	reader = csv.reader(cex_fml_file, delimiter=',')
-	# 	for row in reader:
-	# 		if reader.line_num == 1:
-	# 			continue
-	# 		idB1 = row[0]
-	# 		if cex_temp[idA1]==idB1:
-	# 			cex_temp[idA1]['income'] = str(row[366]) #INCLASS in source
-	# 			cex_temp[idA1]['region'] = str(row[116]) #REGION in source
-	# 		user_dict[(cex_temp[idA1] + '|' + cex_temp[idA1][idA2])] = (cex_temp[idA1]['sex'], 
-	# 			cex_temp[idA1]['occupation'], cex_temp[idA1]['region'], cex_temp[idA1]['education'],
-	# 			cex_temp[idA1]['income'], cex_temp[idA1]['age_range'])
-	# 		user_dict_archid[(cex_temp[idA1] + '|' + cex_temp[idA1][idA2])] = (cex_temp[idA1]['sex']+ 
-	# 			cex_temp[idA1]['occupation'] + cex_temp[idA1][region] + cex_temp[idA1][education] + 
-	# 			cex_temp[idA1]['income'] + cex_temp[idA1]['age_range'])
-	# 	cex_fml_file.close()
+			age = row_mem[1]
 
-	# user_dict = user_dict.extend(cex_temp)
+			try:
+				age = int(age)
+				if age < 20:
+					age_range = '1'
+				elif age >= 20 and age < 30:
+					age_range = '2'
+				elif age >= 30 and age < 40:
+					age_range = '3'
+				elif age >= 40 and age < 50:
+					age_range = '4'
+				elif age >= 50 and age < 60:
+					age_range = '5'
+				elif age >=60 and age < 70:
+					age_range = '6'
+				else:
+					age_range = '7'
+			except:
+				print "didn't work", row[0], row[1]
+
+
+			temp[idA1] = [idA2, sex, occupation, education, age_range]
+	cex_mem_file.close()
+	
+	with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_fml_file:
+		reader_fml = csv.reader(cex_fml_file, delimiter=',')
+
+		for row_fml in reader_fml:
+			idF = row_fml[0]
+			for key, value in temp.iteritems():
+				if key == idF:
+					region = row_fml[116] #REGION in source
+					temp[key].append(region)
+					income = row_fml[366] #INCLASS in source
+					temp[key].append(region)
+
+	cex_fml_file.close()
+
+	for key, value in temp.iteritems():
+		user_dict[(key + "|" + value[0])] = (value[1], value[2], value[5], value[3], value[6], value[4])
+		user_dict_archid[(key + "|" + value[0])]= value[1] + value[2] + value[5] + value[3] + value[6]+ value[4]
+		
+		user_dict[(idA1 + '|' + idA2)] = (sex, occupation, region, education, income, age_range)
+		user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
+		
+		cex_mem_file.close()
+		cex_fml_file.close()
 
 	return_this = [user_dict, user_dict_archid]
+	print user_dict
 	return return_this
 
 def group_archetype_keys(session, user_dict):
