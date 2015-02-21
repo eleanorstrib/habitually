@@ -14,55 +14,41 @@ def create_user_dict(session):
 	user_dict_archid = {}
 
 	# this ATUS file gets the demo data
-	# with open('./data/atuscps_2013/atuscps_2013.dat','rb') as atus_cps_file:
-	# 	reader = csv.reader(atus_cps_file, delimiter=',')
-	# 	for row in reader:
-	# 		if reader.line_num == 1:
-	# 			continue
-	# 		idA1 = row[0]
-	# 		idA2 = row[1]
-	# 		sex = str(row[136])
-	# 		occupation = str(row[41])
-	# 		region = str(row[4])
-	# 		education = str(row[68])
-	# 		income = str(row[8])
-	# 		age = row[187]
-
-	# 		try:
-	# 			age = int(age)
-	# 			if age < 20:
-	# 				age_range = '1'
-	# 			elif age >= 20 and age < 30:
-	# 				age_range = '2'
-	# 			elif age >= 30 and age < 40:
-	# 				age_range = '3'
-	# 			elif age >= 40 and age < 50:
-	# 				age_range = '4'
-	# 			elif age >= 50 and age < 60:
-	# 				age_range = '5'
-	# 			elif age >=60 and age < 70:
-	# 				age_range = '6'
-	# 			else:
-	# 				age_range = '7'
-	# 		except:
-	# 			print "didn't work", row[0], row[1]
-	# 		user_dict[(idA1 + '|' + idA2)] = (sex, occupation, region, education, income, age_range)
-	# 		user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
-	# 	atus_cps_file.close()
-
-	# demo data from CEX file
-	with open('./data/cex_interview_2013/memi141.csv', 'rb') as cex_mem_file:
-		reader = csv.reader(cex_mem_file, delimiter=',')
+	with open('./data/atuscps_2013/atuscps_2013.dat','rb') as atus_cps_file:
+		reader = csv.reader(atus_cps_file, delimiter=',')
 		for row in reader:
 			if reader.line_num == 1:
 				continue
 			idA1 = row[0]
-			idA2 = row[49]
-			sex = str(row[64])
-			occupation = str(row[50])
-			education = str(row[22])
-			age = row[1]
+			idA2 = row[1]
+			sex = str(row[136])
+			occupation = str(row[41])
+			region = str(row[4])
+			education = str(row[68])
 
+			# standardizing income for both studies by recategorizing ATUS codes to match CEX
+			income_raw = str(row[8])
+			if income_raw == '1':
+				income = '1'
+			if income_raw == '2' or income_raw == '3':
+				income = '2'
+			if income_raw == '4' or income_raw == '5':
+				income = '3'
+			if income_raw == '6':
+				income = '4'
+			if income_raw == '7' or income_raw == '8':
+				income = '5'
+			if income_raw == '9' or income_raw == '10':
+				income = '6'
+			if income_raw == '11':
+				income = '7'
+			if income_raw == '12' or income_raw == '13':
+				income = '8'
+			if income_raw == '14' or income_raw == '15' or income_raw == '16':
+				income = '9'
+
+			#putting "raw" age into ranges for analysis
+			age = row[187]
 			try:
 				age = int(age)
 				if age < 20:
@@ -81,22 +67,68 @@ def create_user_dict(session):
 					age_range = '7'
 			except:
 				print "didn't work", row[0], row[1]
-		cex_mem_file.close()
-			
-	with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_fml_file:
-		reader = csv.reader(cex_fml_file, delimiter=',')
-		for row in reader:
-			if reader.line_num == 1:
-				continue
-			idB1 = row[0]
-			if idB1 == idA1:
-				income = str(row[366]) #INCLASS in source
-				region = str(row[116]) #REGION in source
-			else:
-				continue
 			user_dict[(idA1 + '|' + idA2)] = (sex, occupation, region, education, income, age_range)
 			user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
-		cex_fml_file.close()
+		atus_cps_file.close()
+
+	# demo data from CEX file
+	# cex_temp = {}
+	# with open('./data/cex_interview_2013/memi141.csv', 'rb') as cex_mem_file:
+	# 	reader = csv.reader(cex_mem_file, delimiter=',')
+	# 	for row in reader:
+	# 		if reader.line_num == 1:
+	# 			continue
+	# 		idA1 = row[0]
+	# 		idA2 = row[49]
+	# 		sex = str(row[64])
+	# 		occupation = str(row[50])
+	# 		education = str(row[22])
+	# 		print idA1
+	# 		cex_temp[idA1]['idA2'] = idA2
+	# 		cex_temp[idA1]['sex'] = sex
+	# 		cex_temp[idA1]['occupation'] = occupation
+	# 		cex_temp[idA1]['education'] = education
+	# 		age = row[1]
+
+	# 		try:
+	# 			age = int(age)
+	# 			if age < 20:
+	# 				cex_temp[idA1]['age_range'] = '1'
+	# 			elif age >= 20 and age < 30:
+	# 				cex_temp[idA1]['age_range'] = '2'
+	# 			elif age >= 30 and age < 40:
+	# 				cex_temp[idA1]['age_range'] = '3'
+	# 			elif age >= 40 and age < 50:
+	# 				cex_temp[idA1]['age_range'] = '4'
+	# 			elif age >= 50 and age < 60:
+	# 				cex_temp[idA1]['age_range'] = '5'
+	# 			elif age >=60 and age < 70:
+	# 				cex_temp[idA1]['age_range'] = '6'
+	# 			else:
+	# 				cex_temp[idA1]['age_range'] = '7'
+	# 		except:
+	# 			print "didn't work", row[0], row[1]
+
+	# 	cex_mem_file.close()
+			
+	# with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_fml_file:
+	# 	reader = csv.reader(cex_fml_file, delimiter=',')
+	# 	for row in reader:
+	# 		if reader.line_num == 1:
+	# 			continue
+	# 		idB1 = row[0]
+	# 		if cex_temp[idA1]==idB1:
+	# 			cex_temp[idA1]['income'] = str(row[366]) #INCLASS in source
+	# 			cex_temp[idA1]['region'] = str(row[116]) #REGION in source
+	# 		user_dict[(cex_temp[idA1] + '|' + cex_temp[idA1][idA2])] = (cex_temp[idA1]['sex'], 
+	# 			cex_temp[idA1]['occupation'], cex_temp[idA1]['region'], cex_temp[idA1]['education'],
+	# 			cex_temp[idA1]['income'], cex_temp[idA1]['age_range'])
+	# 		user_dict_archid[(cex_temp[idA1] + '|' + cex_temp[idA1][idA2])] = (cex_temp[idA1]['sex']+ 
+	# 			cex_temp[idA1]['occupation'] + cex_temp[idA1][region] + cex_temp[idA1][education] + 
+	# 			cex_temp[idA1]['income'] + cex_temp[idA1]['age_range'])
+	# 	cex_fml_file.close()
+
+	# user_dict = user_dict.extend(cex_temp)
 
 	return_this = [user_dict, user_dict_archid]
 	return return_this
@@ -170,6 +202,7 @@ def load_mapping(session, user_dict_archid):
 	# 		mapping = m.MappingID(subject_id=subject_id, value_id=value_id)
 	# 		session.add(mapping)
 	# 	cex_file.close()
+
 	for key, value in user_dict_archid.iteritems():
 		subject_id = key
 		value_id = value
@@ -184,8 +217,10 @@ def main(session):
     
     user_dict=create_user_dict(session)[0]
     user_dict_archid=create_user_dict(session)[1]
+    print user_dict_archid
     archetype_dict=group_archetype_keys(session, user_dict)
     load_archetype_table(session, archetype_dict)
+    print user_dict_archid
     load_mapping(session, user_dict_archid)
     # add_arch_ids(session, user_dict)
 
@@ -195,41 +230,4 @@ if __name__ == "__main__":
     # main()
 
 
-
-## code from an approach I've since abandoned...will likely delete
-# def add_arch_ids(session, user_dict_archid):
-# 	"""
-# 	This function adds the archetype IDs to the mapping table so we can cross reference them
-# 	"""
-
-# 	#query the database for the value_id and id(primary key) from the Archetypes table
-# 	database_values = session.query(m.Archetype.value_id, m.Archetype.id).all()
-# 	print database_values
-	
-# 	#create a new dict to store the combined value string as the key and the primary id from the table as the value.
-# 	value_dict_db = {}
-# 	for row in database_values:
-# 		value_id = row[0]
-# 		id_prim = row[1]
-# 		value_dict_db[value_id]=id_prim
-# 	print value_dict_db
-
-
-# 	#finally, we compare the keys of the first dict to the keys of the second
-# 	#when the keys match, we take the value from the first dict, and look at the subject_id
-# 	#(value of 2nd dict) and add the value of the first dict(primary key for archetype) 
-# 	#to the record of the relevant user in the db
-# 	for k_db, v_db in value_dict_db.iteritems():
-# 		print "got into first part of dict loop"
-# 		for k_user, v_user in user_dict_archid.iteritems():
-# 			print "kdb =" + str(k_db)
-# 			print "k_user =" + str(k_user)
-# 			if k_db == k_user:
-# 				print "got into if regionment in dict loop"
-# 				archetype_id = value_dict_db[k_db]
-# 				subject_id = user_dict_archid[k_user]
-# 				add_arch_id = m.MappingID(archetype_id=archetype_id)
-# 				print "got past add arch id"
-# 				session.add(add_arch_id)
-# 	session.commit()
 
