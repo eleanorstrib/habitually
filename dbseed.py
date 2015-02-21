@@ -22,7 +22,6 @@ def create_user_dict(session):
 			idA1 = row[0]
 			idA2 = row[1]
 			sex = str(row[136])
-			occupation = str(row[41])
 			region = str(row[4])
 			education = str(row[68])
 
@@ -67,8 +66,8 @@ def create_user_dict(session):
 					age_range = '7'
 			except:
 				print "didn't work", row[0], row[1]
-			user_dict[(idA1 + '|' + idA2)] = (sex, occupation, region, education, income, age_range)
-			user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
+			user_dict[(idA1 + '|' + idA2)] = (sex, region, education, income, age_range)
+			user_dict_archid[(idA1 + '|' + idA2)]= sex+region+education+income+age_range
 		atus_cps_file.close()
 
 	temp = {}
@@ -83,7 +82,6 @@ def create_user_dict(session):
 			idA1 = row_mem[0]
 			idA2 = row_mem[49]
 			sex = row_mem[64]
-			occupation = row_mem[50]
 			education = row_mem[22]
 
 			age = row_mem[1]
@@ -108,7 +106,7 @@ def create_user_dict(session):
 				print "didn't work", row[0], row[1]
 
 
-			temp[idA1] = [idA2, sex, occupation, education, age_range]
+			temp[idA1] = [idA2, sex, education, age_range]
 	cex_mem_file.close()
 	
 	with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_fml_file:
@@ -126,11 +124,11 @@ def create_user_dict(session):
 	cex_fml_file.close()
 
 	for key, value in temp.iteritems():
-		user_dict[(key + "|" + value[0])] = (value[1], value[2], value[5], value[3], value[6], value[4])
-		user_dict_archid[(key + "|" + value[0])]= value[1] + value[2] + value[5] + value[3] + value[6]+ value[4]
+		user_dict[(key + "|" + value[0])] = (value[1], value[4], value[2], value[5], value[3])
+		user_dict_archid[(key + "|" + value[0])]= value[1] + value[4] + value[2] + value[5]+ value[3]
 		
-		user_dict[(idA1 + '|' + idA2)] = (sex, occupation, region, education, income, age_range)
-		user_dict_archid[(idA1 + '|' + idA2)]= sex+occupation+region+education+income+age_range
+		user_dict[(idA1 + '|' + idA2)] = (sex, region, education, income, age_range)
+		user_dict_archid[(idA1 + '|' + idA2)]= sex+region+education+income+age_range
 		
 		cex_mem_file.close()
 		cex_fml_file.close()
@@ -164,50 +162,23 @@ def load_archetype_table(session, archetype_dict):
 	#grab all of the values from each key and put them into the Archetypes table
 	for key in archetype_dict:
 		sex = key[0]
-		occupation = key[1]
-		region = key[2]
-		education = key[3]
-		income = key[4]
-	  	age_range = key[5]
-	  	value_id = sex+occupation+region+education+income+age_range
+		region = key[1]
+		education = key[2]
+		income = key[3]
+	  	age_range = key[4]
+	  	value_id = sex+region+education+income+age_range
 	 
-	  	archetype_load = m.Archetype(sex=sex, occupation=occupation, region=region,
-	  		education=education, income=income, age_range=age_range, value_id=value_id)
+	  	archetype_load = m.Archetype(sex=sex, region=region, education=education, income=income, 
+	  		age_range=age_range, value_id=value_id)
 		session.add(archetype_load)
 	session.commit()
+
 
 def load_mapping(session, user_dict_archid):
 	"""
 	This function takes the subject ids and value IDs from the user dict we created with 
 	archetype ids and adds them to the MappingID table.
 	"""
-	# this section loads data from the ATUS file, which has a consumer unit ID and a person ID
-	# with open('./data/atuscps_2013/atuscps_2013.dat','rb') as atus_file:
-	# 	reader = csv.reader(atus_file, delimiter=',')
-	# 	for row in reader:
-	# 		if reader.line_num == 1:
-	# 			continue
-	# 		primary_source_id = row[0] # this is the TUCASEID field
-	# 		secondary_source_id = row[1] #this is the TULINENO field
-	# 		subject_id = primary_source_id + '|' + secondary_source_id
-	# 		value_id = user_dict_archid[subject_id]
-	# 		mapping = m.MappingID(subject_id=subject_id, value_id=value_id)
-	# 		session.add(mapping)
-	# 	atus_file.close()
-	# this section loads data from the CEX file, which has a CU id, but no ref person (RP) ID, so using RP age as secondary
-	# with open('./data/cex_interview_2013/memi141.csv', 'rb') as cex_file:
-	# 	reader = csv.reader(cex_file, delimiter=',')
-
-	# 	for row in reader:
-	# 		if reader.line_num == 1:
-	# 			continue
-	# 		primary_source_id = row[0] # this is NEWID field
-	# 		secondary_source_id = row[49] # this is the MEMBNO field
-	# 		subject_id = primary_source_id + '|' + secondary_source_id
-	# 		value_id = user_dict_archid[subject_id]
-	# 		mapping = m.MappingID(subject_id=subject_id, value_id=value_id)
-	# 		session.add(mapping)
-	# 	cex_file.close()
 
 	for key, value in user_dict_archid.iteritems():
 		subject_id = key

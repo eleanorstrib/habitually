@@ -19,7 +19,6 @@ class Archetype(Base):
 	__tablename__ = "Archetypes"
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
-	occupation = Column(String)
 	region = Column(String)
 	education = Column(String)
 	income = Column(String)
