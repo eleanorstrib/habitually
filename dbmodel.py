@@ -46,6 +46,37 @@ class Sleeping(Base):
 	min_minutes = Column(Integer)
 	max_minutes = Column(Integer)
 	avg_minutes = Column(Integer)
+	value_id_h = Column(String, nullable=False)
+
+	def __repr__(self):
+		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
+
+
+class Exercising(Base):
+	__tablename__ = "Exercising_habit"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	education = Column(String)
+	age_range = Column(String, nullable = True)
+	min_minutes = Column(Integer)
+	max_minutes = Column(Integer)
+	avg_minutes = Column(Integer)
+	value_id_h = Column(String, nullable=False)
+
+	def __repr__(self):
+		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
+
+
+class Working(Base):
+	__tablename__ = "Working_habit"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	education = Column(String)
+	age_range = Column(String, nullable = True)
+	min_minutes = Column(Integer)
+	max_minutes = Column(Integer)
+	avg_minutes = Column(Integer)
+	value_id_h = Column(String, nullable=False)
 
 	def __repr__(self):
 		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"

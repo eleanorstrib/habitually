@@ -1,6 +1,7 @@
 import dbmodel as m
 import csv
 from math import log
+import numpy
 
 def create_user_dict(session):
 	"""
@@ -183,7 +184,7 @@ def load_archetype_table(session, archetype_dict):
 		education = key[2]
 		income = key[3]
 	  	age_range = key[4]
-	  	value_id = sex+region+education+income+age_range
+	  	value_id = sex+education+age_range+region+income
 	 
 	  	archetype_load = m.Archetype(sex=sex, region=region, education=education, income=income, 
 	  		age_range=age_range, value_id=value_id)
@@ -275,13 +276,178 @@ def load_sleeping(session):
 		min_minutes = value[0]
 		max_minutes = value[1]
 		avg_minutes = value[2]
+		value_id_h = sex+education+age_range
 		sleeping = m.Sleeping(sex=sex, education=education, age_range=age_range, min_minutes=min_minutes, 
-			max_minutes=max_minutes, avg_minutes=avg_minutes)
+			max_minutes=max_minutes, avg_minutes=avg_minutes, value_id_h=value_id_h)
 		session.add(sleeping)
 		print "right before commit"
 	session.commit()
-	print "commit ran"
+	print "commit sleep ran"
 
+def load_exercising(session):
+	"""
+	This function loads the exercise table
+	"""
+	exercise_raw = {}
+	exercise_data = {}
+	with open('./data/atussum_2013/atussum_2013.dat','rb') as atus_sum_file:
+		reader = csv.reader(atus_sum_file, delimiter=',')
+
+		#get the key demo information from the file
+		for row in reader:
+			if reader.line_num == 1:
+				continue
+			# get age and convert to range
+			age = row[3] #TEAGE
+			try:
+				age = int(age)
+				if age < 20:
+					age_range = '1'
+				elif age >= 20 and age < 30:
+					age_range = '2'
+				elif age >= 30 and age < 40:
+					age_range = '3'
+				elif age >= 40 and age < 50:
+					age_range = '4'
+				elif age >= 50 and age < 60:
+					age_range = '5'
+				elif age >=60 and age < 70:
+					age_range = '6'
+				else:
+					age_range = '7'
+			except:
+				print "didn't work", row[0], row[1]
+			
+			sex = row[4] #TESEX
+			
+			education_raw = row[5] #PEEDUCA
+			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
+				education = '10'
+			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+				education = '11'
+			if education_raw == '39':
+				education = '12'
+			if education_raw =='40':
+				education = '13'
+			if education_raw == '41' or education_raw == '42':
+				education = '14'
+			if education_raw == '43':
+				eduation = '15'
+			if education_raw == '45' or education_raw == '46':
+				education = '16'
+
+			# add the demo values as keys in the 'raw' dictionary
+			if (sex, education, age_range) not in exercise_raw:
+				exercise_raw[sex, education, age_range] = []
+
+			NEC = int(row[270]) #exercise/sports not in another category
+			exercise_raw[sex, education, age_range].append(NEC)
+
+			# now for the raw exercise data -- appending all time spent as the value for key demo key
+			for x in range(236,260): #range is there because we want the values for t130126 to t130159
+				exercise_var = int(row[x])
+				exercise_raw[sex, education, age_range].append(exercise_var)
+
+
+			for key, value in exercise_raw.iteritems():
+				exercise_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
+
+	atus_sum_file.close()
+
+	for key, value in exercise_data.iteritems():
+		sex = key[0]
+		education = key[1]
+		age_range = key[2]
+		min_minutes = value[0]
+		max_minutes = value[1]
+		avg_minutes = value[2]
+		value_id_h = sex+education+age_range
+		exercise = m.Exercising(sex=sex, education=education, age_range=age_range, min_minutes=min_minutes, 
+			max_minutes=max_minutes, avg_minutes=avg_minutes, value_id_h=value_id_h)
+		session.add(exercise)
+	session.commit()
+	print "commit exercise ran"
+
+
+def load_working(session):
+	"""
+	This function loads the work table
+	"""
+	work_raw = {}
+	work_data = {}
+	with open('./data/atussum_2013/atussum_2013.dat','rb') as atus_sum_file:
+		reader = csv.reader(atus_sum_file, delimiter=',')
+
+		#get the key demo information from the file
+		for row in reader:
+			if reader.line_num == 1:
+				continue
+			# get age and convert to range
+			age = row[3] #TEAGE
+			try:
+				age = int(age)
+				if age < 20:
+					age_range = '1'
+				elif age >= 20 and age < 30:
+					age_range = '2'
+				elif age >= 30 and age < 40:
+					age_range = '3'
+				elif age >= 40 and age < 50:
+					age_range = '4'
+				elif age >= 50 and age < 60:
+					age_range = '5'
+				elif age >=60 and age < 70:
+					age_range = '6'
+				else:
+					age_range = '7'
+			except:
+				print "didn't work", row[0], row[1]
+			
+			sex = row[4] #TESEX
+			
+			education_raw = row[5] #PEEDUCA
+			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
+				education = '10'
+			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+				education = '11'
+			if education_raw == '39':
+				education = '12'
+			if education_raw =='40':
+				education = '13'
+			if education_raw == '41' or education_raw == '42':
+				education = '14'
+			if education_raw == '43':
+				eduation = '15'
+			if education_raw == '45' or education_raw == '46':
+				education = '16'
+
+			# add the demo values as keys in the 'raw' dictionary
+			if (sex, education, age_range) not in work_raw:
+				work_raw[(sex, education, age_range)] = []
+
+			# now for the raw work data -- appending all time spent as the value for key demo key
+			work_var = int(row[127])
+			work_raw[sex, education, age_range].append(work_var)
+
+			#add these values to the final dict with stats
+			for key, value in work_raw.iteritems():
+				work_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
+
+	atus_sum_file.close()
+
+	for key, value in work_data.iteritems():
+		sex = key[0]
+		education = key[1]
+		age_range = key[2]
+		min_minutes = value[0]
+		max_minutes = value[1]
+		avg_minutes = value[2]
+		value_id_h = sex+education+age_range
+		work = m.Working(sex=sex, education=education, age_range=age_range, min_minutes=min_minutes, 
+			max_minutes=max_minutes, avg_minutes=avg_minutes, value_id_h=value_id_h)
+		session.add(work)
+	session.commit()
+	print "commit work ran"
 
 
 
@@ -301,6 +467,8 @@ def main(session):
     print user_dict_archid
     load_mapping(session, user_dict_archid)
     load_sleeping(session)
+    load_working(session)
+    load_exercising(session)
 
 
 if __name__ == "__main__":
