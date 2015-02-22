@@ -82,7 +82,7 @@ class Working(Base):
 		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
 
 
-class Spending_Clothing(Base):
+class Spending_Clothes(Base):
 	__tablename__ = "Spending_habit_clothing"
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
@@ -90,33 +90,11 @@ class Spending_Clothing(Base):
 	age_range = Column(String)
 	region = Column(String)
 	income= Column(String)
-	min_minutes = Column(Integer)
-	max_minutes = Column(Integer)
-	avg_minutes = Column(Integer)
+	min_spending = Column(Integer)
+	max_spending = Column(Integer)
+	avg_spending = Column(Integer)
 	value_id = Column(String, nullable=False)
 
 	def __repr__(self):
 		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
 
-
-
-#*************************************************************
-#earlier code -- in progress!
-
-# class Spending(Base):
-# 	__tablename__ = "Spending_habits"
-# 	id = Column(Integer, primary_key = True)
-# 	name = Column(String(50))
-# 	description = Column(String(150))
-# 	archetype_id = Column(Integer, ForeignKey('Archetypes.id'))
-# 	clothing_purchserv = Column(Integer(16))
-# 	food_out_purch = Column(Integer(16))
-# 	alcohol_out_purch = Column(Integer(16))
-# 	cigarette_purch = Column(Integer(16))
-# 	gasoline_purch = Column(Integer(8))
-
-# 	def __repr__(self):
-# 		return "<id=%d description=%s archetype_id=%d clothing_purchserv=%d food_out_purch=%d alcohol_out_purch=%d cigarette_purch=%d gasoline_purch=%d>"
-
-# 	archetype = relationship("Archetypes", 
-# 				backref=backref("Spending_habits", order_by=id))

@@ -449,6 +449,62 @@ def load_working(session):
 	print "commit work ran"
 
 
+def load_spending_clothes(session, user_dict):
+	hhld_ids = {}
+	#first I will create a dictionary where the key is the household ID (there is no other demo info in the file)
+	#and the value is the quarterly spending on clothes
+	with open('./data/cex_interview_2013/fmli141.csv', 'rb') as cex_int:
+		reader = csv.reader(cex_int, delimiter=',')
+		for row in reader:
+			if reader.line_num == 1:
+				continue
+			subject_id = row[0] #NEWID, hhld identifier only
+			exp_quar = float(row[259])
+			hhld_ids[subject_id] = [exp_quar]	
+
+	cex_int.close()
+
+	#leveraging the user_dict created in another function (key is subject id, value is demo profile) to link the households a demo
+	for kh in hhld_ids:
+		for key, value in user_dict.iteritems():
+			if kh == key[:7]:  #comparing NEWID to first part of key before the | in user_dict
+				hhld_ids[kh] = hhld_ids[kh] + list(value)
+
+	#now hhld_ids has the NEWID (hhold id) as the key and a list for the value of the spending then the demo characteristics
+	#need to group these by demo and get all fo the spending data points
+	#here we flip the demo profile into the key and aggregate spend in the value
+	demo_dict = {}
+
+	#FIXME try refactoring with .get
+	for key, value in hhld_ids.iteritems():
+		if (value[1], value[2], value[3], value[4], value[5]) not in demo_dict:
+			demo_dict[(value[1], value[2], value[3], value[4], value[5])] = [value[0]]
+		else:
+			demo_dict[(value[1], value[2], value[3], value[4], value[5])].append(value[0])
+
+	#add this data to a new dict with summary stats
+	spending_data = {}
+	for key, value in demo_dict.iteritems():
+		spending_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
+
+	#moving the data where we want it
+	for key, value in spending_data.iteritems():
+		sex = key[0]
+		education = key[1]
+		age_range = key[2]
+		region = key[3]
+		income = key[4]
+		min_spending = value[0]
+		max_spending = value[1]
+		avg_spending = value[2]
+		value_id = sex+education+age_range+region+income
+		spending = m.Spending_Clothes(sex=sex, education=education, age_range=age_range, region=region, income=income,
+			min_spending=min_spending, max_spending=max_spending, avg_spending=avg_spending, value_id=value_id)
+		session.add(spending)
+	session.commit()
+	print "spending clothes committed"
+
+
 
 
 
@@ -468,6 +524,7 @@ def main(session):
     load_sleeping(session)
     load_working(session)
     load_exercising(session)
+    load_spending_clothes(session, user_dict)
 
 
 if __name__ == "__main__":
