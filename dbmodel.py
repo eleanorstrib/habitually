@@ -19,10 +19,10 @@ class Archetype(Base):
 	__tablename__ = "Archetypes"
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
-	region = Column(String)
 	education = Column(String)
+	age_range = Column(String)
+	region = Column(String)
 	income = Column(String)
-  	age_range = Column(String, nullable = True)
   	value_id = Column(String, nullable = False)
 
 	def __repr__(self):
@@ -42,7 +42,7 @@ class Sleeping(Base):
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
 	education = Column(String)
-	age_range = Column(String, nullable = True)
+	age_range = Column(String)
 	min_minutes = Column(Integer)
 	max_minutes = Column(Integer)
 	avg_minutes = Column(Integer)
@@ -57,7 +57,7 @@ class Exercising(Base):
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
 	education = Column(String)
-	age_range = Column(String, nullable = True)
+	age_range = Column(String)
 	min_minutes = Column(Integer)
 	max_minutes = Column(Integer)
 	avg_minutes = Column(Integer)
@@ -72,11 +72,28 @@ class Working(Base):
 	id = Column(Integer, primary_key = True)
 	sex = Column(String)
 	education = Column(String)
-	age_range = Column(String, nullable = True)
+	age_range = Column(String)
 	min_minutes = Column(Integer)
 	max_minutes = Column(Integer)
 	avg_minutes = Column(Integer)
 	value_id_h = Column(String, nullable=False)
+
+	def __repr__(self):
+		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
+
+
+class Spending_Clothing(Base):
+	__tablename__ = "Spending_habit_clothing"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	education = Column(String)
+	age_range = Column(String)
+	region = Column(String)
+	income= Column(String)
+	min_minutes = Column(Integer)
+	max_minutes = Column(Integer)
+	avg_minutes = Column(Integer)
+	value_id = Column(String, nullable=False)
 
 	def __repr__(self):
 		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
@@ -92,11 +109,11 @@ class Working(Base):
 # 	name = Column(String(50))
 # 	description = Column(String(150))
 # 	archetype_id = Column(Integer, ForeignKey('Archetypes.id'))
-# 	clothing_purchserv = Column(Integer(16), nullable = True)
-# 	food_out_purch = Column(Integer(16), nullable = True)
-# 	alcohol_out_purch = Column(Integer(16), nullable = True)
-# 	cigarette_purch = Column(Integer(16), nullable = True)
-# 	gasoline_purch = Column(Integer(8), nullable = True)
+# 	clothing_purchserv = Column(Integer(16))
+# 	food_out_purch = Column(Integer(16))
+# 	alcohol_out_purch = Column(Integer(16))
+# 	cigarette_purch = Column(Integer(16))
+# 	gasoline_purch = Column(Integer(8))
 
 # 	def __repr__(self):
 # 		return "<id=%d description=%s archetype_id=%d clothing_purchserv=%d food_out_purch=%d alcohol_out_purch=%d cigarette_purch=%d gasoline_purch=%d>"

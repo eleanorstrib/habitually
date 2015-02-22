@@ -84,8 +84,8 @@ def create_user_dict(session):
 					age_range = '7'
 			except:
 				print "didn't work", row[0], row[1]
-			user_dict[(idA1 + '|' + idA2)] = (sex, region, education, income, age_range)
-			user_dict_archid[(idA1 + '|' + idA2)]= sex+region+education+income+age_range
+			user_dict[(idA1 + '|' + idA2)] = (sex, education, age_range, region, income)
+			user_dict_archid[(idA1 + '|' + idA2)]= sex+education+age_range+region+income
 		atus_cps_file.close()
 
 	temp = {}
@@ -145,8 +145,8 @@ def create_user_dict(session):
 		user_dict[(key + "|" + value[0])] = (value[1], value[4], value[2], value[5], value[3])
 		user_dict_archid[(key + "|" + value[0])]= value[1] + value[4] + value[2] + value[5]+ value[3]
 		
-		user_dict[(idA1 + '|' + idA2)] = (sex, region, education, income, age_range)
-		user_dict_archid[(idA1 + '|' + idA2)]= sex+region+education+income+age_range
+		user_dict[(idA1 + '|' + idA2)] = (sex, education, age_range, region, income)
+		user_dict_archid[(idA1 + '|' + idA2)]= sex+education+age_range+region+income
 		
 		cex_mem_file.close()
 		cex_fml_file.close()
@@ -347,7 +347,6 @@ def load_exercising(session):
 			for x in range(236,260): #range is there because we want the values for t130126 to t130159
 				exercise_var = int(row[x])
 				exercise_raw[sex, education, age_range].append(exercise_var)
-
 
 			for key, value in exercise_raw.iteritems():
 				exercise_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
