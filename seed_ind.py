@@ -458,12 +458,12 @@ def commit_to_db_cex(session, cex_user_dict):
 		age_range = value[2]
 		region = value[3]
 		income = value[4]
-		spending_habit_clothes_dollars = Column(Integer)
-		spending_habit_eat_out_dollars = Column(Integer)
+		spending_habit_clothes_dollars = value[5]
+		spending_habit_eatout_dollars = value[6]
 		cex_commit = m.Money(hhld_id=hhld_id, person_id=person_id, sex=sex, education=education,
 			age_range=age_range, region=region, income=income, 
 			spending_habit_clothes_dollars=spending_habit_clothes_dollars, 
-			spending_habit_eat_out_dollars=spending_habit_eat_out_dollars)
+			spending_habit_eatout_dollars=spending_habit_eatout_dollars)
 		session.add(cex_commit)
 	session.commit()
 	print "CEX data committed to the database!"
