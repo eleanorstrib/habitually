@@ -98,6 +98,7 @@ def create_user_dict(session):
 				continue
 				
 			idA1 = row_mem[0]
+			idA1 = idA1[:6]
 			idA2 = row_mem[49]
 			sex = row_mem[64]
 			education = row_mem[22]
@@ -132,6 +133,7 @@ def create_user_dict(session):
 
 		for row_fml in reader_fml:
 			idF = row_fml[0]
+			idF = idF[:6]
 			for key, value in temp.iteritems():
 				if key == idF:
 					region = row_fml[116] #REGION in source
@@ -467,7 +469,7 @@ def load_spending_clothes(session, user_dict):
 	#leveraging the user_dict created in another function (key is subject id, value is demo profile) to link the households a demo
 	for kh in hhld_ids:
 		for key, value in user_dict.iteritems():
-			if kh == key[:7]:  #comparing NEWID to first part of key before the | in user_dict
+			if kh == key[:6]:  #comparing NEWID to first part of key before the | in user_dict
 				hhld_ids[kh] = hhld_ids[kh] + list(value)
 
 	#now hhld_ids has the NEWID (hhold id) as the key and a list for the value of the spending then the demo characteristics
@@ -477,16 +479,18 @@ def load_spending_clothes(session, user_dict):
 
 	#FIXME try refactoring with .get
 	for key, value in hhld_ids.iteritems():
-		if (value[1], value[2], value[3], value[4], value[5]) not in demo_dict:
-			demo_dict[(value[1], value[2], value[3], value[4], value[5])] = [value[0]]
-		else:
-			demo_dict[(value[1], value[2], value[3], value[4], value[5])].append(value[0])
+		if len(value) > 1:
+			if (value[1], value[2], value[3], value[4], value[5]) not in demo_dict:
+				demo_dict[(value[1], value[2], value[3], value[4], value[5])] = [value[0]]
+			else:
+				demo_dict[(value[1], value[2], value[3], value[4], value[5])].append(value[0])
 
 	#add this data to a new dict with summary stats
 	spending_data = {}
 	for key, value in demo_dict.iteritems():
 		spending_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
 
+	print spending_data
 	#moving the data where we want it
 	for key, value in spending_data.iteritems():
 		sex = key[0]
@@ -505,15 +509,82 @@ def load_spending_clothes(session, user_dict):
 	print "spending clothes committed"
 
 
+def load_spending_foodandbev(session, user_dict):
+	hhld_ids = {}
+	print "started food bev function"
+	#first I will create a dictionary where the key is the household ID (there is no other demo info in the file)
+	#and the value is the quarterly spending on clothes
+	with open('./data/expn13/xpa13.csv', 'rb') as cex_xpa:
+		reader = csv.reader(cex_xpa, delimiter=',')
+		for row in reader:
+			if reader.line_num == 1:
+				continue
+			subject_id = row[1] #NEWID, hhld identifier and interview ids
+			subject_id = subject_id[:6]
+			try:	
+				ooh_foodr = float(row[11]) #JDINEOQV, food bought in restaurants
+			except:
+				ooh_foodr = 0
+			try:
+				ooh_foodo = float(row[9]) #JOTHSTQV, food bought in cafes, bakeries, ordered in, etc
+			except:
+				ooh_foodo = 0
+			try:
+				ooh_alcohol = float(row[13]) #JALOUTQV alcohol bought in bars/taverns/restaurants, etc.
+			except:
+				ooh_alcohol = 0
+			ooh_all = ooh_foodr + ooh_foodo + ooh_alcohol
+			hhld_ids[subject_id] = [ooh_all]	
 
+	cex_xpa.close()
 
+	#leveraging the user_dict created in another function (key is subject id, value is demo profile) to link the households a demo
+	for kh in hhld_ids:
+		for key, value in user_dict.iteritems():
+			if kh == key[:6]:  #comparing NEWID to first part of key before the | in user_dict
+				hhld_ids[kh] = hhld_ids[kh] + list(value) #key is the partial subject ID, value is the total spend + demos
+	print hhld_ids
 
+	#now hhld_ids has the NEWID (hhold id) as the key and a list for the value of the spending then the demo characteristics
+	#need to group these by demo and get all of the spending data points
+	#here we flip the demo profile into the key and aggregate spend in the value
+	demo_dict = {}
 
+	#only try this where we were able to append the demos to the list of values
+	try:
+		demo_key =list(value[1], value[2], value[3], value[4], value[5])
+		all_spend = value[0]
+		for key, value in hhld_ids.iteritems():
+			if demo_key not in demo_dict:
+				demo_dict[demo_key] = [all_spend]
+			else:
+				demo_dict[demo_key].append(all_spend)
+	except IndexError:
+		pass
 
+	#add this data to a new dict with summary stats
+	spending_data = {}
+	for key, value in demo_dict.iteritems():
+		spending_data[key] = [min(value), max(value), ((reduce(lambda x,y: x+y, value))/len(value))]
+
+	#moving the data where we want it
+	for key, value in spending_data.iteritems():
+		sex = key[0]
+		education = key[1]
+		age_range = key[2]
+		region = key[3]
+		income = key[4]
+		min_spending = value[0]
+		max_spending = value[1]
+		avg_spending = value[2]
+		value_id = sex+education+age_range+region+income
+		spending = m.Spending_FoodBev(sex=sex, education=education, age_range=age_range, region=region, income=income,
+			min_spending=min_spending, max_spending=max_spending, avg_spending=avg_spending, value_id=value_id)
+		session.add(spending)
+	session.commit()
+	print "spending food/bev committed"
 
 def main(session):
-	# load the mapping table with out the archetype keys
-    
     user_dict=create_user_dict(session)[0]
     user_dict_archid=create_user_dict(session)[1]
     print user_dict_archid
@@ -521,6 +592,7 @@ def main(session):
     load_archetype_table(session, archetype_dict)
     print user_dict_archid
     load_mapping(session, user_dict_archid)
+    load_spending_foodandbev(session, user_dict)
     load_sleeping(session)
     load_working(session)
     load_exercising(session)

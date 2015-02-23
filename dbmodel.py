@@ -98,3 +98,20 @@ class Spending_Clothes(Base):
 	def __repr__(self):
 		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
 
+
+class Spending_FoodBev(Base):
+	__tablename__ = "Spending_habit_foodbev"
+	id = Column(Integer, primary_key = True)
+	sex = Column(String)
+	education = Column(String)
+	age_range = Column(String)
+	region = Column(String)
+	income= Column(String)
+	min_spending = Column(Integer)
+	max_spending = Column(Integer)
+	avg_spending = Column(Integer)
+	value_id = Column(String, nullable=False)
+
+	def __repr__(self):
+		return "<id=%d sex=%s education=%s age_range=%s min_minutes=%d max_minutes=%d avg_minutes=%d>"
+
