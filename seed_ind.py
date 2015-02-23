@@ -1,4 +1,4 @@
-# import model_ind as m
+import model_ind as m
 import csv
 from math import log
 
@@ -10,7 +10,7 @@ from math import log
 # for work and exercise habits#
 ###############################
 
-def demo_data_atus():
+def demo_data_atus(session):
 	"""
 	This function adds all of the ATUS demo data to a dictionary.
 	"""
@@ -94,7 +94,7 @@ def demo_data_atus():
 	print "created atus dictionary"
 	return user_dict_atus
 
-def load_exercising(user_dict_atus):
+def load_exercising(session, user_dict_atus):
 	"""
 	This function loads the exercise table from the ATUS data set.
 	"""
@@ -173,7 +173,7 @@ def load_exercising(user_dict_atus):
 	return user_dict_atus
 
 
-def load_working(user_dict_atus):
+def load_working(session, user_dict_atus):
 	"""
 	This function loads data for time worked at a primary job.
 	"""
@@ -245,7 +245,7 @@ def load_working(user_dict_atus):
 	return user_dict_atus
 
 
-def remove_no_data_records_atus(user_dict_atus_all):
+def remove_no_data_records_atus(session, user_dict_atus_all):
 	"""
 	This function removes the key/value pairs in the ATUS dictionary where there is no habit data, 
 	as these records will slow the analysis if left in, and don't add value
@@ -266,9 +266,31 @@ def remove_no_data_records_atus(user_dict_atus_all):
 	difference = original_count - clean_count
 
 	print atus_user_dict
-	print (difference, " records discarded from original ATUS data set")
+	print (difference, "records discarded from original ATUS data set")
 	print (clean_count, "records retained in clean ATUS data set")
 	return atus_user_dict
+
+
+def commit_to_db_atus(session, atus_user_dict):
+	"""
+	Unpacks everything from the final ATUS dictionary, associates it with the appropriate db field, adds to Time db.
+	"""
+	for key, value in atus_user_dict.iteritems():
+		hhld_id = key[0]
+		person_id = key[1]
+		sex = value[0]
+		education = value[1]
+		age_range = value[2]
+		region = value[3]
+		income = value[4]
+		exercise_habit_timemin = value[5]
+		work_habit_timemin = value[6]
+		atus_commit = m.Time(hhld_id=hhld_id, person_id=person_id, sex=sex, education=education, age_range=age_range,
+			region=region, income=income, exercise_habit_timemin=exercise_habit_timemin, work_habit_timemin=work_habit_timemin)
+		session.add(atus_commit)
+	session.commit()
+	print "ATUS data committed to the database!"
+
 
 
 #########################################
@@ -278,7 +300,7 @@ def remove_no_data_records_atus(user_dict_atus_all):
 #########################################
 
 
-def demo_data_cex():
+def demo_data_cex(session):
 	"""
 	This function adds all of the CEX demo data to a dictionary.
 	Because the clothing expenditure data also happens to be in it, adding it here too to avoid having to create
@@ -352,7 +374,7 @@ def demo_data_cex():
 	return user_dict_cex
 
 
-def load_spending_foodandbev(user_dict_cex):
+def load_spending_foodandbev(session, user_dict_cex):
 	"""
 	This function adds food and beverage spending to the cex dictionary.
 	"""
@@ -398,7 +420,7 @@ def load_spending_foodandbev(user_dict_cex):
 	return user_dict_cex
 
 
-def remove_no_data_records_cex(user_dict_cex_all):
+def remove_no_data_records_cex(session, user_dict_cex_all):
 	"""
 	This function removes the key/value pairs in the ATUS dictionary where there is no habit data, 
 	as these records will slow the analysis if left in, and don't add value
@@ -424,77 +446,46 @@ def remove_no_data_records_cex(user_dict_cex_all):
 	return cex_user_dict
 
 
-def main():
+def commit_to_db_cex(session, cex_user_dict):
+	"""
+	Unpacks everything from the final CEX dictionary, associates it with the appropriate db field, adds to Money db.
+	"""
+	for key, value in cex_user_dict.iteritems():
+		hhld_id = key[0]
+		person_id = key[1]
+		sex = value[0]
+		education = value[1]
+		age_range = value[2]
+		region = value[3]
+		income = value[4]
+		spending_habit_clothes_dollars = Column(Integer)
+		spending_habit_eat_out_dollars = Column(Integer)
+		cex_commit = m.Money(hhld_id=hhld_id, person_id=person_id, sex=sex, education=education,
+			age_range=age_range, region=region, income=income, 
+			spending_habit_clothes_dollars=spending_habit_clothes_dollars, 
+			spending_habit_eat_out_dollars=spending_habit_eat_out_dollars)
+		session.add(cex_commit)
+	session.commit()
+	print "CEX data committed to the database!"
+
+
+def main(session):
 	#atus files
-	user_dict_atus = demo_data_atus()
-	load_exercising(user_dict_atus)
-	user_dict_atus_all = load_working(user_dict_atus)
-	atus_user_dict = remove_no_data_records_atus(user_dict_atus_all)
+	user_dict_atus = demo_data_atus(session)
+	load_exercising(session, user_dict_atus)
+	user_dict_atus_all = load_working(session, user_dict_atus)
+	atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
 	print "ATUS data dictionary created (atus_user_dict)"
+	commit_to_db_atus(session, atus_user_dict)
 
 	# cex files
-	user_dict_cex = demo_data_cex()
-	user_dict_cex_all = load_spending_foodandbev(user_dict_cex)
-	cex_user_dict = remove_no_data_records_cex(user_dict_cex_all)
-	print "CEX data dictionary created (cex_user_dict)"
-    
+	user_dict_cex = demo_data_cex(session)
+	user_dict_cex_all = load_spending_foodandbev(session, user_dict_cex)
+	cex_user_dict = remove_no_data_records_cex(session, user_dict_cex_all)
+	commit_to_db_cex(session, cex_user_dict)
 
 
 if __name__ == "__main__":
-    # go = m.session
-    # main(go)
-    main()
+    go = m.session
+    main(go)
 
-
-#***************
-#May use to refactor
-
-# def normalize_education(variable):
-# 	"""
-# 	This function standardizes education codes across the datasets by reorganizing ATUS codes to match CEX
-# 	"""
-# 	education_raw = row[68]
-# 	if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-# 		education = '10'
-# 	if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-# 		education = '11'
-# 	if education_raw == '39':
-# 		education = '12'
-# 	if education_raw =='40':
-# 		education = '13'
-# 	if education_raw == '41' or education_raw == '42':
-# 		education = '14'
-# 	if education_raw == '43':
-# 		eduation = '15'
-# 	if education_raw == '45' or education_raw == '46':
-# 		education = '16'
-
-# 	print education
-# 	return education
-
-# def normalize_income(variable):
-# 	"""
-# 	This function standardizes income codes across the datasets by reorganizing ATUS codes to match CEX
-# 	"""
-# 	income_raw = row[8]
-# 	if income_raw == '1':
-# 		income = '1'
-# 	if income_raw == '2' or income_raw == '3':
-# 		income = '2'
-# 	if income_raw == '4' or income_raw == '5':
-# 		income = '3'
-# 	if income_raw == '6':
-# 		income = '4'
-# 	if income_raw == '7' or income_raw == '8':
-# 		income = '5'
-# 	if income_raw == '9' or income_raw == '10':
-# 		income = '6'
-# 	if income_raw == '11':
-# 		income = '7'
-# 	if income_raw == '12' or income_raw == '13':
-# 		income = '8'
-# 	if income_raw == '14' or income_raw == '15' or income_raw == '16':
-# 		income = '9'
-
-# 	print income
-# 	return income
