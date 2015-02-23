@@ -246,7 +246,6 @@ def load_working(user_dict_atus):
 				else:
 					user_dict_atus[k].append('') # subjects without a value will get an empty string to keep indexing clean
 
-	print user_dict_atus
 	return user_dict_atus
 
 
@@ -327,8 +326,7 @@ def demo_data_cex():
 	for key, value in temp.iteritems():
 		user_dict_cex[(key, value[0])] = [value[1], value[4], value[2], value[5], value[3], value[6]]
 	
-	print user_dict_cex
-	print "created cex dictionary"
+	print "created cex dictionary with clothing spend data"
 	return user_dict_cex
 
 
@@ -385,9 +383,9 @@ def load_spending_foodandbev(user_dict_cex):
 
 def main():
 	#atus files
-	# user_dict_atus = demo_data_atus()
-	# load_exercising(user_dict_atus)
-	# atus_final = load_working(user_dict_atus)
+	user_dict_atus = demo_data_atus()
+	load_exercising(user_dict_atus)
+	atus_final = load_working(user_dict_atus)
 	#cex files
 	user_dict_cex = demo_data_cex()
 	load_spending_foodandbev(user_dict_cex)
