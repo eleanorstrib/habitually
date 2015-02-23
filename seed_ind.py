@@ -161,7 +161,7 @@ def load_exercising(user_dict_atus):
 
 	atus_sum_file.close()
 	print exercise_raw
-	print "finished looping through exercise file -- appending dict"
+	print "finished looping through exercise file -- appending data to dict"
 	# loop through the raw dict with the user_dict_atus to find which records to append the new value to
 	# check the ID first then verify the other variables match 
 	for k, v in user_dict_atus.iteritems():
@@ -169,8 +169,6 @@ def load_exercising(user_dict_atus):
 			if k[0] == kr[0]:
 				if kr[1] == v[0] and kr[2] == v[1] and kr[3] == v[2]:
 					user_dict_atus[k].append(vr)
-				else:
-					user_dict_atus[k].append('') # subjects without a value will get an empty string to keep indexing clean
 
 	return user_dict_atus
 
@@ -235,7 +233,7 @@ def load_working(user_dict_atus):
 			work_raw[idA1, sex, education, age_range] = work_raw[idA1, sex, education, age_range] + work_var
 
 	atus_sum_file.close()
-	print "finished looping through work file -- appending dict"
+	print "finished looping through work file -- appending data to dict"
 	# loop through the raw dict with the user_dict_atus to find which records to append the new value to
 	# check the ID first then verify the other variables match 
 	for k, v in user_dict_atus.iteritems():
@@ -243,10 +241,34 @@ def load_working(user_dict_atus):
 			if k[0] == kr[0]:
 				if kr[1] == v[0] and kr[2] == v[1] and kr[3] == v[2]:
 					user_dict_atus[k].append(vr)
-				else:
-					user_dict_atus[k].append('') # subjects without a value will get an empty string to keep indexing clean
 
 	return user_dict_atus
+
+
+def remove_no_data_records_atus(user_dict_atus_all):
+	"""
+	This function removes the key/value pairs in the ATUS dictionary where there is no habit data, 
+	as these records will slow the analysis if left in, and don't add value
+	"""
+
+	#dict where the final data will live
+	atus_user_dict = {}
+
+	# loop through the user_dict_atus_file, append records with more than just demos to the final dict
+	print "removing incomplete records"
+	for k, v in user_dict_atus_all.iteritems():
+		if len(v) > 5:
+			atus_user_dict[k] = v
+	
+	# get length of orginal vs new, clean dict
+	original_count = len(user_dict_atus_all)
+	clean_count = len(atus_user_dict)
+	difference = original_count - clean_count
+
+	print atus_user_dict
+	print (difference, " records discarded from original ATUS data set")
+	print (clean_count, "records retained in clean ATUS data set")
+	return atus_user_dict
 
 
 #########################################
@@ -373,22 +395,48 @@ def load_spending_foodandbev(user_dict_cex):
 	
 	print "completed food and bev info appending"
 
-	print user_dict_cex
-
 	return user_dict_cex
 
-	
 
+def remove_no_data_records_cex(user_dict_cex_all):
+	"""
+	This function removes the key/value pairs in the ATUS dictionary where there is no habit data, 
+	as these records will slow the analysis if left in, and don't add value
+	"""
+
+	#dict where the final data will live
+	cex_user_dict = {}
+
+	# loop through the user_dict_atus_file, append records with more than just demos to the final dict
+	print "removing incomplete records"
+	for k, v in user_dict_cex_all.iteritems():
+		if len(v) > 5:
+			cex_user_dict[k] = v
+	
+	# get length of orginal vs new, clean dict
+	original_count = len(user_dict_cex_all)
+	clean_count = len(cex_user_dict)
+	difference = original_count - clean_count
+
+	print cex_user_dict
+	print (difference, " records discarded from original CEX data set")
+	print (clean_count, "records retained in clean CEX data set")
+	return cex_user_dict
 
 
 def main():
 	#atus files
 	user_dict_atus = demo_data_atus()
 	load_exercising(user_dict_atus)
-	atus_final = load_working(user_dict_atus)
-	#cex files
+	user_dict_atus_all = load_working(user_dict_atus)
+	atus_user_dict = remove_no_data_records_atus(user_dict_atus_all)
+	print "ATUS data dictionary created (atus_user_dict)"
+
+	# cex files
 	user_dict_cex = demo_data_cex()
-	load_spending_foodandbev(user_dict_cex)
+	user_dict_cex_all = load_spending_foodandbev(user_dict_cex)
+	cex_user_dict = remove_no_data_records_cex(user_dict_cex_all)
+	print "CEX data dictionary created (cex_user_dict)"
     
 
 
