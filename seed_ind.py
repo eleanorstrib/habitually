@@ -24,67 +24,73 @@ def demo_data_atus(session):
 				continue
 			idA1 = row[0]
 			idA2 = row[1]
-			sex = str(row[136])
-			region = str(row[4])
+
+			sex = row[136]
+			try:
+				sex = float(sex)
+			except ValueError:
+				sex = 0
+
+			region = float(row[4])
 
 			# standardizing education codes for both studies by reorganizing ATUS codes to match CEX
 			education_raw = row[68]
 
 			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = '10'
+				education = 10
 			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = '11'
+				education = 11
 			if education_raw == '39':
-				education = '12'
+				education = 12
 			if education_raw =='40':
-				education = '13'
+				education = 13
 			if education_raw == '41' or education_raw == '42':
-				education = '14'
+				education = 14
 			if education_raw == '43':
-				eduation = '15'
+				eduation = 15
 			if education_raw == '45' or education_raw == '46':
-				education = '16'
+				education = 16
 
 
 			# standardizing income for both studies by recategorizing ATUS codes to match CEX
 			income_raw = row[8]
 			if income_raw == '1':
-				income = '1'
+				income = 1
 			if income_raw == '2' or income_raw == '3':
-				income = '2'
+				income = 2
 			if income_raw == '4' or income_raw == '5':
-				income = '3'
+				income = 3
 			if income_raw == '6':
-				income = '4'
+				income = 4
 			if income_raw == '7' or income_raw == '8':
-				income = '5'
+				income = 5
 			if income_raw == '9' or income_raw == '10':
-				income = '6'
+				income = 6
 			if income_raw == '11':
-				income = '7'
+				income = 7
 			if income_raw == '12' or income_raw == '13':
-				income = '8'
+				income = 8
 			if income_raw == '14' or income_raw == '15' or income_raw == '16':
-				income = '9'
+				income = 9
 
 			#putting "raw" age into ranges for analysis
 			age = row[187]
 			try:
-				age = int(age)
+				age = float(age)
 				if age < 20:
-					age_range = '1'
+					age_range = 1
 				elif age >= 20 and age < 30:
-					age_range = '2'
+					age_range = 2
 				elif age >= 30 and age < 40:
-					age_range = '3'
+					age_range = 3
 				elif age >= 40 and age < 50:
-					age_range = '4'
+					age_range = 4
 				elif age >= 50 and age < 60:
-					age_range = '5'
+					age_range = 5
 				elif age >=60 and age < 70:
-					age_range = '6'
+					age_range = 6
 				else:
-					age_range = '7'
+					age_range = 7
 			except:
 				print "didn't work", row[0], row[1]
 
@@ -111,52 +117,52 @@ def load_exercising(session, user_dict_atus):
 			idA1 = row[0] #TUCASEID will use with demos to match to a record in the user_dict
 			age = row[3] #TEAGE
 			try:
-				age = int(age)
+				age = float(age)
 				if age < 20:
-					age_range = '1'
+					age_range = 1
 				elif age >= 20 and age < 30:
-					age_range = '2'
+					age_range = 2
 				elif age >= 30 and age < 40:
-					age_range = '3'
+					age_range = 3
 				elif age >= 40 and age < 50:
-					age_range = '4'
+					age_range = 4
 				elif age >= 50 and age < 60:
-					age_range = '5'
+					age_range = 5
 				elif age >=60 and age < 70:
-					age_range = '6'
+					age_range = 6
 				else:
-					age_range = '7'
+					age_range = 7
 			except:
 				print "didn't work", row[0], row[1]
 			
-			sex = row[4] #TESEX
+			sex = float(row[4]) #TESEX
 			
 			education_raw = row[5] #PEEDUCA
 			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = '10'
+				education = 10
 			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = '11'
+				education = 11
 			if education_raw == '39':
-				education = '12'
+				education = 12
 			if education_raw =='40':
-				education = '13'
+				education = 13
 			if education_raw == '41' or education_raw == '42':
-				education = '14'
+				education = 14
 			if education_raw == '43':
-				eduation = '15'
+				eduation = 15
 			if education_raw == '45' or education_raw == '46':
-				education = '16'
+				education = 16
 
 			# add the demo values as keys in the 'raw' dictionary
 			if (idA1, sex, education, age_range) not in exercise_raw:
 				exercise_raw[idA1, sex, education, age_range] = 0
 
-			NEC = int(row[270]) #exercise/sports not in another category
+			NEC = float(row[270]) #exercise/sports not in another category
 			exercise_raw[idA1, sex, education, age_range] = exercise_raw[idA1, sex, education, age_range] + NEC
 
 			# now for the raw exercise data -- appending all time spent as the value for demo key and summing it together
 			for x in range(236,260): #range is there because we want the values for t130126 to t130159
-				exercise_var = int(row[x])
+				exercise_var = float(row[x])
 				exercise_raw[idA1, sex, education, age_range] = exercise_raw[idA1, sex, education, age_range] + exercise_var
 
 	atus_sum_file.close()
@@ -189,47 +195,47 @@ def load_working(session, user_dict_atus):
 			idA1 = row[0] #primary interview hhld id
 			age = row[3] #TEAGE
 			try:
-				age = int(age)
+				age = float(age)
 				if age < 20:
-					age_range = '1'
+					age_range = 1
 				elif age >= 20 and age < 30:
-					age_range = '2'
+					age_range = 2
 				elif age >= 30 and age < 40:
-					age_range = '3'
+					age_range = 3
 				elif age >= 40 and age < 50:
-					age_range = '4'
+					age_range = 4
 				elif age >= 50 and age < 60:
-					age_range = '5'
+					age_range = 5
 				elif age >=60 and age < 70:
-					age_range = '6'
+					age_range = 6
 				else:
-					age_range = '7'
+					age_range = 7
 			except:
 				print "didn't work", row[0], row[1]
 			
-			sex = row[4] #TESEX
+			sex = float(row[4]) #TESEX
 			
 			education_raw = row[5] #PEEDUCA
 			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = '10'
+				education = 10
 			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = '11'
+				education = 11
 			if education_raw == '39':
-				education = '12'
+				education = 12
 			if education_raw =='40':
-				education = '13'
+				education = 13
 			if education_raw == '41' or education_raw == '42':
-				education = '14'
+				education = 14
 			if education_raw == '43':
-				eduation = '15'
+				eduation = 15
 			if education_raw == '45' or education_raw == '46':
-				education = '16'
+				education = 16
 
 			# add the demo values as keys in the 'raw' dictionary
 			work_raw[(idA1, sex, education, age_range)] = 0
 
 			# now for the raw work data -- appending and summing all time spent as the value for demo key
-			work_var = int(row[127])
+			work_var = float(row[127])
 			work_raw[idA1, sex, education, age_range] = work_raw[idA1, sex, education, age_range] + work_var
 
 	atus_sum_file.close()
@@ -320,27 +326,32 @@ def demo_data_cex(session):
 			idA1 = row_mem[0]
 			idA1 = idA1[:6]
 			idA2 = row_mem[49]
-			sex = row_mem[64]
+			sex = float(row_mem[64])
+
 			education = row_mem[22]
+			try:
+				education = float(education)
+			except:
+				education = 17
 
 			age = row_mem[1]
 
 			try:
-				age = int(age)
+				age = float(age)
 				if age < 20:
-					age_range = '1'
+					age_range = 1
 				elif age >= 20 and age < 30:
-					age_range = '2'
+					age_range = 2
 				elif age >= 30 and age < 40:
-					age_range = '3'
+					age_range = 3
 				elif age >= 40 and age < 50:
-					age_range = '4'
+					age_range = 4
 				elif age >= 50 and age < 60:
-					age_range = '5'
+					age_range = 5
 				elif age >=60 and age < 70:
-					age_range = '6'
+					age_range = 6
 				else:
-					age_range = '7'
+					age_range = 7
 			except:
 				print "didn't work", row[0], row[1]
 
@@ -355,22 +366,39 @@ def demo_data_cex(session):
 		for row_fml in reader_fml:
 			idF = row_fml[0]
 			idF = idF[:6]
+
 			for key, value in temp.iteritems():
 				if key == idF:
-					region = row_fml[116] #REGION in source
-					temp[key].append(region)
-					income = row_fml[366] #INCLASS in source
-					temp[key].append(region)
-					exp_quar = float(row_fml[259])
-					temp[key].append(exp_quar)
+					if row_fml[116]:
+						region = float(row_fml[116]) #REGION in source
+						temp[key].append(region)
+					else:
+						pass
+					
+					if row_fml[366]:
+						income = float(row_fml[366]) #INCLASS in source
+						temp[key].append(region)
+					else:
+						pass
+
+					if row_fml[259]:
+						exp_quar = float(row_fml[259])
+						temp[key].append(exp_quar)
+					else:
+						pass
 
 	cex_fml_file.close()
-
+	print temp
 
 	for key, value in temp.iteritems():
-		user_dict_cex[(key, value[0])] = [value[1], value[4], value[2], value[5], value[3], value[6]]
+			if len(value) == 7:
+				print "seven!"
+				user_dict_cex[(key, value[0])] = [value[1], value[2], value[3], value[4], value[5], value[6]]
+			else:
+				continue
 	
 	print "created cex dictionary with clothing spend data"
+	print user_dict_cex
 	return user_dict_cex
 
 
@@ -471,12 +499,12 @@ def commit_to_db_cex(session, cex_user_dict):
 
 def main(session):
 	#atus files
-	user_dict_atus = demo_data_atus(session)
-	load_exercising(session, user_dict_atus)
-	user_dict_atus_all = load_working(session, user_dict_atus)
-	atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
-	print "ATUS data dictionary created (atus_user_dict)"
-	commit_to_db_atus(session, atus_user_dict)
+	# user_dict_atus = demo_data_atus(session)
+	# load_exercising(session, user_dict_atus)
+	# user_dict_atus_all = load_working(session, user_dict_atus)
+	# atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
+	# print "ATUS data dictionary created (atus_user_dict)"
+	# commit_to_db_atus(session, atus_user_dict)
 
 	# cex files
 	user_dict_cex = demo_data_cex(session)
