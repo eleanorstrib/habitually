@@ -9,7 +9,7 @@
 
 
 <body>
-
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script>
 
 //Checks if user is logged in and displays a message based on the result
@@ -30,32 +30,40 @@
     }
   }
 
-  //Initializes SDK
-  window.fbAsyncInit = function() {
-  FB.init({
-    appId      : 'someid',
-    cookie     : true,  // enable cookies, server can access session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2', // use version 2.2
-    status     : true   // check for user status on load
-  });
+//wrapping the initialization of FB SDK into some JS to pull
+//app id from the "secret" file
+$.getScript("secret.js", function(){
 
-  // Checks user status post-login
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
+	  //Initializes SDK
+	  window.fbAsyncInit = function() {
+		  FB.init({
+		    appId      : FB_APP_ID,
+		    cookie     : true,  // enable cookies, server can access session
+		    xfbml      : true,  // parse social plugins on this page
+		    version    : 'v2.2', // use version 2.2
+		    status     : true   // check for user status on load
+		  });
 
-  };
+	  // Checks user status post-login
+		  FB.getLoginStatus(function(response) {
+		    statusChangeCallback(response);
+		  });
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+	  };
 
+	  // Load the SDK asynchronously
+	  (function(d, s, id) {
+	    var js, fjs = d.getElementsByTagName(s)[0];
+	    if (d.getElementById(id)) return;
+	    js = d.createElement(s); js.id = id;
+	    js.src = "//connect.facebook.net/en_US/sdk.js";
+	    fjs.parentNode.insertBefore(js, fjs);
+	  }(document, 'script', 'facebook-jssdk'));
+
+
+   // Use anything defined in the loaded script...
+});
+ 
   // Test of social graph API, and call for object containing response
   function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
