@@ -4,7 +4,92 @@ from math import log
 
 
 ###############################
-# the first functions listed  #
+# functions in this section   #
+# standardize codes across    # 
+# studies for education, age  #
+# and income                  #
+###############################
+
+def education_calc_range(education_raw):
+	"""
+	Switches the education code in ATUS to the less specific CEX one to standardize
+	"""
+	global education
+
+	if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
+		education = 10
+	if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+		education = 11
+	if education_raw == '39':
+		education = 12
+	if education_raw =='40':
+		education = 13
+	if education_raw == '41' or education_raw == '42':
+		education = 14
+	if education_raw == '43':
+		eduation = 15
+	if education_raw == '45' or education_raw == '46':
+		education = 16
+
+	return education
+
+
+def age_calc_range(age):
+	"""
+	Changes the respondent age in years to a code for age range
+	"""
+	global age_range
+	try:
+		age = float(age)
+		if age < 20:
+			age_range = 1
+		elif age >= 20 and age < 30:
+			age_range = 2
+		elif age >= 30 and age < 40:
+			age_range = 3
+		elif age >= 40 and age < 50:
+			age_range = 4
+		elif age >= 50 and age < 60:
+			age_range = 5
+		elif age >=60 and age < 70:
+			age_range = 6
+		else:
+			age_range = 7
+	except:
+		age_range = None
+
+	return age_range
+
+
+def income_calc_range(income_raw):
+	"""
+	Switches the ATUS income code to match the less specific CEX one to standardize data
+	"""
+	global income
+	
+	if income_raw == '1':
+		income = 1
+	if income_raw == '2' or income_raw == '3':
+		income = 2
+	if income_raw == '4' or income_raw == '5':
+		income = 3
+	if income_raw == '6':
+		income = 4
+	if income_raw == '7' or income_raw == '8':
+		income = 5
+	if income_raw == '9' or income_raw == '10':
+		income = 6
+	if income_raw == '11':
+		income = 7
+	if income_raw == '12' or income_raw == '13':
+		income = 8
+	if income_raw == '14' or income_raw == '15' or income_raw == '16':
+		income = 9
+	return income
+
+
+###############################
+# functions in this section   #
 # loop through the ATUS file  # 
 # to gather demo and time data#
 # for work and exercise habits#
@@ -35,64 +120,15 @@ def demo_data_atus(session):
 
 			# standardizing education codes for both studies by reorganizing ATUS codes to match CEX
 			education_raw = row[68]
-
-			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = 10
-			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = 11
-			if education_raw == '39':
-				education = 12
-			if education_raw =='40':
-				education = 13
-			if education_raw == '41' or education_raw == '42':
-				education = 14
-			if education_raw == '43':
-				eduation = 15
-			if education_raw == '45' or education_raw == '46':
-				education = 16
-
+			education = education_calc_range(education_raw) #returns education variable
 
 			# standardizing income for both studies by recategorizing ATUS codes to match CEX
 			income_raw = row[8]
-			if income_raw == '1':
-				income = 1
-			if income_raw == '2' or income_raw == '3':
-				income = 2
-			if income_raw == '4' or income_raw == '5':
-				income = 3
-			if income_raw == '6':
-				income = 4
-			if income_raw == '7' or income_raw == '8':
-				income = 5
-			if income_raw == '9' or income_raw == '10':
-				income = 6
-			if income_raw == '11':
-				income = 7
-			if income_raw == '12' or income_raw == '13':
-				income = 8
-			if income_raw == '14' or income_raw == '15' or income_raw == '16':
-				income = 9
+			income = income_calc_range(income_raw)
 
 			#putting "raw" age into ranges for analysis
 			age = row[187]
-			try:
-				age = float(age)
-				if age < 20:
-					age_range = 1
-				elif age >= 20 and age < 30:
-					age_range = 2
-				elif age >= 30 and age < 40:
-					age_range = 3
-				elif age >= 40 and age < 50:
-					age_range = 4
-				elif age >= 50 and age < 60:
-					age_range = 5
-				elif age >=60 and age < 70:
-					age_range = 6
-				else:
-					age_range = 7
-			except:
-				print "didn't work", row[0], row[1]
+			age_range = age_calc_range(age)
 
 			user_dict_atus[(idA1, idA2)] = [sex, education, age_range, region, income]
 
@@ -116,42 +152,12 @@ def load_exercising(session, user_dict_atus):
 			# get age and convert to range
 			idA1 = row[0] #TUCASEID will use with demos to match to a record in the user_dict
 			age = row[3] #TEAGE
-			try:
-				age = float(age)
-				if age < 20:
-					age_range = 1
-				elif age >= 20 and age < 30:
-					age_range = 2
-				elif age >= 30 and age < 40:
-					age_range = 3
-				elif age >= 40 and age < 50:
-					age_range = 4
-				elif age >= 50 and age < 60:
-					age_range = 5
-				elif age >=60 and age < 70:
-					age_range = 6
-				else:
-					age_range = 7
-			except:
-				print "didn't work", row[0], row[1]
+			age_range = age_calc_range(age)
 			
 			sex = float(row[4]) #TESEX
 			
 			education_raw = row[5] #PEEDUCA
-			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = 10
-			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = 11
-			if education_raw == '39':
-				education = 12
-			if education_raw =='40':
-				education = 13
-			if education_raw == '41' or education_raw == '42':
-				education = 14
-			if education_raw == '43':
-				eduation = 15
-			if education_raw == '45' or education_raw == '46':
-				education = 16
+			education = education_calc_range(education_raw) #returns education variable
 
 			# add the demo values as keys in the 'raw' dictionary
 			if (idA1, sex, education, age_range) not in exercise_raw:
@@ -194,42 +200,12 @@ def load_working(session, user_dict_atus):
 			# get age and convert to range
 			idA1 = row[0] #primary interview hhld id
 			age = row[3] #TEAGE
-			try:
-				age = float(age)
-				if age < 20:
-					age_range = 1
-				elif age >= 20 and age < 30:
-					age_range = 2
-				elif age >= 30 and age < 40:
-					age_range = 3
-				elif age >= 40 and age < 50:
-					age_range = 4
-				elif age >= 50 and age < 60:
-					age_range = 5
-				elif age >=60 and age < 70:
-					age_range = 6
-				else:
-					age_range = 7
-			except:
-				print "didn't work", row[0], row[1]
+			age_range = age_calc_range(age)
 			
 			sex = float(row[4]) #TESEX
 			
 			education_raw = row[5] #PEEDUCA
-			if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-				education = 10
-			if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-				education = 11
-			if education_raw == '39':
-				education = 12
-			if education_raw =='40':
-				education = 13
-			if education_raw == '41' or education_raw == '42':
-				education = 14
-			if education_raw == '43':
-				eduation = 15
-			if education_raw == '45' or education_raw == '46':
-				education = 16
+			education = education_calc_range(education_raw) #returns education variable
 
 			# add the demo values as keys in the 'raw' dictionary
 			work_raw[(idA1, sex, education, age_range)] = 0
@@ -335,26 +311,7 @@ def demo_data_cex(session):
 				education = 17
 
 			age = row_mem[1]
-
-			try:
-				age = float(age)
-				if age < 20:
-					age_range = 1
-				elif age >= 20 and age < 30:
-					age_range = 2
-				elif age >= 30 and age < 40:
-					age_range = 3
-				elif age >= 40 and age < 50:
-					age_range = 4
-				elif age >= 50 and age < 60:
-					age_range = 5
-				elif age >=60 and age < 70:
-					age_range = 6
-				else:
-					age_range = 7
-			except:
-				print "didn't work", row[0], row[1]
-
+			age_range = age_calc_range(age)
 
 			temp[idA1] = [idA2, sex, education, age_range]
 
@@ -388,11 +345,9 @@ def demo_data_cex(session):
 						pass
 
 	cex_fml_file.close()
-	print temp
 
 	for key, value in temp.iteritems():
 			if len(value) == 7:
-				print "seven!"
 				user_dict_cex[(key, value[0])] = [value[1], value[2], value[3], value[4], value[5], value[6]]
 			else:
 				continue
@@ -499,12 +454,12 @@ def commit_to_db_cex(session, cex_user_dict):
 
 def main(session):
 	#atus files
-	# user_dict_atus = demo_data_atus(session)
-	# load_exercising(session, user_dict_atus)
-	# user_dict_atus_all = load_working(session, user_dict_atus)
-	# atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
-	# print "ATUS data dictionary created (atus_user_dict)"
-	# commit_to_db_atus(session, atus_user_dict)
+	user_dict_atus = demo_data_atus(session)
+	load_exercising(session, user_dict_atus)
+	user_dict_atus_all = load_working(session, user_dict_atus)
+	atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
+	print "ATUS data dictionary created (atus_user_dict)"
+	commit_to_db_atus(session, atus_user_dict)
 
 	# cex files
 	user_dict_cex = demo_data_cex(session)
