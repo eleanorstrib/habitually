@@ -66,7 +66,7 @@ def income_calc_range(income_raw):
 	Switches the ATUS income code to match the less specific CEX one to standardize data
 	"""
 	global income
-	
+
 	if income_raw == '1':
 		income = 1
 	if income_raw == '2' or income_raw == '3':
@@ -136,17 +136,17 @@ def demo_data_atus(session):
 	print "created atus dictionary"
 	return user_dict_atus
 
-def load_exercising(session, user_dict_atus):
+def load_habit_atus(session, user_dict_atus):
 	"""
 	This function loads the exercise table from the ATUS data set.
 	"""
-	exercise_raw = {}
-
+	raw_habit = {}
 	with open('./data/atussum_2013/atussum_2013.dat','rb') as atus_sum_file:
 		reader = csv.reader(atus_sum_file, delimiter=',')
 
 		#get the key demo information from the file
 		for row in reader:
+			temp_habit = []
 			if reader.line_num == 1:
 				continue
 			# get age and convert to range
@@ -160,70 +160,41 @@ def load_exercising(session, user_dict_atus):
 			education = education_calc_range(education_raw) #returns education variable
 
 			# add the demo values as keys in the 'raw' dictionary
-			if (idA1, sex, education, age_range) not in exercise_raw:
-				exercise_raw[idA1, sex, education, age_range] = 0
+			if (idA1, sex, education, age_range) not in raw_habit:
+				raw_habit[idA1, sex, education, age_range] = 0
 
-			NEC = float(row[270]) #exercise/sports not in another category
-			exercise_raw[idA1, sex, education, age_range] = exercise_raw[idA1, sex, education, age_range] + NEC
+			NEC = float(row[270]) #exercise/sports not in another categor
 
-			# now for the raw exercise data -- appending all time spent as the value for demo key and summing it together
+
+			# raw exercise data -- appending all time spent as the value for demo key and summing it together
 			for x in range(236,260): #range is there because we want the values for t130126 to t130159
 				exercise_var = float(row[x])
-				exercise_raw[idA1, sex, education, age_range] = exercise_raw[idA1, sex, education, age_range] + exercise_var
+
+			temp_habit.append((NEC+exercise_var))
+
+			# raw work data -- appending and summing all time spent as the value for demo key
+			work_var = float(row[127]) #t050101
+			temp_habit.append(work_var)
+			
+			# raw sleep data -- appending and summing all time spent as the value for demo key
+			sleep_var = float(row[24]) #t010101
+			temp_habit.append(sleep_var)
+			print temp_habit
+
+			# add them all to the dictionary key with the right id and demos
+			raw_habit[(idA1, sex, education, age_range)] = temp_habit
 
 	atus_sum_file.close()
-	print exercise_raw
-	print "finished looping through exercise file -- appending data to dict"
-	# loop through the raw dict with the user_dict_atus to find which records to append the new value to
-	# check the ID first then verify the other variables match 
-	for k, v in user_dict_atus.iteritems():
-		for kr, vr in exercise_raw.iteritems():
-			if k[0] == kr[0]:
-				if kr[1] == v[0] and kr[2] == v[1] and kr[3] == v[2]:
-					user_dict_atus[k].append(vr)
 
-	return user_dict_atus
+	print "finished looping through file -- appending exercise, work and sleep data to dict"
 
-
-def load_working(session, user_dict_atus):
-	"""
-	This function loads data for time worked at a primary job.
-	"""
-	work_raw = {}
-	with open('./data/atussum_2013/atussum_2013.dat','rb') as atus_sum_file:
-		reader = csv.reader(atus_sum_file, delimiter=',')
-
-		#get the key demo information from the file
-		for row in reader:
-			if reader.line_num == 1:
-				continue
-			# get age and convert to range
-			idA1 = row[0] #primary interview hhld id
-			age = row[3] #TEAGE
-			age_range = age_calc_range(age)
-			
-			sex = float(row[4]) #TESEX
-			
-			education_raw = row[5] #PEEDUCA
-			education = education_calc_range(education_raw) #returns education variable
-
-			# add the demo values as keys in the 'raw' dictionary
-			work_raw[(idA1, sex, education, age_range)] = 0
-
-			# now for the raw work data -- appending and summing all time spent as the value for demo key
-			work_var = float(row[127])
-			work_raw[idA1, sex, education, age_range] = work_raw[idA1, sex, education, age_range] + work_var
-
-	atus_sum_file.close()
-	print "finished looping through work file -- appending data to dict"
-	# loop through the raw dict with the user_dict_atus to find which records to append the new value to
-	# check the ID first then verify the other variables match 
-	for k, v in user_dict_atus.iteritems():
-		for kr, vr in work_raw.iteritems():
-			if k[0] == kr[0]:
-				if kr[1] == v[0] and kr[2] == v[1] and kr[3] == v[2]:
-					user_dict_atus[k].append(vr)
-
+	# loop through the raw dict with the user_dict_atus to find the matching records based
+	# on idA1 and the demo variables
+	for ku, vu in user_dict_atus.iteritems():
+		habit = raw_habit.get((ku[0], vu[0], vu[1], vu[2]))
+		if habit:
+			user_dict_atus[ku].extend(habit)
+	
 	return user_dict_atus
 
 
@@ -239,7 +210,7 @@ def remove_no_data_records_atus(session, user_dict_atus_all):
 	# loop through the user_dict_atus_file, append records with more than just demos to the final dict
 	print "removing incomplete records"
 	for k, v in user_dict_atus_all.iteritems():
-		if len(v) > 5:
+		if len(v) > 6:
 			atus_user_dict[k] = v
 	
 	# get length of orginal vs new, clean dict
@@ -267,8 +238,10 @@ def commit_to_db_atus(session, atus_user_dict):
 		income = value[4]
 		exercise_habit_timemin = value[5]
 		work_habit_timemin = value[6]
+		sleep_habit_timemin = value[7]
 		atus_commit = m.Time(hhld_id=hhld_id, person_id=person_id, sex=sex, education=education, age_range=age_range,
-			region=region, income=income, exercise_habit_timemin=exercise_habit_timemin, work_habit_timemin=work_habit_timemin)
+			region=region, income=income, exercise_habit_timemin=exercise_habit_timemin, 
+			work_habit_timemin=work_habit_timemin, sleep_habit_timemin=sleep_habit_timemin)
 		session.add(atus_commit)
 	session.commit()
 	print "ATUS data committed to the database!"
@@ -455,17 +428,19 @@ def commit_to_db_cex(session, cex_user_dict):
 def main(session):
 	#atus files
 	user_dict_atus = demo_data_atus(session)
-	load_exercising(session, user_dict_atus)
-	user_dict_atus_all = load_working(session, user_dict_atus)
+	user_dict_atus_all = load_habit_atus(session, user_dict_atus)
 	atus_user_dict = remove_no_data_records_atus(session, user_dict_atus_all)
 	print "ATUS data dictionary created (atus_user_dict)"
 	commit_to_db_atus(session, atus_user_dict)
+	print "ATUS data committed to db"
 
 	# cex files
 	user_dict_cex = demo_data_cex(session)
 	user_dict_cex_all = load_spending_foodandbev(session, user_dict_cex)
 	cex_user_dict = remove_no_data_records_cex(session, user_dict_cex_all)
+	print "CEX data dictionary created (atus_user_dict)"
 	commit_to_db_cex(session, cex_user_dict)
+	print "CEX data committed to db"
 
 
 if __name__ == "__main__":

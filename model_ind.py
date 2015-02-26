@@ -26,9 +26,10 @@ class Time(Base):
 	income = Column(Integer, nullable=False)
 	exercise_habit_timemin = Column(Integer)
 	work_habit_timemin = Column(Integer)
+	sleep_habit_timemin = Column(Integer)
 
 	def __repr__(self):
-		return "<id=%d sex=%s education=%s age_range=%s region=%s income=%s exercise_habit_timemin=%d work_habit_timemin=%d>"
+		return "<id=%d sex=%s education=%s age_range=%s region=%s income=%s exercise_habit_timemin=%d work_habit_timemin=%d sleep_habit_timemin=%d>"
 
 class Money(Base):
 	__tablename__ = "Money_habits"

@@ -54,12 +54,16 @@ $.getScript("secret.js", function(){
 });
  
   // Test of social graph API, and call for object containing response
-  function testAPI() {
+function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.first_name);
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
       console.log(response);
+      return response
     });
+    
   }
+
+var userDataFB = testAPI();
