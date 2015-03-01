@@ -42,17 +42,7 @@ education_codes = {
 }
 
 
-income_codes = {
-  1 : "Less than $5,000",
-  2 : "$5,000 to $9,999",
-  3 : "$10,000 to $14,999",
-  4 : "$15,000 to $19,999",
-  5 : "$20,000 to $29,999",
-  6 : "$30,000 to $39,999",
-  7 : "$40,000 to $49,999",
-  8 : "$50,000 to $69,999",
-  9 : "$70,000 and over",
-}
+
 
 
 var regionCodes = {
@@ -136,141 +126,169 @@ function callAPI() {
       //   console.log(education.get("school"));
       // });
 
-
-
     //these functions get some data about the user and makes some guesses about 
     // some of their demo characteristics
-      // var userEducation= function() {
-      //   //start with info about education
-      //   var userEdObj = {};
-      //   var edList = [];
-      //   if (userFBInfo.education.length > 0) { // if any education info is present
-      //     for (i = 0; i < (userFBInfo.education).length; i++) { // loop through the object
-      //       if (userFBInfo.education[i].year !== undefined) {  // if the year is available
-      //         userEdObj[userFBInfo.education[i].type] = parseInt(userFBInfo.education[i].year.name); // append info to obj
-      //         edList.push(parseInt(userFBInfo.education[i].year.name)); // append year to list
+      var userEducation= function() {
+        //start with info about education
+        var userEdObj = {};
+        var edList = [];
+        if (userFBInfo.education.length > 0) { // if any education info is present
+          for (i = 0; i < (userFBInfo.education).length; i++) { // loop through the object
+            if (userFBInfo.education[i].year !== undefined) {  // if the year is available
+              userEdObj[userFBInfo.education[i].type] = parseInt(userFBInfo.education[i].year.name); // append info to obj
+              edList.push(parseInt(userFBInfo.education[i].year.name)); // append year to list
 
-      //         //determine highest level of education based on the highest 'type' in the user object
-      //         //this is not foolproof, but will give us a rough idea of education and salary
+              //determine highest level of education based on the highest 'type' in the user object
+              //this is not foolproof, but will give us a rough idea of education and salary
 
-      //         //variables being set
-      //         var userSalaryBase;
-      //         var queryEducation;
-      //         var lastGradYr;
-      //         var yearsSinceGrad;
-      //         var userIncome;
-      //         var queryIncome;
+              //variables being set
+              var userSalaryBase;
+              var queryEducation;
+              var lastGradYr;
+              var yearsSinceGrad;
+              var userIncome;
 
-      //         if ('Graduate School' in userEdObj) {
-      //           userSalaryBase = salaryGrad; // set base salary to average
-      //           queryEducation = 16; // set a userEd var for DB query
-      //           lastGradYr = Math.max.apply(Math, edList); 
-      //           yearsSinceGrad = (new Date().getFullYear())-lastGradYr; //years since we have graduation info
-      //           console.log("Last:" + lastGradYr);
+              if ('Graduate School' in userEdObj) {
+                userSalaryBase = salaryGrad; // set base salary to average
+                queryEducation = 16; // set a userEd var for DB query
+                lastGradYr = Math.max.apply(Math, edList); 
+                yearsSinceGrad = (new Date().getFullYear())-lastGradYr; //years since we have graduation info
 
-      //           //check if the last grad year is grad school
-      //             if lastGradYr == userEdObj['Graduate School'] {
-      //                 // compound with average increase per year A = P ( 1+r ) ^ t 
-      //                 queryIncome = userSalaryBase*Math.pow((1+avgSalaryInc),yearsSinceGrad); 
-      //                 console.log(queryIncome);
-      //             } else {
-      //               //assume grad school was 4 years after last grad year
-      //               queryIncome = userSalaryBase*Math.pow((1+avgSalaryInc),(lastGradYear+4)); 
-      //               console.log(queryIncome);
-      //             }
+                //check if the last grad year is grad school
+                  if (lastGradYr == userEdObj['Graduate School']) {
+                      // compound with average increase per year A = P ( 1+r ) ^ t 
+                      userIncome = userSalaryBase*Math.pow((1+avgSalaryInc),yearsSinceGrad); 
+                  } else {
+                    //assume grad school was 4 years after last grad year
+                    userIncome = userSalaryBase*Math.pow((1+avgSalaryInc),(lastGradYear+4)); 
+                  }
 
-      //         } else if ('College' in userEdObj && !('Graduate School' in userEdObj)) {
-      //           userSalaryBase = salaryColl;
-      //           queryEducation = 15;
-      //             if lastGradYr == userEdObj['College']{
-      //                 // compound with average increase per year A = P ( 1+r ) ^ t 
-      //                 queryIncome = userSalaryBase*Math.pow((1+avgSalaryInc),yearsSinceGrad); 
-      //                 console.log(queryIncome);
-      //             } else {
-      //               //assume college was 2 years after last grad year
-      //               queryIncome = userSalaryBase*Math.pow((1+avgSalaryInc),(lastGradYear+4)); 
-      //               console.log(queryIncome);
+              } else if ('College' in userEdObj && !('Graduate School' in userEdObj)) {
+                userSalaryBase = salaryColl;
+                queryEducation = 15;
+                  if (lastGradYr == userEdObj['College']){
+                      // compound with average increase per year A = P ( 1+r ) ^ t 
+                      userIncome = userSalaryBase*Math.pow((1+avgSalaryInc),yearsSinceGrad); 
+                  } else {
+                    //assume college was 2 years after last grad year
+                    userIncome = userSalaryBase*Math.pow((1+avgSalaryInc),(lastGradYear+4)); 
+                  }
+              } else if ('High School' in userEdObj && !('College' in userEdObj) && !('Graduate School' in userEdObj)) { 
+                var userSalaryBase = salaryHS;
+                var userIncome = 12;
 
-      //         } else if ('High School' in userEdObj && !('College' in userEdObj) 
-      //           && !('Graduate School' in userEdObj)) { 
-      //           var userSalaryBase = salaryHS;
-      //           var userIncome = 12;
+              } else { // no data given on education, assuming no education
+                var userSalaryBase = salaryNoData;
+                var queryEducation = 5;
+              }
 
-      //         } else { // no data given on education, assuming no education
-      //           var userSalaryBase = salaryNoData;
-      //           var userEducation = 5;
-      //         }
-      //         //figure out last available grad year to help calc salary, age
-      //         console.log(userIncome);
-      //         console.log(userSalaryBase);
-      //         console.log(avgSalaryInc);
-      //         console.log(yearsSinceGrad);
+              if (userIncome < 5000) {
+                queryIncome = 1;
+              } else if (userIncome >= 5000 && userIncome <= 9999) {
+                queryIncome = 2;
+              } else if (userIncome >= 10000 && userIncome <= 14999){
+                queryIncome = 3;
+              } else if (userIncome >= 15000 && userIncome <= 19999) {
+                queryIncome = 4;
+              } else if (userIncome >= 20000 && userIncome <= 29999)  {
+                queryIncome = 5;
+              } else if (userIncome >= 30000 && userIncome <= 39999) {
+                queryIncome = 6;
+              } else if (userIncome >= 40000 && userIncome <= 49999) {
+                queryIncome = 7;
+              } else if (userIncome >= 50000 && userIncome <= 69999) {
+                queryIncome = 8;
+              } else {
+                queryIncome = 9;
+              }
+              console.log("queryIncome =" + queryIncome)
+              console.log("queryEducation = " + queryEducation);
 
+            // #FIX ME -- double check if needed
+            } else {  
+                // if the year not available, add a key, but year == 0
+                userEdObj['userFBInfo.education[i]type'] = 0; 
+                // queryIncome = 
+            }
+              // console.log(userEdObj);
+              // console.log(edList);
+            }
+        } 
 
-      //       } else {                  // if the year not available, add a key, but year == 0
-      //           userEdObj['userFBInfo.education[i]type'] = 0; 
-      //       }
-      //         // console.log(userEdObj);
-      //         // console.log(edList);
-      //       }
-      //   } 
-
-      // }
+      } // end of userEducationIncome function
 
       var userAge = function() {
         if (userFBInfo.birthday != undefined) {
-          console.log("We have a birthday!");
           var bDay = new Date(userFBInfo.birthday);
           var ageYr = Math.round(parseInt((today-bDay)/(1000*60*60*24))/365);
-          console.log(ageYr);
           if (ageYr < 20) {
             queryAge = 1;
-          } else if (ageYr >= 20 && ageYr < 30){
+          } else if (ageYr >= 20 && ageYr < 30) {
             queryAge = 2;
-          } else if (ageYr >= 30 && ageYr < 40){
+          } else if (ageYr >= 30 && ageYr < 40) {
             queryAge = 3;
-          } else if (ageYr >= 40 && ageYr < 50){
+          } else if (ageYr >= 40 && ageYr < 50) {
             queryAge = 4;
-          } else if (ageYr >= 50 && ageYr < 60){
+          } else if (ageYr >= 50 && ageYr < 60) {
             queryAge = 5;
-          } else if (ageYr >= 60 && ageYr < 70){
+          } else if (ageYr >= 60 && ageYr < 70) {
             queryAge = 6;
           } else {
              queryAge = 7;
           }
+        // if we can't find an age, look at the last grad year
         } else {
-          console.log("else");
+          //average age in the US is 37, use 30s
+          queryAge = 3;
         }
-        console.log(queryAge);
-        return(queryAge);
+        console.log("queryAge " + queryAge);
       }
 
-
+      console.log("test again" + userFBInfo.gender);
+      var queryGender;
+      var userGender = function() {
+        if (userFBInfo.gender == "male") {
+          queryGender = 1;
+        } else {
+          //since most FB users and a small majority of the population is female
+          //this will also take cases where the gender is custom-defined for now
+          queryGender = 2;
+          console.log("queryGender = " + queryGender);
+        }
+        // return queryGender;
+      }
 
 
       // gets location data for the user, passes back a region code 
       //needed to query the database
-      $.getJSON(locationURL, function(data){
-        var locationIn = data.location.located_in; // this is the id of the parent location
-        var parentLocationURL = "http://graph.facebook.com/" + locationIn; //url for the object needed
-        $.getJSON(parentLocationURL, function(moreData){
-          var userState = moreData.location.state; // goes into the object for parent loc, gets state
-          console.log(userState);
-          console.log(regionCodes[userState].region);
-          console.log(new Date().getFullYear())
-        })
-      });
+      var userRegion = function() {
+            $.getJSON(locationURL, function(data){
+              var locationIn = data.location.located_in; // this is the id of the parent location
+              var parentLocationURL = "http://graph.facebook.com/" + locationIn; //url for the object needed
+              $.getJSON(parentLocationURL, function(moreData){
+                var userState = moreData.location.state; // goes into the object for parent loc, gets state
+                var printRegion = regionCodes[userState].region;
+                var queryRegion = regionCodes[userState].code;
+                console.log("queryRegion = "  + queryRegion);
+              })
+            });
+          }
 
       console.log("name: " + userFBInfo.first_name);
-      console.log("gender: " + userFBInfo.gender);
-      console.log("loc: " + userFBInfo.location.id);
-
-      console.log(userFBInfo.education[1].year.name);
-      console.log((userFBInfo.education).length);
-      console.log(userFBInfo.education[0].year);
       userAge();
-      console.log(locationURL, locationURL.id);
-      console.log("education " + (userFBInfo.education).length);
+      userGender();
+      userEducation();
+      userRegion();
+
+
+      
+      
+    //   console.log(userFBInfo.education[1].year.name);
+    //   console.log((userFBInfo.education).length);
+    //   console.log(userFBInfo.education[0].year);
+
+    //   console.log(locationURL, locationURL.id);
+    //   console.log("education " + (userFBInfo.education).length);
     });
     
   }
