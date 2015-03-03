@@ -10,29 +10,47 @@ from math import log
 # and income                  #
 ###############################
 
-def education_calc_range(education_raw):
+def education_calc_range_atus(education_raw):
 	"""
-	Switches the education code in ATUS to the less specific CEX one to standardize
+	Switches the education code in ATUS to a collapsed set of codes.
 	"""
 	global education
 
-	if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34':
-		education = 10
-	if education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
-		education = 11
+	if education_raw == '31' or education_raw == '32' or education_raw == '33' or education_raw == '34' or education_raw == '35' or education_raw == '36' or education_raw == '37' or education_raw == '38':
+		education = 1
 	if education_raw == '39':
-		education = 12
-	if education_raw =='40':
-		education = 13
-	if education_raw == '41' or education_raw == '42':
-		education = 14
+		education = 2
+	if education_raw =='40' or education_raw == '41' or education_raw == '42':
+		education = 3
 	if education_raw == '43':
-		eduation = 15
+		eduation = 4
 	if education_raw == '45' or education_raw == '46':
-		education = 16
+		education = 5
 
 	return education
 
+
+def education_calc_range_cex(education):
+	"""
+	Collapses categories in CEX to match ATUS
+	"""
+
+	if education == 0 or education == 10 or education == 11 or education == '0' or education == '10' or education == '11':
+		education == 1
+	if education == 12 or education == '12':
+		education == 2
+	if education == 13 or education == 14 or education == '13' or education == '14':
+		education == 3 
+	if education == 15 or education == '15':
+		education == 4
+	if education == 16 or education == '16':
+		education == 5
+	if education == 17 or education == '17':
+		education == 6
+	else:
+		education == 6
+
+	return education
 
 def age_calc_range(age):
 	"""
@@ -63,28 +81,32 @@ def age_calc_range(age):
 
 def income_calc_range(income_raw):
 	"""
-	Switches the ATUS income code to match the less specific CEX one to standardize data
+	Switches the ATUS income code to match the less specific CEX one to standardize data, 
+	reduces the categories to even larger groups 
 	"""
 	global income
 
-	if income_raw == '1':
+	if income_raw == '1' or income_raw == '2' or income_raw == '3' or income_raw == '4' or income_raw == 1 or income_raw == 2 or income_raw == 3 or income_raw == 4:
 		income = 1
-	if income_raw == '2' or income_raw == '3':
+	if income_raw == '5' or income_raw == '6' or income_raw == 5 or income_raw == 6: 
 		income = 2
-	if income_raw == '4' or income_raw == '5':
+	if income_raw == '7' or income_raw == '8' or income_raw == '9' or income_raw == '10' or income_raw == 7 or income_raw == 8:
 		income = 3
-	if income_raw == '6':
+	if income_raw == '11' or income_raw == '12' or income_raw == '13' or income_raw == '14' or income_raw == '15' or income_raw == '16' or income_raw == 9:
 		income = 4
-	if income_raw == '7' or income_raw == '8':
-		income = 5
-	if income_raw == '9' or income_raw == '10':
-		income = 6
-	if income_raw == '11':
-		income = 7
-	if income_raw == '12' or income_raw == '13':
-		income = 8
-	if income_raw == '14' or income_raw == '15' or income_raw == '16':
-		income = 9
+	else:
+		income = 3
+
+
+	if income == 1 or income == 2 or income == 3 or income == 4:
+		income == 1
+	if income == 5 or income ==6:
+		income == 2
+	if income == 7 or income== 8:
+		income == 3
+	if income == 9:
+		income == 4
+
 	return income
 
 
@@ -120,7 +142,7 @@ def demo_data_atus(session):
 
 			# standardizing education codes for both studies by reorganizing ATUS codes to match CEX
 			education_raw = row[68]
-			education = education_calc_range(education_raw) #returns education variable
+			education = education_calc_range_atus(education_raw) #returns education variable
 
 			# standardizing income for both studies by recategorizing ATUS codes to match CEX
 			income_raw = row[8]
@@ -157,7 +179,7 @@ def load_habit_atus(session, user_dict_atus):
 			sex = float(row[4]) #TESEX
 			
 			education_raw = row[5] #PEEDUCA
-			education = education_calc_range(education_raw) #returns education variable
+			education = education_calc_range_atus(education_raw) #returns education variable
 
 			# add the demo values as keys in the 'raw' dictionary
 			if (idA1, sex, education, age_range) not in raw_habit:
@@ -280,8 +302,9 @@ def demo_data_cex(session):
 			education = row_mem[22]
 			try:
 				education = float(education)
+				education = education_calc_range_cex(education)
 			except:
-				education = 17
+				education = 6
 
 			age = row_mem[1]
 			age_range = age_calc_range(age)
@@ -306,7 +329,8 @@ def demo_data_cex(session):
 						pass
 					
 					if row_fml[366]:
-						income = float(row_fml[366]) #INCLASS in source
+						income_raw = float(row_fml[366]) #INCLASS in source
+						income = income_calc_range(income_raw)
 						temp[key].append(region)
 					else:
 						pass
