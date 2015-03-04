@@ -28,8 +28,8 @@ money_all = money_query.all()
 ##### demographic variables from form/FB ######
 sex = 2
 age_range = 2
-education = 16
-income = 6
+education = 6
+income = 3
 region = 4
 
 
@@ -38,14 +38,14 @@ profile_count = time_query.filter(m.Time.sex == sex, m.Time.age_range == age_ran
 profile_list = time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education == education).all()
 
 
-##### check probability of this profile in exercise #####
-ex_over_profile = session.query(m.Time.exercise_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.exercise_habit_timemin >= sleep_target)
-ex_under_profile = session.query(m.Time.exercise_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education,  m.Time.region == region, m.Time.exercise_habit_timemin <= sleep_target)
-ex_over_profile_count = ex_over_profile.count()
-ex_over_profile_average = ex_under_profile.count()
-ex_under_profile_count = ex_under_profile.count()
-ex_under_profile_all = ex_under_profile.all()  #FIXME - sending back tuples
-ex_profile_count =  time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.income == income).count()
+# ##### check probability of this profile in exercise #####
+# ex_over_profile = session.query(m.Time.exercise_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.exercise_habit_timemin >= sleep_target)
+# ex_under_profile = session.query(m.Time.exercise_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education,  m.Time.region == region, m.Time.exercise_habit_timemin <= sleep_target)
+# ex_over_profile_count = ex_over_profile.count()
+# ex_over_profile_average = ex_under_profile.count()
+# ex_under_profile_count = ex_under_profile.count()
+# ex_under_profile_all = ex_under_profile.all()  #FIXME - sending back tuples
+# ex_profile_count =  time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.income == income).count()
 
 # print "over ", ex_over_profile_count
 # print "under ", ex_under_profile_count
@@ -62,36 +62,35 @@ wk_over_profile_all = wk_over_profile.all()
 wk_under_profile_all = wk_over_profile.all()  #FIXME - sending back tuples
 
 test = time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education == education, m.Time.work_habit_timemin > work_target).all()
-test_list = [test[x].work_habit_timemin for x in range(0,3)]
+test_list = [test[x].work_habit_timemin for x in range(0,len(test))]
 
-# time_list = [[time_query[x].exercise_habit_timemin, time_query[x].work_habit_timemin, time_query[x].work_habit_timemin] for x in range (0, len(time_query))]
+time_list = [[time_query[x].exercise_habit_timemin, time_query[x].work_habit_timemin, time_query[x].work_habit_timemin] for x in range (0, 3)]
 
-# print "profile count", profile_count
-# print "data", profile_list
+print time_list
+# ##### check probability of this profile in sleep #####
+
+# sl_over_profile = session.query(m.Time.sleep_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.sleep_habit_timemin > sleep_target)
+# sl_under_profile = session.query(m.Time.sleep_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.sleep_habit_timemin < sleep_target)
+# sl_over_profile_count = sl_over_profile.count()
+# sl_under_profile_count = sl_under_profile.count()
+# # sl_over_profile_all = sl_over_profile.all()
+# # sl_under_profile_all = sl_over_profile.all()  #FIXME - sending back tuples
+
+# # test = time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education == education, m.Time.sleep_habit_timemin > sleep_target).all()
+# # test_list = [test[x].work_habit_timemin for x in range(0,len(test))]
+
+# # time_list = [[time_query[x].exercise_habit_timemin, time_query[x].work_habit_timemin, time_query[x].work_habit_timemin] for x in range (0, 100)]
+
+# print "profile count", sl_over_profile_count
+# print "data", sl_under_profile_count
 # print "over count", test
 # print "test list", test_list
 
-##### check probability of this profile in sleep #####
+# print sl_over_profile_all
 
-sl_over_profile = session.query(m.Time.sleep_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.sleep_habit_timemin > sleep_target)
-sl_under_profile = session.query(m.Time.sleep_habit_timemin).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education >= education, m.Time.region == region, m.Time.sleep_habit_timemin < sleep_target)
-sl_over_profile_count = wk_over_profile.count()
-sl_under_profile_count = wk_under_profile.count()
-sl_over_profile_all = wk_over_profile.all()
-sl_under_profile_all = wk_over_profile.all()  #FIXME - sending back tuples
+# sl_test = session.query(m.Time.sleep_habit_timemin).filter(sex == sex, age_range== age_range, education == education, region == region, income == income, m.Time.sleep_habit_timemin > sleep_target).all()
 
-test = time_query.filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education == education, m.Time.sleep_habit_timemin > sleep_target).all()
-test_list = [test[x].work_habit_timemin for x in range(0,len(test))]
-
-# time_list = [[time_query[x].exercise_habit_timemin, time_query[x].work_habit_timemin, time_query[x].work_habit_timemin] for x in range (0, len(time_query))]
-
-print "profile count", profile_count
-print "data", profile_list
-print "over count", test
-print "test list", test_list
-
-
-
+# print sl_test
 
 # ##### query matching records based on demos ######
 # time_vars = session.query(m.Time).filter(m.Time.sex == sex, m.Time.age_range == age_range, m.Time.education == education, m.Time.income == income, m.Time.region == region)
