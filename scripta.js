@@ -5,22 +5,31 @@
 
 
 	app.controller('UserForm', function($scope) {
-		// $scope.master = {};
-		// $scope.update = function(user) {
-		// 	$scope.master = angular.copy(user);
-		// };
+		$scope.master = {};
+		$scope.update = function(user) {
+			console.log($scope);
+			console.log(user.target);
+			$scope.master = angular.copy(user);
+		};
 		// $scope.reset = function() {
 		// 	$scope.user = angular.copy($scope.master);
 		// };
 
+		$scope.userName = {
+			text: '',
+			word: /^\s*\w*\s*$/
+		};
+
+		$scope.currentlySelectedUserName = $scope.userName.text;
+
 		$scope.ageRange = [
-			{ description: 'Under 20 years old', decade: 'under twenty', value: 1},
-			{ description: '20 - 29 years old', decade: 'twenties', value: 2},
-			{ description: '30 - 39 years old', decade: 'thirties', value: 3},
-			{ description: '40 - 49 years old', decade: 'forties', value: 4},
-			{ description: '50 - 59 years old', decade: 'fifties', value: 5},
-			{ description: '60 - 69 years old', decade: 'sixties', value: 6},
-			{ description: 'Over 70 years old', decade: 'seventy +', value: 7},
+			{ description: 'Under 20 years old', decade: 'under twenty', value: 1 },
+			{ description: '20 - 29 years old', decade: 'twenties', value: 2 },
+			{ description: '30 - 39 years old', decade: 'thirties', value: 3 },
+			{ description: '40 - 49 years old', decade: 'forties', value: 4 },
+			{ description: '50 - 59 years old', decade: 'fifties', value: 5 },
+			{ description: '60 - 69 years old', decade: 'sixties', value: 6 },
+			{ description: 'Over 70 years old', decade: 'seventy +', value: 7 }
 		];
 
 		$scope.currentlySelectedAge = $scope.ageRange[0].value;
@@ -63,6 +72,11 @@
 
 		$scope.currentlySelectedIncome = $scope.income[0].value;
 
+		$scope.submit = function($event) {
+			// if($scope.ageRange && $scope.gender && $scope.region && $scope.education && $scope.income) {
+				angular.element($event.target.form).triggerHandler('submit');
+			// }
+		};
 
 		// $scope.reset();
 	

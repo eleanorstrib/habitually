@@ -29,42 +29,48 @@ print ("*** " * 30)
 print "CLASSIFIER TEST"
 
 class TimeML:
-	def __init__(self, timequery, timelist):
-		self.d = timequery
-		self.l = timelist
+	def __init__(self, timedemos, timesleep):
+		self.d = timedemos
+		self.l = timesleep
 
+time_demos = session.query(m.Time.sex, m.Time.age_range, m.Time.region, m.Time.income, m.Time.education).all()
+time_sleep = session.query(m.Time.sleep_habit_timemin).all()
 
-
-time_query = session.query(m.Time).all()
-time_list = [[time_query[x].exercise_habit_timemin, time_query[x].work_habit_timemin, time_query[x].work_habit_timemin] for x in range (0, len(time_query))]
-
-
-
-t = TimeML(time_query, time_list)
+t = TimeML(time_demos, time_sleep)
 
 # assign variables to my lists and convert to numpy arrays
-time_habits = t.l
-time_habits= np.asarray(time_habits)
-time_targets =[[30, 480, 480]]
-time_targets = np.asarray(time_targets)
+y = t.l
+y = [y[i][0] for i in range(0, len(y))]
+y= np.asarray(y)
+
+
+X = t.d
+X= np.asarray(X)
+print X
+print y
+print "shape X", X.shape
+print "shape y", y.shape
+
+print "est.fit(X, y)", est.fit(X,y)
+print "est.coef_", est.coef_
 
 
 #attempt at linear regression 
-est.fit(time_habits, time_targets)
-est.coef_
+# est.fit(time_habits, time_targets)
+# est.coef_
 
-print est.coef_
+# print est.coef_
 
-print time_habits.shape
-print time_targets.shape
+# print time_habits.shape
+# print time_targets.shape
 
 
-#  attempt at using the classifier
-classifier = svm.SVC()
+# #  attempt at using the classifier
+# classifier = svm.SVC()
 
-fitting = classifier.fit(time_habits, time_targets)
+# fitting = classifier.fit(time_habits, time_targets)
 
-print fitting
+# print fitting
 
 
 
