@@ -1,4 +1,6 @@
 
+
+
 //variables to calculate estimated income, baseline as of 2012
 //http://www.usnews.com/education/best-graduate-schools/articles/2012/06/29/6-reasons-why-graduate-school-pays-off
 var salaryGrad = 55242;
@@ -16,41 +18,41 @@ var avgSalaryInc = 0.03;
 //today's date
 var today = new Date();
 
-//these are the codes needed to query the db
-//objects include some text values for display
-var ageCodes = {
-  1 : {range: '< 20', verb: 'under 20', code: 1},
-  2 : {range: '20-29', verb: 'twenties'},
-  // median age is ~38 https://www.cia.gov/library/publications/the-world-factbook/geos/us.html
-  3 : {range: '30-39', verb: 'thirties'}, 
-  4 : {range: '40-49', verb: 'forties'},
-  5 : {range: '50-59', verb: 'fifties'},
-  6 : {range: '60-69', verb: 'sixties'},
-  7 : {range: '70+', verb: 'seventies'},
-}
+// //these are the codes needed to query the db
+// //objects include some text values for display
+// var ageCodes = {
+//   1 : {range: '< 20', verb: 'under 20', code: 1},
+//   2 : {range: '20-29', verb: 'twenties'},
+//   // median age is ~38 https://www.cia.gov/library/publications/the-world-factbook/geos/us.html
+//   3 : {range: '30-39', verb: 'thirties'}, 
+//   4 : {range: '40-49', verb: 'forties'},
+//   5 : {range: '50-59', verb: 'fifties'},
+//   6 : {range: '60-69', verb: 'sixties'},
+//   7 : {range: '70+', verb: 'seventies'},
+// }
 
-education_codes = {
-  0 : "Never attended school",
-  10 : "First through 8th grade",
-  11 : "Ninth through 12th grade (did not graduate)",
-  12 : "High school graduate",
-  13 : "Some college (did not graduate)",
-  14 : "Associate's/vocational degree",
-  15 : "Bachelor's degree",
-  16 : "Master's or Doctoral degree",
-  17 : "No data reported"
-}
-
-
+// education_codes = {
+//   0 : "Never attended school",
+//   10 : "First through 8th grade",
+//   11 : "Ninth through 12th grade (did not graduate)",
+//   12 : "High school graduate",
+//   13 : "Some college (did not graduate)",
+//   14 : "Associate's/vocational degree",
+//   15 : "Bachelor's degree",
+//   16 : "Master's or Doctoral degree",
+//   17 : "No data reported"
+// }
 
 
 
+
+  //FIX ME -- ADD ALL STATES
 var regionCodes = {
   AL: {code: 4, region: 'Western'},
   AZ: {code: 4, region: 'Western'},
   CA: {code: 4, region: 'Western'},
   CO: {code: 4, region: 'Western'},
-  //FIX ME -- ADD ALL STATES
+
   // 1: {Northeast:
   //     ['CT', 'ME', 'MA', 'NH', 'NJ', 'NY', 'PA', 'RI', 'VT']},
   // 2: {Midwest:
@@ -59,6 +61,47 @@ var regionCodes = {
   //     ['AL', 'AK', 'DE', 'DC', 'FL', 'GA', 'KY', 'LA', 'MD', 'MI', 'NC', 'OK', 'SC', 'TN', 'TX', 'VA', 'WV']},
   // 4 : {West: ['AK', 'AZ', 'CA', 'CO', 'HI', 'ID', 'MT', 'NV', 'NM', 'OR', 'UT', 'WA', 'WI']},
 };
+
+//wrapping the initialization of FB SDK into some JS to pull
+//app id from the "secret" file
+$.getScript("secret.js", function(){
+
+    //Initializes SDK
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : FB_APP_ID,
+        cookie     : true,  // enable cookies, server can access session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.2', // use version 2.2
+        status     : true   // check for user status on load
+      });
+      $(document).trigger('fbload'); 
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  }
+
+    // // Checks user status post-login
+      function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+   // Use anything defined in the loaded script...
+});
 
 //Checks if user is logged in and displays a message based on the result
   function statusChangeCallback(response) {
@@ -78,39 +121,8 @@ var regionCodes = {
     }
   }
 
-//wrapping the initialization of FB SDK into some JS to pull
-//app id from the "secret" file
-$.getScript("secret.js", function(){
-
-	  //Initializes SDK
-	  window.fbAsyncInit = function() {
-		  FB.init({
-		    appId      : FB_APP_ID,
-		    cookie     : true,  // enable cookies, server can access session
-		    xfbml      : true,  // parse social plugins on this page
-		    version    : 'v2.2', // use version 2.2
-		    status     : true   // check for user status on load
-		  });
-
-	  // Checks user status post-login
-		  FB.getLoginStatus(function(response) {
-		    statusChangeCallback(response);
-		  });
-
-	  };
-
-	  // Load the SDK asynchronously
-	  (function(d, s, id) {
-	    var js, fjs = d.getElementsByTagName(s)[0];
-	    if (d.getElementById(id)) return;
-	    js = d.createElement(s); js.id = id;
-	    js.src = "//connect.facebook.net/en_US/sdk.js";
-	    fjs.parentNode.insertBefore(js, fjs);
-	  }(document, 'script', 'facebook-jssdk'));
 
 
-   // Use anything defined in the loaded script...
-});
  
   // Test of social graph API, and call for object containing response
 function callAPI() {
@@ -150,7 +162,7 @@ function callAPI() {
 
               if ('Graduate School' in userEdObj) {
                 userSalaryBase = salaryGrad; // set base salary to average
-                queryEducation = 16; // set a userEd var for DB query
+                queryEducation = 5; // set a userEd var for DB query
                 lastGradYr = Math.max.apply(Math, edList); 
                 yearsSinceGrad = (new Date().getFullYear())-lastGradYr; //years since we have graduation info
 
@@ -165,7 +177,7 @@ function callAPI() {
 
               } else if ('College' in userEdObj && !('Graduate School' in userEdObj)) {
                 userSalaryBase = salaryColl;
-                queryEducation = 15;
+                queryEducation = 4;
                   if (lastGradYr == userEdObj['College']){
                       // compound with average increase per year A = P ( 1+r ) ^ t 
                       userIncome = userSalaryBase*Math.pow((1+avgSalaryInc),yearsSinceGrad); 
@@ -175,31 +187,23 @@ function callAPI() {
                   }
               } else if ('High School' in userEdObj && !('College' in userEdObj) && !('Graduate School' in userEdObj)) { 
                 var userSalaryBase = salaryHS;
-                var userIncome = 12;
+                var userIncome = 2;
 
-              } else { // no data given on education, assuming no education
+              } else { // no data given on education, assuming HS grad
                 var userSalaryBase = salaryNoData;
-                var queryEducation = 5;
+                var queryEducation = 2;
               }
 
-              if (userIncome < 5000) {
+              if (userIncome < 20000) {
                 queryIncome = 1;
-              } else if (userIncome >= 5000 && userIncome <= 9999) {
+              } else if (userIncome >= 20000 && userIncome <= 39999) {
                 queryIncome = 2;
-              } else if (userIncome >= 10000 && userIncome <= 14999){
+              } else if (userIncome >= 40000 && userIncome <= 59999){
                 queryIncome = 3;
-              } else if (userIncome >= 15000 && userIncome <= 19999) {
+              } else if (userIncome >= 60000) {
                 queryIncome = 4;
-              } else if (userIncome >= 20000 && userIncome <= 29999)  {
-                queryIncome = 5;
-              } else if (userIncome >= 30000 && userIncome <= 39999) {
-                queryIncome = 6;
-              } else if (userIncome >= 40000 && userIncome <= 49999) {
-                queryIncome = 7;
-              } else if (userIncome >= 50000 && userIncome <= 69999) {
-                queryIncome = 8;
               } else {
-                queryIncome = 9;
+                queryIncome = 3; //if no income provided, assume average
               }
               console.log("queryIncome =" + queryIncome)
               console.log("queryEducation = " + queryEducation);
@@ -233,10 +237,10 @@ function callAPI() {
             queryAge = 5;
           } else if (ageYr >= 60 && ageYr < 70) {
             queryAge = 6;
-          } else {
+          } else if (ageYr > 70) {
              queryAge = 7;
           }
-        // if we can't find an age, look at the last grad year
+        // if we can't find an age, assume 
         } else {
           //average age in the US is 37, use 30s
           queryAge = 3;

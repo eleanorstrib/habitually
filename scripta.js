@@ -1,12 +1,12 @@
 
 (function() {
-	var app = angular.module('habitually', []);
+	var app = angular.module('habitually', ['ngRoute']);
 
 
 
 	app.controller('UserForm', function($scope) {
 		$scope.master = {};
-		$scope.update = function(user) {
+		$scope.update = function(event) {
 			console.log($scope);
 			console.log(user.target);
 			$scope.master = angular.copy(user);
@@ -72,9 +72,9 @@
 
 		$scope.currentlySelectedIncome = $scope.income[0].value;
 
-		$scope.submit = function($event) {
+		$scope.submit = function(event) {
 			// if($scope.ageRange && $scope.gender && $scope.region && $scope.education && $scope.income) {
-				angular.element($event.target.form).triggerHandler('submit');
+				angular.element(event.target.form).triggerHandler('submit');
 			// }
 		};
 

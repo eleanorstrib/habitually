@@ -31,6 +31,7 @@
 
 		<!--JavaScript-->
 			<script src="scripta.js"></script>
+			<script src="./static/fb_login.js"></script>
 
 	</head>
 
@@ -63,7 +64,24 @@
 
 			<div class="row">
 				<div class="col-md-4">
-					<h2> all about you </h2>
+					<h2> FACEBOOK </h2>
+					<!-- like button -->
+						<div
+						  class="fb-like"
+						  data-share="true"
+						  data-width="450"
+						  data-show-faces="true">
+						</div>
+
+						<!-- status for login -->
+						<div id="status">
+						</div>
+
+						<div id="fb-root">
+						</div>
+
+						<fb:login-button scope="public_profile,email,user_location,user_education_history,user_birthday" onlogin="checkLoginState();">
+						</fb:login-button>
 				</div> 
 				<div class="col-md-6">
 					<form role="form" ng-submit="submit()">
@@ -144,7 +162,7 @@
 					    <label for="education" class="col-sm-2 control-label">education</label>
 					    <div class="col-sm-10">
 
-					      <select ng-model="currentlySelectedEducation" 
+					      <select ng-model="choice" 
 					      	ng-options="education.description for education in education" ng-value="education.value for value in education">
 					      </select>
 
