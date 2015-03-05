@@ -2,6 +2,25 @@
 (function() {
 	var app = angular.module('habitually', ['ngRoute']);
 
+	app.config(function($routeProvider){
+		$routeProvider
+
+			.when('/', {
+				templateUrl: 'main.html'
+			})
+
+			.when('/about', {
+				templateUrl: 'about.html'
+			})
+
+			.when('/howitworks', {
+				templateUrl: 'howitworks.html'
+			})
+
+			.when('/getstarted', {
+				templateUrl: 'getstarted.html'
+			})
+	});
 
 
 	app.controller('UserForm', function($scope) {
@@ -67,7 +86,7 @@
 			{ description: 'Under $20,000', value: 1 },
 			{ description: '$20,000 to $39,999', value: 2 },
 			{ description: '$40,000 to 59,999', value: 3 },
-			{ description: 'Over $60,000', value: 4}
+			{ description: 'Over $60,000', value: 4},
 		];
 
 		$scope.currentlySelectedIncome = $scope.income[0].value;

@@ -68,6 +68,7 @@ $.getScript("secret.js", function(){
 
     //Initializes SDK
     window.fbAsyncInit = function() {
+      console.log("get it started")
       FB.init({
         appId      : FB_APP_ID,
         cookie     : true,  // enable cookies, server can access session
@@ -75,7 +76,7 @@ $.getScript("secret.js", function(){
         version    : 'v2.2', // use version 2.2
         status     : true   // check for user status on load
       });
-      $(document).trigger('fbload'); 
+
 
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
@@ -101,7 +102,7 @@ $.getScript("secret.js", function(){
 
 
    // Use anything defined in the loaded script...
-});
+// });
 
 //Checks if user is logged in and displays a message based on the result
   function statusChangeCallback(response) {
