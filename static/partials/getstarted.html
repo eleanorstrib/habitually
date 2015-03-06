@@ -1,0 +1,120 @@
+<br />
+<h3> Tell us about you</h3>
+<h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/>
+Fill out the form below or log in with Facebook.</h3>
+
+<br/>
+
+<div ng-controller="userForm">
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<form>
+				<div class="col-md-3">
+					<label>your name</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" name="firstName" ng-model="userForm.firstName" required>
+					
+				</div>
+		</div>
+		<div class="col-md-3">{{ userForm.firstName }}</div>
+	</div><!--  end row -->
+
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3">
+				<label>age</label>
+			</div>
+			<div class="col-md-9">
+				<select ng-model="userForm.ageRange"
+					ng-options="ageRange.description for ageRange in ageRange" required>
+				</select>
+									
+			</div>
+		</div>
+		<div class="col-md-3">current {{ userForm.ageRange.value }}</div> <!-- ??? -->
+	</div><!-- end row -->
+	
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3">
+				<label>gender</label>
+			</div>
+			<div class="col-md-9">
+				<input type="radio" ng-model="userForm.gender" value=2 required>&nbspFemale <br />  
+				<input type="radio" ng-model="userForm.gender" value=1 required>&nbspMale <br/>
+			</div>
+		</div>
+		<div class="col-md-3">Current value: {{userForm.gender}}</div> <!-- ??? -->
+	</div><!-- end row -->
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3">
+				<label>region</label>
+			</div>
+			<div class="col-md-9">
+			<select ng-model="userForm.region" ng-options="region.description for region in region">
+			</select>
+			</div>
+		</div>
+		<div class="col-md-3">Current value: {{ userForm.region.value }}</div> <!-- ??? -->
+	</div><!-- end row -->
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3">
+				<label>education</label>
+			</div>
+			<div class="col-md-9">
+			<select ng-model="userForm.education" ng-options="education.description for education in education">
+			</select>
+			</div>
+		</div>
+		<div class="col-md-3">Current value: {{ userForm.education.value }}</div> <!-- ??? -->
+	</div><!-- end row -->
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3">
+				<label>income</label>
+			</div>
+			<div class="col-md-9">
+			<select ng-model="userForm.income" ng-options="income.description for income in income">
+			</select>
+			</div>
+		</div>
+		<div class="col-md-3">Current value: {{ master | json }}</div> <!-- ??? -->
+	</div><!-- end row -->
+
+
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-3"></div>
+			<div class="col-md-9">
+				<input type="submit" ng-click="update(user)"value="analyze me!">
+			</div>
+		</div>
+		<div class="col-md-3">RIGHT</div> <!-- ??? -->
+	</div><!-- end row -->
+
+		</form>
+	</div>
+	</div>
+</div>
+</div>
