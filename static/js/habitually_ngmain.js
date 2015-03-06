@@ -22,11 +22,16 @@
 			})
 	})
 
-	app.controller('userForm', ['$scope', function($scope) {
+	app.controller('userForm', ['$scope', '$http', function($scope, $http) {
 		$scope.master = {};
+
+		$http.get("/habit-data.json").success(function(data) {
+			console.dir(data);
+			$scope.habits = data;
+		});
+
 		$scope.update = function(user) {
 			$scope.master = angular.copy(user);
-        	console.log($scope.master);
 		};
 		$scope.reset = function() {
 			$scope.user = angular.copy($scope.master);
@@ -52,7 +57,7 @@
 			{ description: 'Over 70 years old', decade: 'seventy +', value: 7 }
 		];
 
-		$scope.currentlySelectedAge = $scope.ageRange.value;
+		$scope.currentlySelectedAge = $scope.ageRange[0].value;
 
 
 		$scope.gender = [
@@ -92,8 +97,6 @@
 
 		$scope.currentlySelectedIncome = $scope.income.value;
 
-
-		
 
 	}]) //closes controller
 

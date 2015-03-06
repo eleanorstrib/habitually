@@ -4,8 +4,9 @@
 Fill out the form below or log in with Facebook.</h3>
 
 <br/>
-
 <div ng-controller="userForm">
+    Your name is {{habits.name}}
+
 	<div class="row">
 		<div class="col-md-2">
 		</div>
@@ -48,8 +49,8 @@ Fill out the form below or log in with Facebook.</h3>
 				<label>gender</label>
 			</div>
 			<div class="col-md-9">
-				<input type="radio" ng-model="userForm.gender" value=2 required>&nbspFemale <br />  
-				<input type="radio" ng-model="userForm.gender" value=1 required>&nbspMale <br/>
+				<input type="radio" ng-model="userForm.gender" value=2 required>&nbsp;Female <br />  
+				<input type="radio" ng-model="userForm.gender" value=1 required>&nbsp;Male <br/>
 			</div>
 		</div>
 		<div class="col-md-3">Current value: {{userForm.gender}}</div> <!-- ??? -->
