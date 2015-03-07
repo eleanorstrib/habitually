@@ -27,21 +27,21 @@ def index():
 	"""
 	This function loads the first page and all of the survey data for graphing.
 	"""
-	habits = calc.main(habits_dict)
-	usersess['habits'] = {}
-	usersess['habits'] = habits
+	# habits = calc.main(habits_dict)
+	# usersess['habits'] = {}
+	# usersess['habits'] = habits
 	print usersess  # FIXME remove
 	# define all of the variables needed on the page
-	avg_work_hours_all = usersess['habits']['work']['avg_work_hours_all']
-	print avg_work_hours_all
+	# avg_work_hours_all = usersess['habits']['work']['avg_work_hours_all']
+	# print avg_work_hours_all
 	
-	return render_template('index.html', avg_work_hours_all=avg_work_hours_all)
+	return render_template('index.html')
 
-@app.route("/habit-data.json")
+@app.route("/allhabits.json")
 def habits_data():
 	"""Return JSON info about habits."""
-
-	return '{"name":"joel"}'
+	habits = calc.main(habits_dict)
+	return jsonify(habits)
 
 
 if __name__ == "__main__":

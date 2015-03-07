@@ -1,3 +1,4 @@
+
 (function() { 
 
 	var app = angular.module('habitually', ['ngRoute']);
@@ -22,10 +23,17 @@
 			})
 	})
 
+	app.controller('mainPage', ['$scope', '$http', function($scope, $http){
+		$http.get("/allhabits.json").success(function(data) {
+			console.dir(data);
+			$scope.habits = data;
+		});
+	}])
+
 	app.controller('userForm', ['$scope', '$http', function($scope, $http) {
 		$scope.master = {};
 
-		$http.get("/habit-data.json").success(function(data) {
+		$http.get("/allhabits.json").success(function(data) {
 			console.dir(data);
 			$scope.habits = data;
 		});
@@ -98,7 +106,7 @@
 		$scope.currentlySelectedIncome = $scope.income.value;
 
 
-	}]) //closes controller
+	}]) //closes form controller
 
 }) (); //closes whole function
 
