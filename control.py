@@ -1,6 +1,6 @@
 
 from __future__ import division
-from flask import Flask, render_template, jsonify, send_file, make_response
+from flask import Flask, render_template, jsonify, send_file, make_response, request
 from flask import session as usersess
 from flask.ext.sqlalchemy import SQLAlchemy
 import calculations as calc
@@ -9,6 +9,7 @@ import jinja2
 import os
 import json
 import requests
+import ast
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -28,14 +29,7 @@ def index():
 	"""
 	This function loads the first page and all of the survey data for graphing.
 	"""
-	# habits = calc.main(habits_dict)
-	# usersess['habits'] = {}
-	# usersess['habits'] = habits
 	print usersess  # FIXME remove
-	# define all of the variables needed on the page
-	# avg_work_hours_all = usersess['habits']['work']['avg_work_hours_all']
-	# print avg_work_hours_all
-	
 	return render_template('index.html')
 
 @app.route("/allhabits.json")
@@ -44,18 +38,16 @@ def habits_data():
 	habits = calc.main(habits_dict)
 	return jsonify(habits)
 
-@app.route("/userData", methods = ['POST'])
+@app.route("/userData.json", methods = ['POST'])
 def user_data():
 	"""Pull in JSON info about the user's demos."""
-	data = request.forms.get(userData)
-	# gender = data.get(queryGender)
-	# age_range = data.get(queryAgeRange)
-	# region = data.get(queryRegion)
-	# education = data.get(queryEducation)
-	# income = data.get(queryIncome)
+	data = request.data # this is a string
+	user_data = ast.literal_eval(data)
+	# user_data = json.loads(user_data)
 
-	print data
-	return data
+	print type(user_data)
+	print user_data
+	return user_data
 
 
 if __name__ == "__main__":

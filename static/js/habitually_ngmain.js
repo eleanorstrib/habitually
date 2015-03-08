@@ -35,7 +35,7 @@
 		});
 	}])
 
-	app.controller('userForm', function($scope, $http) {
+	app.controller('userForm', [ '$scope', '$http', function($scope, $http) {
 		// $scope.master = {}; //might remove this
 		console.log($scope.userData);
 		$scope.wasSubmitted = false;
@@ -54,7 +54,9 @@
 			userData.queryEducation = $scope.formData.education.value;
 			userData.queryIncome = $scope.formData.income.value;
 			console.log(userData);
-			$http.post("/userData.json", userData)
+			userData = JSON.stringify(userData)
+			console.log(userData)
+			$http.post("/userData.json", JSON.stringify(userData))
 				.success(function(data, status, headers, config){
 					console.log("Success!")
 					console.log(userData)
@@ -120,7 +122,7 @@
 		$scope.currentlySelectedIncome = $scope.income.value;
 
 
-	}) //closes form controller
+	}]) //closes form controller
 
 }) (); //closes whole function
 
