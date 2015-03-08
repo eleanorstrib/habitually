@@ -14,6 +14,7 @@ from sklearn import svm
 import numpy as np
 import codedict as cd
 from array import array
+import sklearn
 from sklearn.linear_model import LinearRegression
 est = LinearRegression(fit_intercept=False)
 
@@ -54,6 +55,11 @@ print "shape y", y.shape
 print "est.fit(X, y)", est.fit(X,y)
 print "est.coef_", est.coef_
 
+user = [2, 3, 4, 5, 4]
+user = np.asarray(user)
+print "numpy array", user
+
+print sklearn.svm.libsvm.predict(user)
 
 #attempt at linear regression 
 # est.fit(time_habits, time_targets)

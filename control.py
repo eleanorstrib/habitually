@@ -8,6 +8,7 @@ import model_ind as m
 import jinja2
 import os
 import json
+import requests
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -42,6 +43,19 @@ def habits_data():
 	"""Return JSON info about habits."""
 	habits = calc.main(habits_dict)
 	return jsonify(habits)
+
+@app.route("/userData", methods = ['POST'])
+def user_data():
+	"""Pull in JSON info about the user's demos."""
+	data = request.forms.get(userData)
+	# gender = data.get(queryGender)
+	# age_range = data.get(queryAgeRange)
+	# region = data.get(queryRegion)
+	# education = data.get(queryEducation)
+	# income = data.get(queryIncome)
+
+	print data
+	return data
 
 
 if __name__ == "__main__":

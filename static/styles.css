@@ -2,3 +2,15 @@ body {
 	padding: 40px;
 	font-family: 'Oxygen', sans-serif;
 }
+
+.carousel-stats {
+	font-family: 'Oxygen', sans-serif;
+	font-weight: 300;
+	font-size: 45px;
+}
+
+.carousel-text {
+	font-family: 'Oxygen', sans-serif;
+	font-weight: 300;
+	font-size: 16px;
+}
