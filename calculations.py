@@ -8,15 +8,6 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker, scoped_session
 import numpy
 
-# engine = create_engine("sqlite:///habit.db", echo=True)
-# m.Session = m.sessionmaker(bind=engine)
-
-# session = m.Session()
-
-##### variables for target ######
-exercise_target = 30
-work_target = 456
-sleep_target = 480
 
 ##### queries for all data from each table #####
 time_query = m.session.query(m.Time)

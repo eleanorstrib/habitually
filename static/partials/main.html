@@ -1,35 +1,52 @@
 <div ng-controller="mainPage">
 
 	<div class="row">
-	<div class="col-md-9"><!--begin carousel column-->
+	<div class="col-md-1 carousel-all"></div>
+	<div class="col-md-10 carousel-all"><!--begin carousel column-->
 	<!--START CAROUSEL-->
 		<div id="myCarousel" class="carousel slide">
 		  <ol class="carousel-indicators">
 		    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 		    <li data-target="#myCarousel" data-slide-to="1"></li>
 		    <li data-target="#myCarousel" data-slide-to="2"></li>
+		    <li data-target="#myCarousel" data-slide-to="3"></li>
+		    <li data-target="#myCarousel" data-slide-to="4"></li>
 		  </ol>
 		  <!-- items -->
 		  <div class="carousel-inner">
 		    <div class="item active">
-		    	<img src="http://airows.com/wp-content/uploads/2013/02/Six-Senses-Hideaway-Samui-Thailand-1000X667-02.jpeg">
+		    	<img src="../static/img/carousel_sleep.jpg">
 		    	<div class="carousel-caption">
-		    		<h3>Cute puppy 1</h3>
-		    		<p>This puppy is pretty darn cute  {{habits.work.avg_work_hours_all}}</p>
+		    		<span class="carousel-stats">{{ habits.sleep.avg_sleep_hours_all | number:2 }} hours</span>
+		    		<p>Average hours an American sleeps each night</p>
 		    	</div>
 		    </div>
 		    <div class="item">
-		    	<img src="http://image.shutterstock.com/display_pic_with_logo/1156523/138933233/stock-photo-shopping-bags-various-colour-138933233.jpg">
+		    	<img src="../static/img/carousel_clothes.jpg">
 		    	<div class="carousel-caption">
-		    		<span class="carousel-stats">{{habits.work.avg_work_hours_all}}</span>
-		    		<p><span class="carousel-text">This puppy is pretty darn cute too... how can I choose?</span></p>
+		    		<span class="carousel-stats">{{ habits.clothing.max_clothes_spending_all | currency }}</span>
+		    		<p><span class="carousel-text">Maximum amount reported on clothes in one quarter</span></p>
 		    	</div>
 		    </div>
 		    <div class="item">
-		    	<img src="http://image.shutterstock.com/display_pic_with_logo/427184/195877961/stock-photo-how-much-tip-195877961.jpg">
+		    	<img src="../static/img/carousel_work.jpg">
 		    	<div class="carousel-caption">
-		    		<h3>Cute puppy 3</h3>
-		    		<p>OMG so many cute puppies!</p>
+		    		<span class="carousel-stats">{{ habits.work.avg_work_hours_all | number:2 }} hours</span>
+		    		<p>Hours the average person with a primary job works each day</p>
+		    	</div>
+		    </div>
+		    <div class="item">
+		    	<img src="../static/img/carousel_eatout.jpg">
+		    	<div class="carousel-caption">
+		    		<span class="carousel-stats">{{habits.eatout.med_eatout_spending_all | currency }}</span>
+		    		<p>Median spend on eating out in a 3-month period</p>
+		    	</div>
+		    </div>
+		    <div class="item">
+		    	<img src="../static/img/carousel_exercise.jpg">
+		    	<div class="carousel-caption">
+		    		<span class="carousel-stats">{{ habits.exercise.avg_ex_hours_all | number:2 }} hours</span>
+		    		<p>Was all the average American worked out in a typical day. <br /> How about you?</p>
 		    	</div>
 		    </div>
 		  </div>
@@ -43,6 +60,6 @@
 			    <span class="sr-only">Next</span>
 			</a>
 		</div> <!--end carousel column-->
-		<div class="col-md-3">BLAH!</div>
+		<div class="col-md-1 carousel-all"></div>
 	</div> <!--end row-->
 </div> <!--end controller-->

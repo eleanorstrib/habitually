@@ -22,8 +22,8 @@
 				templateUrl: '../static/partials/getstarted.html'
 			})
 
-			.when('/seeprojections', {
-				templateUrl: '../static/partials/seeprojections.html'
+			.when('/predictions', {
+				templateUrl: '../static/partials/predictions.html'
 			})
 	})
 
@@ -32,6 +32,14 @@
 		.success(function(data) {
 			console.dir(data);
 			$scope.habits = data;
+		});
+	}])
+	
+	app.controller('predictPage', ['$scope', '$http', function($scope, $http){
+		$http.get("/predictions.json")
+		.success(function(data) {
+			console.dir(data);
+			$scope.predictions = data;
 		});
 	}])
 
@@ -123,6 +131,14 @@
 
 
 	}]) //closes form controller
+
+	app.controller('predictPage', ['$scope', '$http', function($scope, $http){
+		$http.get("/predictions.json")
+		.success(function(data) {
+			console.dir(data);
+			$scope.predictions = data;
+		});
+	}])
 
 }) (); //closes whole function
 

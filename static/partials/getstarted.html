@@ -1,62 +1,71 @@
 
 <h3> Tell us about you </h3>
-<h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/>
-Fill out the form below or log in with Facebook.</h3>
+<h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/></h3>
 
-<br/>
 <div ng-controller="userForm">
 <form ng-submit="submit()" name="userform">
+
 	<div class="row">
-		<div class="col-md-2">
-		</div>
-		<div class="col-md-7" >
+		<div class="col-md-2"></div>
+		<div class="col-md-4">Log in with Facebook</div>
+		<div class="col-md-4">Use this form</div>
+		<div class="col-md-2"></div>
+	</div><!--  end row -->
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-4">BLAH</div>
+		<div class="col-md-4" >
 				<div class="col-md-3">
-					<label>your name</label>
+					<label>name</label>
 				</div>
 				<div class="col-md-9">
 					<input type="text" name="firstName" ng-model="formData.firstName" novalidate>
 				</div>
 		</div>
-		<div class="col-md-3">{{ formData.firstName }}</div>
+		<div class="col-md-2">{{ formData.firstName }}</div>
 	</div><!--  end row -->
 
 
 	<div class="row">
 		<div class="col-md-2">
 		</div>
-		<div class="col-md-7">
-			<div class="col-md-3">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<div class="col-md-4">
 				<label>age</label>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<select ng-model="formData.ageRange"
 					ng-options="ageRange.description for ageRange in ageRange" novalidate>
 				</select>
 									
 			</div>
 		</div>
-		<div class="col-md-3">current {{ formData.ageRange.decade }}</div> <!-- ??? -->
+		<div class="col-md-2">{{ formData.ageRange.decade }}</div> <!-- ??? -->
 	</div><!-- end row -->
 	
 	<div class="row">
 		<div class="col-md-2">
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-4">Blah</div>
+		<div class="col-md-4">
 			<div class="col-md-3">
 				<label>gender</label>
 			</div>
 			<div class="col-md-9">
-				<input type="radio" ng-model="formData.gender" value="You are a woman" novalidate>&nbsp;Female <br />  
+				<input type="radio" ng-model="formData.gender" value="You are a woman" novalidate>&nbsp;Female&nbsp;&nbsp;
 				<input type="radio" ng-model="formData.gender" value="You are a man" novalidate>&nbsp;Male <br/>
 			</div>
 		</div>
-		<div class="col-md-3">Current value: {{ formData.gender }}</div> <!-- ??? -->
+		<div class="col-md-2">{{ formData.gender }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
 		<div class="col-md-2">
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
 			<div class="col-md-3">
 				<label>region</label>
 			</div>
@@ -65,13 +74,14 @@ Fill out the form below or log in with Facebook.</h3>
 			</select>
 			</div>
 		</div>
-		<div class="col-md-3">Current value: {{ formData.region.text }}</div> <!-- ??? -->
+		<div class="col-md-2">{{ formData.region.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
 		<div class="col-md-2">
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
 			<div class="col-md-3">
 				<label>education</label>
 			</div>
@@ -80,13 +90,14 @@ Fill out the form below or log in with Facebook.</h3>
 			</select>
 			</div>
 		</div>
-		<div class="col-md-3">Current value: {{ formData.education.text }}</div> <!-- ??? -->
+		<div class="col-md-2">{{ formData.education.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
 		<div class="col-md-2">
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
 			<div class="col-md-3">
 				<label>income</label>
 			</div>
@@ -95,20 +106,21 @@ Fill out the form below or log in with Facebook.</h3>
 			</select>
 			</div>
 		</div>
-		<div class="col-md-3">Current value: {{ formData.income.text }}</div> <!-- ??? -->
+		<div class="col-md-2">{{ formData.income.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 
 	<div class="row">
 		<div class="col-md-2"></div>
-		<div class="col-md-7">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
 			<div class="col-md-3"></div>
 			<div class="col-md-9">
 				<input type="submit" value="analyze me" />
 
 			</div>
 		</div>
-		<div class="col-md-3">RIGHT</div> <!-- ??? -->
+		<div class="col-md-2"></div> <!-- ??? -->
 	</div><!-- end row -->
 
 		

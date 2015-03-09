@@ -4,6 +4,7 @@ from flask import Flask, render_template, jsonify, send_file, make_response, req
 from flask import session as usersess
 from flask.ext.sqlalchemy import SQLAlchemy
 import calculations as calc
+import predict
 import model_ind as m
 import jinja2
 import os
@@ -23,6 +24,7 @@ import numpy
 app = Flask(__name__)
 app.secret_key='\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
 habits_dict = {}
+user_predict = {}
 
 @app.route('/')
 def index():
@@ -32,23 +34,42 @@ def index():
 	print usersess  # FIXME remove
 	return render_template('index.html')
 
-@app.route("/allhabits.json")
+@app.route('/allhabits.json')
 def habits_data():
-	"""Return JSON info about habits."""
+	"""
+	Return JSON info on summary habit data.
+	"""
 	habits = calc.main(habits_dict)
 	return jsonify(habits)
 
-@app.route("/userData.json", methods = ['POST'])
+@app.route('/userData.json', methods = ['POST'])
 def user_data():
-	"""Pull in JSON info about the user's demos."""
+	"""
+	Pull in JSON info about the user's demos.
+	"""
 	data = request.data # this is a string
-	user_data = ast.literal_eval(data)
-	# user_data = json.loads(user_data)
+	data = ast.literal_eval(data)
+	user_data = json.loads(data) #converted to dict
+	name = user_data['firstName']
+	age_range = user_data['queryAge']
+	gender = user_data['queryGender']
+	region = user_data['queryRegion']
+	education = user_data['queryEducation']
+	income = user_data['queryIncome']
 
-	print type(user_data)
-	print user_data
-	return user_data
+	print name, age_range, gender, region, education, income
+	print type(age_range)
 
+	return data
+
+@app.route('/predictions.json')
+def user_predictions():
+	"""
+	Sends json data from ML algorithm to front end.
+	"""
+	predictions = predict.main(user_predict)
+	print predictions
+	return jsonify(predictions)
 
 if __name__ == "__main__":
 	app.run(debug=True)
