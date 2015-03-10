@@ -30,8 +30,8 @@ user_habits = {}
 
 # variables that will be passed in
 gender=1
-age_range=5
-region=4
+age_range=3
+region=1
 income=4
 education=4
 # create a numpy array out of the user variables
@@ -141,20 +141,22 @@ def money_data_calc(user_habits):
 	of the user based on their demo profile
 	"""
 	# set up query for demo data from table and class
-	money_demos = session.query(m.Money.sex, m.Money.age_range, m.Money.region, m.Money.income, m.Money.education).all()
-
+	money_demo_clothes = session.query(m.Money.sex, m.Money.age_range, m.Money.region, m.Money.income, 
+		m.Money.education).filter(m.Money.spending_habit_clothes_dollars > 0).all()
+	money_demo_eatout = session.query(m.Money.sex, m.Money.age_range, m.Money.region, m.Money.income, 
+		m.Money.education).filter(m.Money.spending_habit_eatout_dollars > 0).all()
 	class MoneyML:
 		def __init__(self, moneydemos, moneydata):
 			self.demos = moneydemos
 			self.time = moneydata
 
 	# get all of the needed data from the db
-	money_clothing = session.query(m.Money.spending_habit_clothes_dollars).all()
-	money_eatout = session.query(m.Money.spending_habit_eatout_dollars).all()
+	money_clothing = session.query(m.Money.spending_habit_clothes_dollars).filter(m.Money.spending_habit_clothes_dollars > 0).all()
+	money_eatout = session.query(m.Money.spending_habit_eatout_dollars).filter(m.Money.spending_habit_eatout_dollars > 0).all()
 
 	# create instances of the class feeding in our data
-	clothes_data = MoneyML(money_demos, money_clothing)
-	eatout_data = MoneyML(money_demos, money_eatout)
+	clothes_data = MoneyML(money_demo_clothes, money_clothing)
+	eatout_data = MoneyML(money_demo_eatout, money_eatout)
 
 
 	## clothes data ##

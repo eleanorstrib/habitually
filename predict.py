@@ -16,32 +16,23 @@ from sklearn.linear_model import LinearRegression
 
 est = LinearRegression(fit_intercept=False)
 
-# user_predict = {}
-
-# variables that will be passed in
-gender=1
-age_range=5
-region=4
-income=4
-education=4
-# create a numpy array out of the user variables
-user = [gender, age_range, region, income, education]
-user = np.asarray(user)
-print "numpy array for user: ", user
-
 ############## TIME DATA ##############
 # set up query for demo data from table and class
 # note that queries are split up because previous calculations
 # for work and sleep removed 0 values
 
-def time_data_calc(user_predict):
+def time_data_calc(user_predict, user_raw, user):
 	"""
 	This function calculations all predictions on time-related user_predict
 	of the user based on their demo profile
 	"""
+	# unpack the user variable
+	sex, age_range, region, income, education = user_raw
+	print "first raw", sex, age_range, region, income, education
 	# run queries for all data on habits
 	# note that summary data for work and sleep excluded '0' responses, keeping
 	# that consistent here as well
+
 	time_demo_exercise = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region, m.Time.income, m.Time.education).all()
 	time_demo_sleep = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region,
 		m.Time.income, m.Time.education).filter(m.Time.sleep_habit_timemin > 0).all()
@@ -117,18 +108,21 @@ def time_data_calc(user_predict):
 	user_predict['exercise'] = predict_exercise
 	user_predict['sleep'] = predict_sleep
 	user_predict['work'] = predict_work
-
+	print "after time function ", user_predict
 	return user_predict
 
 
 ############## MONEY DATA ##############
 
 
-def money_data_calc(user_predict):
+def money_data_calc(user_predict, user_raw, user):
 	"""
 	This function calculations all predictions on time-related user_predict
 	of the user based on their demo profile
 	"""
+	# unpack the user variable
+	sex, age_range, region, income, education = user_raw
+
 	# set up query for demo data from table and class
 	money_demos = m.session.query(m.Money.sex, m.Money.age_range, m.Money.region, m.Money.income, m.Money.education).all()
 
@@ -181,18 +175,18 @@ def money_data_calc(user_predict):
 
 	user_predict['clothing'] = predict_clothing
 	user_predict['eatout'] = predict_eatout
-
+	print "end of clothing", user_predict
 	return user_predict
 
 
-def main(user_predict):
-	time_data_calc(user_predict)
-	money_data_calc(user_predict)
+def main(user_predict, user_raw, user):
+	time_data_calc(user_predict, user_raw, user)
+	money_data_calc(user_predict, user_raw, user)
 	print user_predict
 	return user_predict
 
 if __name__=="__main__":
-	main(user_predict)
+	main(user_predict, user_raw, user)
 
 
 

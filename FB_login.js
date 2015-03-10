@@ -1,4 +1,4 @@
-
+console.log("accessed js file");
 
 
 //variables to calculate estimated income, baseline as of 2012
