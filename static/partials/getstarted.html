@@ -1,12 +1,6 @@
 
 <h3> Tell us about you </h3>
 <h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/></h3>
-	<div id=“fb-root”></div>
-		<fb:login-button scope="public_profile,user_location, user_activities, user_birthday, user_education_history" onlogin="checkLoginState();">
-		</fb:login-button>
-
-	<div id="status">Status
-	</div>
 
 	<div class="row">
 		<div class="col-md-2"></div>
@@ -15,10 +9,16 @@
 		<div class="col-md-2"></div>
 	</div><!--  end row -->
 	<div ng-controller="userForm">
-	<form ng-submit="submit()" name="userform">
+	<form ng-submit="submit()" name="userform" action="/predictions">
 	<div class="row">
 		<div class="col-md-2"></div>
-		<div class="col-md-4">BLAH</div>
+		<div class="col-md-4"><div id=“fb-root”></div> 
+		<fb:login-button scope="public_profile,user_location, user_activities, user_birthday, user_education_history" onlogin="checkLoginState();">
+		</fb:login-button>
+
+		<div id="status">Status
+		</div>
+		<a href="#predictions"><button class='btn btn-success'>analyze me!</button></a></div>
 		<div class="col-md-4" >
 				<div class="col-md-3">
 					<label>name</label>
@@ -120,7 +120,7 @@
 		<div class="col-md-4">
 			<div class="col-md-3"></div>
 			<div class="col-md-9">
-				<input type="submit" value="analyze me" />
+				<a href="#predictions"><input type="submit" value="analyze me" /></a>
 
 			</div>
 		</div>

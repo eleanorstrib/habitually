@@ -1,8 +1,40 @@
 <div ng-controller="predictPage">
 
-<p> Getting cut off?
-</p>
+	<p> Getting cut off?
+	</p>
+	<div my-first-directive="" message="Mom!"></div>
+	      xx<div barchart>
+      </div>xx
+	<p> BLAH!{{ predictions.work }} </p>
 
-<p> BLAH!{{ predictions.work }} </p>
+</div> 
 
-</div>
+
+<!--closes controller-->
+ <div ng-controller="DemoCtrl">
+
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">Resize the page or change the numbers to see the d3 re-render!</div>
+    </div> <!-- closes row-->
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3"><hr></div>
+      xx<div ng-barchart>
+      </div>xx
+
+    </div><!-- closes row-->
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <span>BLAH</span>
+        <d3-bars data="d3Data" label="name" on-click="d3OnClick(item)"></d3-bars>
+        <br />
+        <br />
+        <span>{{ d3Data[0].name }}</span>
+        <input type="text" ng-model="d3Data[0].score"></input>
+        <br />
+        <span>Second Item</span>
+        <input type="text" ng-model="d3Data[1].score"></input>
+        <br />
+        <span>Third Item</span>
+        <input type="text" ng-model="d3Data[2].score"></input>
+      </div><!--closes column-->
+    </div> <!--closes controller-->

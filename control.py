@@ -53,6 +53,25 @@ def user_data():
 	Pull in JSON info about the user's demos.
 	"""
 	data = request.data # this is a string
+	print data
+	print type(data)
+	usersess['user_data'] = data
+	print usersess
+	return "loading your predictions!"
+
+
+@app.route('/userDataJS.json', methods = ['POST'])
+def user_data_js():
+	"""
+	Pull in JSON info about the user's demos.
+	"""
+	data = request.form.to_dict(flat=True)
+	print type(data)
+	print data
+	# data = json.loads(data)
+	# print data
+	# print type(data)
+	print "hey"
 	usersess['user_data'] = data
 	print usersess
 	return "loading your predictions!"
@@ -64,8 +83,16 @@ def user_predictions():
 	Sends json data from ML algorithm to front end.
 	"""
 	user_dict = usersess['user_data']
-	user_dict = ast.literal_eval(usersess['user_data'])
-	user_dict = json.loads(user_dict)
+	print "first version"
+	print type(user_dict)
+	if not isinstance(user_dict, dict):
+		user_dict = ast.literal_eval(usersess['user_data'])
+		user_dict = json.loads(user_dict)
+	else:
+		user_dict = {key:int(value) for key, value in user_dict.iteritems()}
+	print "second version"
+	print type(user_dict)
+	print "*******"
 	print user_dict
 	print type(user_dict)
 	
@@ -82,6 +109,7 @@ def user_predictions():
 	
 	predictions = predict.main(user_predict, user_raw, user)
 	print predictions
+	usersess['predictions'] = predictions
 	return jsonify(predictions)
 	return "hi"
 

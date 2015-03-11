@@ -67,8 +67,9 @@ def time_data_calc(user_predict, user_raw, user):
 	print "est.fit(X, y)", est.fit(X,y)
 	print "est.coef_", est.coef_
 	predict_exercise = est.predict(user)
+	if predict_exercise < 0:
+		predict_exercise = 0
 	print "estimated hours of exercise", predict_exercise/60, "versus an average of 0.02 hours"
-
 
 
 	## sleep data ##
@@ -103,6 +104,8 @@ def time_data_calc(user_predict, user_raw, user):
 	print "est.fit(X, y)", est.fit(X,y)
 	print "est.coef_", est.coef_
 	predict_work = est.predict(user)
+	if predict_work < 0:
+		predict_work = 0
 	print "estimated hours of work", predict_work/60, "versus an average of 7.2"
 
 	user_predict['exercise'] = predict_exercise
@@ -154,6 +157,11 @@ def money_data_calc(user_predict, user_raw, user):
 	print "est.fit(X, y)", est.fit(X,y)
 	print "est.coef_", est.coef_
 	predict_clothing = est.predict(user)
+	# constrain the value if the model gives us something outlandish
+	if predict_clothing < 0:
+		predict_clothing = 0
+	if predict_clothing > 20333.33:
+		predict_clothing = 20333.33 # current max value from original dataset
 	print "estimated dollars spent on clothing $", predict_clothing, "versus an average of $0.94"
 
 	## eat out data ##
@@ -171,11 +179,16 @@ def money_data_calc(user_predict, user_raw, user):
 	print "est.fit(X, y)", est.fit(X,y)
 	print "est.coef_", est.coef_
 	predict_eatout = est.predict(user)
+		# constrain the value if the model gives us something outlandish
+	if predict_eatout < 0:
+		predict_eatout = 0
+	if predict_eatout > 9750:
+		predict_clothing = 9750 # current max value from original dataset
 	print "estimated dollars spent eating out $", predict_eatout, "versus an average of $9.37"
 
 	user_predict['clothing'] = predict_clothing
 	user_predict['eatout'] = predict_eatout
-	print "end of clothing", user_predict
+	
 	return user_predict
 
 
