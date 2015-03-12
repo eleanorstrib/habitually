@@ -1,29 +1,76 @@
 <div ng-controller="predictPage">
 
-	<p> Getting cut off?
+<div class="row work-habit">
+  <div class="col-md-4"><span class="prediction-stats">work</span></div>
+  <div class="col-md-4">
+    <span class="prediction-stats">{{ predictions.work | number: 2 }}</span>
+  your prediction</div>
+  <div class="col-md-4"><span class="prediction-stats-white">7.17</span> US average</div>
+</div>  <!--close work row-->
+
+<div class="row sleep-habit">
+  <div class="col-md-4"><span class="prediction-stats">sleep</span></div>
+  <div class="col-md-4">
+    <span class="prediction-stats">{{ predictions.sleep | number: 2 }}</span>
+  your prediction</div>
+  <div class="col-md-4"><span class="prediction-stats">8.88</span> US average</div>
+</div>  <!--close sleep row-->
+
+<div class="row exercise-habit">
+  <div class="col-md-4"><span class="prediction-stats">exercise</span></div>
+  <div class="col-md-4">
+    <span class="prediction-stats">{{ predictions.exercise | number: 2 }}</span>
+  your prediction (hrs)</div>
+  <div class="col-md-4"><span class="prediction-stats">0.02</span> US average (hrs)</div>
+</div> <!-- close exercise row-->
+
+
+<div class="row clothing-habit">
+  <div class="col-md-4"><span class="prediction-stats">clothing</span></div>
+  <div class="col-md-4">
+    <span class="prediction-stats">{{ predictions.clothing | currency }}</span>
+  your prediction</div>
+  <div class="col-md-4"><span class="prediction-stats">$0.00</span> US average</div>
+</div> <!-- close clothes row-->
+
+<div class="row eatout-habit">
+  <div class="col-md-4"><span class="prediction-stats">eating out</span></div>
+  <div class="col-md-4">
+    <span class="prediction-stats">{{ predictions.eatout | currency }}</span>
+  your prediction</div>
+  <div class="col-md-4"><span class="prediction-stats">$390.00</span> US average</div>
+</div> <!-- close clothes row-->
+
+
+	<!-- <p> Getting cut off?
 	</p>
-	<div my-first-directive="" message="Mom!"></div>
+
 	      xx<div barchart>
       </div>xx
-	<p> BLAH!{{ predictions.work }} </p>
-
-</div> 
 
 
-<!--closes controller-->
- <div ng-controller="DemoCtrl">
+<div class="chart">
+  <div style="width: {{ predictions.sleep }}%;"></div>predicted hours you sleep({{ predictions.sleep }})<br />
+  <div style="width: 7.17%;"></div>Average hours slept(7.17)
+</div>
+	<p> HELLO?{{ predictions }} </p>
+
+</div> <!--closes controller -->
+
+ <!-- <div ng-controller="DemoCtrl">
 
     <div class="row">
       <div class="col-md-6 col-md-offset-3">Resize the page or change the numbers to see the d3 re-render!</div>
-    </div> <!-- closes row-->
-    <div class="row">
+    </div> <!-- closes row
+<!--     <div class="row">
       <div class="col-md-6 col-md-offset-3"><hr></div>
-      xx<div ng-barchart>
-      </div>xx
 
-    </div><!-- closes row-->
-    <div class="row">
+
+    </div> --><!-- closes row-->
+<!--     <div class="row">
       <div class="col-md-6 col-md-offset-3">
+      	      xx<div ng-barchart>
+      </div>xx
         <span>BLAH</span>
         <d3-bars data="d3Data" label="name" on-click="d3OnClick(item)"></d3-bars>
         <br />
@@ -36,5 +83,6 @@
         <br />
         <span>Third Item</span>
         <input type="text" ng-model="d3Data[2].score"></input>
-      </div><!--closes column-->
-    </div> <!--closes controller-->
+      </div><!--closes column -->
+<!--     </div> --> <!--closes controller--> 
+ 

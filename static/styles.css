@@ -15,7 +15,67 @@ body {
 	font-size: 16px;
 }
 
+.prediction-stats {
+	font-family: 'Oxygen', sans-serif;
+	font-weight: 300;
+	font-size: 20px;
+}
+.prediction-stats-white {
+	font-family: 'Oxygen', sans-serif;
+	font-weight: 300;
+	font-size: 45px;
+	color: white;
+}
+
+.work-habit {
+	background-image: url('./img/carousel_work.jpg');
+	background-repeat: no-repeat;
+	line-height:100px;
+	margin: 10px;
+}
+
+.sleep-habit {
+	background-image: url('./img/carousel_sleep.jpg');
+	background-repeat: no-repeat;
+	line-height:100px;
+	margin: 10px;
+}
+
+.exercise-habit {
+	background-image: url('./img/carousel_exercise.jpg');
+	background-repeat: no-repeat;
+	line-height:100px;
+	margin: 10px;
+}
+
+.clothing-habit {
+	background-image: url('./img/carousel_clothes.jpg');
+	background-repeat: no-repeat;
+	line-height:100px;
+	margin: 10px;
+}
+
+.eatout-habit {
+	background-image: url('./img/carousel_eatout.jpg');
+	background-repeat: no-repeat;
+	line-height:100px;
+	margin: 10px;
+}
 .carousel-all {
 	  max-height: 700px;
   	overflow: hidden;
+}
+
+.chart div {
+	display: inline-block;
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 10px;
+  margin: 1px;
+  color: white;
+}
+
+.chartname div {
+	display: inline-block;
 }

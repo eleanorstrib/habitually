@@ -108,9 +108,9 @@ def time_data_calc(user_predict, user_raw, user):
 		predict_work = 0
 	print "estimated hours of work", predict_work/60, "versus an average of 7.2"
 
-	user_predict['exercise'] = predict_exercise
-	user_predict['sleep'] = predict_sleep
-	user_predict['work'] = predict_work
+	user_predict['exercise'] = (predict_exercise/60)
+	user_predict['sleep'] = (predict_sleep/60)
+	user_predict['work'] = (predict_work/60)
 	print "after time function ", user_predict
 	return user_predict
 

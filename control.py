@@ -1,6 +1,6 @@
 
 from __future__ import division
-from flask import Flask, render_template, jsonify, send_file, make_response, request, g
+from flask import Flask, render_template, jsonify, send_file, make_response, request, redirect
 from flask import session as usersess
 from flask.ext.sqlalchemy import SQLAlchemy
 import calculations as calc
@@ -18,17 +18,13 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker, scoped_session
 import numpy as np
 
-# engine = create_engine("sqlite:///habit.db", echo=True)
-# Session = sessionmaker(bind=engine)
+
 
 app = Flask(__name__)
 app.secret_key='\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
 habits_dict = {}
 user_predict = {}
 
-# @app.before_request  # Every time we get a request, first do this stuff.
-# def before_request():
-# 	pass
 
 @app.route('/')
 def index():
@@ -52,12 +48,14 @@ def user_data():
 	"""
 	Pull in JSON info about the user's demos.
 	"""
+	print "hello?"
 	data = request.data # this is a string
 	print data
 	print type(data)
+
 	usersess['user_data'] = data
 	print usersess
-	return "loading your predictions!"
+	return redirect("/#/predictions")
 
 
 @app.route('/userDataJS.json', methods = ['POST'])
@@ -109,9 +107,14 @@ def user_predictions():
 	
 	predictions = predict.main(user_predict, user_raw, user)
 	print predictions
-	usersess['predictions'] = predictions
+	# usersess['predictions'] = {}
+	# usersess['predictions'] = predictions
+	# finaldata = usersess['predictions']
+	# print "THIS IS FINAL DATA"
+	# print finaldata
+
 	return jsonify(predictions)
-	return "hi"
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
