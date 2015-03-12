@@ -1,15 +1,15 @@
 <div ng-controller="predictPage">
 
 <div class="row work-habit">
-  <div class="col-md-4"><span class="prediction-stats">work</span></div>
+  <div class="col-md-4"><span class="prediction-stats">work (hrs/day)</span></div>
   <div class="col-md-4">
     <span class="prediction-stats">{{ predictions.work | number: 2 }}</span>
   your prediction</div>
-  <div class="col-md-4"><span class="prediction-stats-white">7.17</span> US average</div>
+  <div class="col-md-4"><span class="prediction-stats-white">7.17</span><span style="color: white;"> US average</span></div>
 </div>  <!--close work row-->
 
 <div class="row sleep-habit">
-  <div class="col-md-4"><span class="prediction-stats">sleep</span></div>
+  <div class="col-md-4"><span class="prediction-stats">sleep (hrs/day)</span></div>
   <div class="col-md-4">
     <span class="prediction-stats">{{ predictions.sleep | number: 2 }}</span>
   your prediction</div>
@@ -17,16 +17,16 @@
 </div>  <!--close sleep row-->
 
 <div class="row exercise-habit">
-  <div class="col-md-4"><span class="prediction-stats">exercise</span></div>
+  <div class="col-md-4"><span class="prediction-stats">exercise (hrs/day)</span></div>
   <div class="col-md-4">
     <span class="prediction-stats">{{ predictions.exercise | number: 2 }}</span>
-  your prediction (hrs)</div>
-  <div class="col-md-4"><span class="prediction-stats">0.02</span> US average (hrs)</div>
+  your prediction (hrs/day)</div>
+  <div class="col-md-4"><span class="prediction-stats">0.02</span> US average</div>
 </div> <!-- close exercise row-->
 
 
 <div class="row clothing-habit">
-  <div class="col-md-4"><span class="prediction-stats">clothing</span></div>
+  <div class="col-md-4"><span class="prediction-stats">clothing ($/3 mos)</span></div>
   <div class="col-md-4">
     <span class="prediction-stats">{{ predictions.clothing | currency }}</span>
   your prediction</div>
@@ -34,7 +34,7 @@
 </div> <!-- close clothes row-->
 
 <div class="row eatout-habit">
-  <div class="col-md-4"><span class="prediction-stats">eating out</span></div>
+  <div class="col-md-4"><span class="prediction-stats">eating out($/3 mos)</span></div>
   <div class="col-md-4">
     <span class="prediction-stats">{{ predictions.eatout | currency }}</span>
   your prediction</div>

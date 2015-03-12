@@ -1,25 +1,31 @@
 
 <h3> Tell us about you </h3>
-<h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/></h3>
+<h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/>
+Please select one of the two options below.</h3>
 
 	<div class="row">
-		<div class="col-md-2"></div>
-		<div class="col-md-4">Log in with Facebook</div>
-		<div class="col-md-4">Use this form</div>
-		<div class="col-md-2"></div>
+		<div class="col-md-1"></div>
+		<div class="col-md-4 get-started">
+			<p><strong>Log in with Facebook</strong></p>
+			habitually will use the demographic data you give us permission to access, and fill in any blanks.</div>
+		<div class="col-md-4 get-started"><p><strong>Use the form</strong></p>
+			Input your own demographic variables for maximum accuracy.</div>
+		<div class="col-md-3"></div>
 	</div><!--  end row -->
+
 	<div ng-controller="userForm">
 	<form ng-submit="submit()" name="userform" method="post">
 	<div class="row">
-		<div class="col-md-2"></div>
-		<div class="col-md-4"><div id=“fb-root”></div> 
+		<div class="col-md-1"></div>
+		<div class="col-md-4"><br /><div id=“fb-root”></div> 
 		<fb:login-button scope="public_profile,user_location, user_activities, user_birthday, user_education_history" onlogin="checkLoginState();">
 		</fb:login-button>
 
-		<div id="status">Status
-		</div>
+		<div id="status"></div>
+		<br />
 		<a href="#predictions"><button class='btn btn-success'>analyze me!</button></a></div>
-		<div class="col-md-4" >
+		<div class="col-md-4" ><br />
+			Data is only saved for the duration of your visit to the site.<p></p>
 				<div class="col-md-3">
 					<label>name</label>
 				</div>
@@ -27,19 +33,19 @@
 					<input type="text" name="firstName" ng-model="formData.firstName" novalidate>
 				</div>
 		</div>
-		<div class="col-md-2">{{ formData.firstName }}</div>
+		<div class="col-md-3">{{ formData.firstName }}</div>
 	</div><!--  end row -->
 
 
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label>age</label>
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-9">
 				<select ng-model="formData.ageRange"
 					ng-options="ageRange.description for ageRange in ageRange" novalidate>
 				</select>
@@ -50,9 +56,9 @@
 	</div><!-- end row -->
 	
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 		</div>
-		<div class="col-md-4">Blah</div>
+		<div class="col-md-4"></div>
 		<div class="col-md-4">
 			<div class="col-md-3">
 				<label>gender</label>
@@ -62,11 +68,11 @@
 				<input type="radio" ng-model="formData.gender" value="You are a man" novalidate>&nbsp;Male <br/>
 			</div>
 		</div>
-		<div class="col-md-2">{{ formData.gender }}</div> <!-- ??? -->
+		<div class="col-md-3">{{ formData.gender }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
@@ -78,11 +84,11 @@
 			</select>
 			</div>
 		</div>
-		<div class="col-md-2">{{ formData.region.text }}</div> <!-- ??? -->
+		<div class="col-md-3">{{ formData.region.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
@@ -94,11 +100,11 @@
 			</select>
 			</div>
 		</div>
-		<div class="col-md-2">{{ formData.education.text }}</div> <!-- ??? -->
+		<div class="col-md-3">{{ formData.education.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-1">
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
@@ -110,12 +116,12 @@
 			</select>
 			</div>
 		</div>
-		<div class="col-md-2">{{ formData.income.text }}</div> <!-- ??? -->
+		<div class="col-md-3">{{ formData.income.text }}</div> <!-- ??? -->
 	</div><!-- end row -->
 
 
 	<div class="row">
-		<div class="col-md-2"></div>
+		<div class="col-md-1"></div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
 			<div class="col-md-3"></div>
@@ -124,7 +130,7 @@
 
 			</div>
 		</div>
-		<div class="col-md-2"></div> <!-- ??? -->
+		<div class="col-md-3"></div> <!-- ??? -->
 	</div><!-- end row -->
 
 		
