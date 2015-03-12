@@ -1,5 +1,5 @@
 
-<h3> Tell us about you </h3>
+<h3 class="fancy-header"> Tell us about you </h3>
 <h3 class="lead"> To predict your habits, we need to know a little bit about you.<br/>
 Please select one of the two options below.</h3>
 
@@ -30,10 +30,10 @@ Please select one of the two options below.</h3>
 					<label>name</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" name="firstName" ng-model="formData.firstName" novalidate>
+					<input type="text" class="form-control" name="firstName" ng-model="formData.firstName" novalidate>
 				</div>
 		</div>
-		<div class="col-md-3">{{ formData.firstName }}</div>
+		<div class="col-md-3"><p>&nbsp;</p><p>&nbsp;</p><br/>{{ formData.firstName }}</div>
 	</div><!--  end row -->
 
 
@@ -46,7 +46,7 @@ Please select one of the two options below.</h3>
 				<label>age</label>
 			</div>
 			<div class="col-md-9">
-				<select ng-model="formData.ageRange"
+				<select class="form-control" ng-model="formData.ageRange"
 					ng-options="ageRange.description for ageRange in ageRange" novalidate>
 				</select>
 									
@@ -80,7 +80,7 @@ Please select one of the two options below.</h3>
 				<label>region</label>
 			</div>
 			<div class="col-md-9">
-			<select ng-model="formData.region" ng-options="region.description for region in region" novalidate>
+			<select class="form-control" ng-model="formData.region" ng-options="region.description for region in region" novalidate>
 			</select>
 			</div>
 		</div>
@@ -96,7 +96,7 @@ Please select one of the two options below.</h3>
 				<label>education</label>
 			</div>
 			<div class="col-md-9">
-			<select ng-model="formData.education" ng-options="education.description for education in education" novalidate>
+			<select class="form-control" ng-model="formData.education" ng-options="education.description for education in education" novalidate>
 			</select>
 			</div>
 		</div>
@@ -112,7 +112,7 @@ Please select one of the two options below.</h3>
 				<label>income</label>
 			</div>
 			<div class="col-md-9">
-			<select ng-model="formData.income" ng-options="income.description for income in income" novalidate>
+			<select class="form-control" ng-model="formData.income" ng-options="income.description for income in income" novalidate>
 			</select>
 			</div>
 		</div>
@@ -127,6 +127,7 @@ Please select one of the two options below.</h3>
 			<div class="col-md-3"></div>
 			<div class="col-md-9">
 				<input type="submit" value="analyze me" />
+				
 
 			</div>
 		</div>

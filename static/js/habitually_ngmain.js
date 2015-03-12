@@ -88,7 +88,7 @@
 		};
 
 		$scope.ageRange = [
-			{ description: 'Under 20 years old', decade: 'You are under twenty years old', value: 1 },
+			{ description: 'Under 20 years old', decade: 'You are under twenty', value: 1 },
 			{ description: '20 - 29 years old', decade: 'You are in your twenties', value: 2 },
 			{ description: '30 - 39 years old', decade: 'You are in your thirties', value: 3 },
 			{ description: '40 - 49 years old', decade: 'You are in your forties', value: 4 },
@@ -146,18 +146,17 @@
 	angular.module('habitually.directives', ['d3']);
 
 	app.directive('barchart', ['d3', function(d3){
-			// alert("hi");
+			alert("hi");
 			return {
-				restrict: 'EA',
-				// require: '^predictPage',
+				// restrict: 'EA',
 				// scope:{
 					// data: '=', //double bind
 					// label: '@',
 					// onClick: '&'
 				// },//scope
-				link: function(scope, element, attrs) {
-					console.log("predictions");
-					console.log(scope.predictions);
+				link: function(scope) {
+					console.log("hi");
+					console.log(scope);
 				// }
 				// 	var svg = d3.select(element[0])
 				// 		.append('svg')
@@ -222,7 +221,7 @@
 			 //        .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
 			 //        .on("mouseout", function(){d3.select(this).style("fill", "white");});
 			    }//link
-			};//return
+			}//return
 		}]); // directive
 
 }) (); //closes whole function

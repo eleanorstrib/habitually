@@ -107,11 +107,6 @@ def user_predictions():
 	
 	predictions = predict.main(user_predict, user_raw, user)
 	print predictions
-	# usersess['predictions'] = {}
-	# usersess['predictions'] = predictions
-	# finaldata = usersess['predictions']
-	# print "THIS IS FINAL DATA"
-	# print finaldata
 
 	return jsonify(predictions)
 
