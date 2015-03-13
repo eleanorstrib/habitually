@@ -26,6 +26,10 @@
 			.when('/predictions', {
 				templateUrl: '../static/partials/predictions.html'
 			})
+
+			.when('/thankyou', {
+				templateUrl: '../static/partials/thankyou.html'
+			})
 	})
 
 	app.controller('mainPage', ['$scope', '$http', function($scope, $http){
@@ -45,7 +49,6 @@
 	}])
 
 	app.controller('userForm', [ '$scope', '$http', '$location', function($scope, $http, $location) {
-		// $scope.master = {}; //might remove this
 		console.log($scope.userData);
 		$scope.wasSubmitted = false;
 		console.log("false was submitted");
@@ -63,12 +66,12 @@
 			userData.queryEducation = $scope.formData.education.value;
 			userData.queryIncome = $scope.formData.income.value;
 			console.log(userData);
-			userData = JSON.stringify(userData)
-			console.log(userData)
+			userData = JSON.stringify(userData);
+			console.log(userData);
 			$http.post("/userData.json", JSON.stringify(userData))
 				.success(function(data, status, headers, config){
-					console.log("Success!")
-					console.log(userData)
+					console.log("Success!");
+					console.log(userData);
 					$location.path('predictions');
 				})
 				.error(function(data, status, headers, config) {
@@ -130,15 +133,47 @@
 
 	}]) //closes form controller
 
-	app.controller('predictPage', ['$scope', '$http', function($scope, $http){
-		// $scope.predictions = { name: 'Eleanor', age: 37};
+	app.controller('predictPage', ['$scope', '$http', function($scope, $http) {
 		$http.get("/predictions.json")
 		.success(function(data) {
 			// console.dir(data);
 			$scope.predictions = data;
-		});
+		});//concludes getting predictions
 	}]) //closes predict controller
 
+	app.controller('actualData', ['$scope', '$http', '$location', function($scope, $http, $location){
+		$scope.aWork = 0;
+		$scope.aSleep = 0;
+		$scope.aEx = 0;
+		$scope.aClothes = 0;
+		$scope.aEatOut = 0;
+		$scope.wasSubmitted = false;
+		console.log("false was submitted");
+
+		$scope.submit = function() {
+			var actualData = {};
+			console.log('trying aWork');
+			console.log($scope.formData.aWork);
+			actualData.work = $scope.formData.aWork;
+			actualData.sleep = $scope.formData.aSleep;
+			actualData.exercise = $scope.formData.aEx;
+			actualData.clothes = $scope.formData.aClothes;
+			actualData.eatout = $scope.formData.aEatOut;
+			// actualData = JSON.stringify(actualData);
+			console.log(actualData);
+			$http.post("/actualData.json", JSON.stringify(actualData))
+				.success(function(data, status, headers, config){
+					console.log("Success!");
+					console.log("this is in the post function" + actualData);
+					$location.path('thankyou');
+				})
+				.error(function(data, status, headers, config) {
+					console.log("Fail!!");
+					console.log(actualData);
+					alert("There was an error - please try again.");
+				})
+		};
+	}]) //closes actual data controller
 
 	//setup dependency injection for D3
 	angular.module('d3',[]);

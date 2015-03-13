@@ -1,88 +1,88 @@
 <div ng-controller="predictPage">
+  <div ng-controller="actualData">
+  <div class="row">
+    <div class="col-md-8">
+      <h3 class="lead">Your predictions are ready </h3>
+      <p>Predictions of the time and money you spend based on your demographic profile appear below. <br />
+      Help improve future predictions by inputting the time and money you actually spend on each thing or activity.
+      </p>
+    </div>
+    
+    <form ng-submit="submit()" name="userform" method="post">
+    <div class="col-md-4"> </div>
+  </div>
 
-<div class="row work-habit">
-  <div class="col-md-4"><span class="prediction-stats">work (hrs/day)</span></div>
-  <div class="col-md-4">
-    <span class="prediction-stats">{{ predictions.work | number: 2 }}</span>
-  your prediction</div>
-  <div class="col-md-4"><span class="prediction-stats-white">7.17</span><span style="color: white;"> US average</span></div>
-</div>  <!--close work row-->
-
-<div class="row sleep-habit">
-  <div class="col-md-4"><span class="prediction-stats">sleep (hrs/day)</span></div>
-  <div class="col-md-4">
-    <span class="prediction-stats">{{ predictions.sleep | number: 2 }}</span>
-  your prediction</div>
-  <div class="col-md-4"><span class="prediction-stats">8.88</span> US average</div>
-</div>  <!--close sleep row-->
-
-<div class="row exercise-habit">
-  <div class="col-md-4"><span class="prediction-stats">exercise (hrs/day)</span></div>
-  <div class="col-md-4">
-    <span class="prediction-stats">{{ predictions.exercise | number: 2 }}</span>
-  your prediction (hrs/day)</div>
-  <div class="col-md-4"><span class="prediction-stats">0.02</span> US average</div>
-</div> <!-- close exercise row-->
-
-
-<div class="row clothing-habit">
-  <div class="col-md-4"><span class="prediction-stats">clothing ($/3 mos)</span></div>
-  <div class="col-md-4">
-    <span class="prediction-stats">{{ predictions.clothing | currency }}</span>
-  your prediction</div>
-  <div class="col-md-4"><span class="prediction-stats">$0.00</span> US average</div>
-</div> <!-- close clothes row-->
-
-<div class="row eatout-habit">
-  <div class="col-md-4"><span class="prediction-stats">eating out ($/3 mos)</span></div>
-  <div class="col-md-4">
-    <span class="prediction-stats">{{ predictions.eatout | currency }}</span>
-  your prediction</div>
-  <div class="col-md-4"><span class="prediction-stats">$390.00</span> US average</div>
-</div> <!-- close clothes row-->
-
-
-	<!-- <p> Getting cut off?
-	</p>
-
-	      xx<div barchart>
-      </div>xx
-
-
-<div class="chart">
-  <div style="width: {{ predictions.sleep }}%;"></div>predicted hours you sleep({{ predictions.sleep }})<br />
-  <div style="width: 7.17%;"></div>Average hours slept(7.17)
-</div>
-	<p> HELLO?{{ predictions }} </p>
-
-</div> <!--closes controller -->
-
- <!-- <div ng-controller="DemoCtrl">
+  <div class="row">
+    <div class="col-md-2 work-habit">
+      <div class="row fancy-header"><h3>time working</h3></div>
+      <div class="row">your prediction</div>
+      <div class="row"><span class="prediction-stats">&nbsp;{{ predictions.work | number: 2 }}&nbsp;</div>
+      <div class="row">US average</div>
+      <div class="row"><span class="prediction-stats">&nbsp;7.17&nbsp;</div>
+      <div class="row">actual work time (hrs/day)</div>
+      <div class="row"><span class="prediction-form-input"><input ng-model="formData.aWork" placeholder="{{ predictions.work | number: 2 }}"
+      name="aWork" size="9" class="form-control" type="number" min="0" max="24"></input></span><br /></div>
+    </div>
 
     <div class="row">
-      <div class="col-md-6 col-md-offset-3">Resize the page or change the numbers to see the d3 re-render!</div>
-    </div> <!-- closes row
-<!--     <div class="row">
-      <div class="col-md-6 col-md-offset-3"><hr></div>
+      <div class="col-md-2 sleep-habit">
+      <div class="row fancy-header"><h3>time sleeping</h3></div>
+      <div class="row"><span class="prediction-cap">your prediction</span></div>
+      <div class="row"><span class="prediction-stats">&nbsp;{{ predictions.sleep | number: 2 }}&nbsp;</div>
+      <div class="row prediction-cap">US average</div>
+      <div class="row"><span class="prediction-stats">&nbsp;8.88&nbsp;</span></div>
+      <div class="row">actual sleep time (hrs/day)</div>
+      <div class="row"><span class="prediction-form-input"><input ng-model="formData.aSleep" placeholder="{{ predictions.sleep | number: 2 }}"
+      name="aSleep" class="form-control" type="number" min="0" max="24"></input></span><br /></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 exercise-habit">
+      <div class="row fancy-header"><h3>time exercising</h3></div>
+      <div class="row">your prediction</div>
+      <div class="row"><span class="prediction-stats">&nbsp;{{ predictions.exercise | number: 2 }}</span></div>
+      <div class="row">US average</div>
+      <div class="row"><span class="prediction-stats">&nbsp;0.02&nbsp;</span></div>
+      <div class="row">actual exercise time (hrs/day)</div>
+      <div class="row"><span class="prediction-form-input"><input ng-model="formData.aEx" placeholder="{{ predictions.exercise | number: 2 }}"
+        name="aEx" class="form-control" type="number" min="0" max="24"></input></span><br /></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 clothing-habit">
+      <div class="row fancy-header"><h3>spend on clothing</h3></div>
+      <div class="row">your prediction</div>
+      <div class="row"><span class="prediction-stats">&nbsp;{{ predictions.clothing | currency }}&nbsp;</span></div>
+      <div class="row">US average</div>
+      <div class="row"><span class="prediction-stats">&nbsp;$1.00&nbsp;</span></div>
+      <div class="row">actual clothing spend ($/3mos)</div>
+      <div class="row"><span class="prediction-form-input"><input ng-model="formData.aClothes" placeholder="{{ predictions.clothing | currency }}"
+       name="aClothes" class="form-control" type="number" min="0"></input></span><br /></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 eatout-habit">
+      <div class="row fancy-header"><h3>spend on eating out</h3></div>
+      <div class="row">your prediction</div>
+      <div class="row"><span class="prediction-stats">&nbsp;{{ predictions.eatout | currency }}&nbsp;</span></div>
+      <div class="row">US average</div>
+      <div class="row"><span class="prediction-stats">&nbsp;$390.00&nbsp;</span></div>
+      <div class="row">actual eat out spend($/3mos)</div>
+      <div class="row"><span class="prediction-form-input"><input ng-model="formData.aEatOut" placeholder="{{ predictions.eatout | currency }}" 
+      name="aEatOut" class="form-control" type="number" min="0"></input></span><br /></div>
+    </div> 
+    
+    </div> <!-- closes nested controller -->
+  </div> <!-- closes main row -->
+  <div class="row">
+
+    <div class="col-md-9"></div>
+    <div class="col-md-2" style="align:center"><input type="submit" value="submit data" /></div>
+     <div class="col-md-1"></div>
+  </form>  <!-- closes form -->
+
+  </div>   <!-- closes the button row -->
 
 
-    </div> --><!-- closes row-->
-<!--     <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-      	      xx<div ng-barchart>
-      </div>xx
-        <span>BLAH</span>
-        <d3-bars data="d3Data" label="name" on-click="d3OnClick(item)"></d3-bars>
-        <br />
-        <br />
-        <span>{{ d3Data[0].name }}</span>
-        <input type="text" ng-model="d3Data[0].score"></input>
-        <br />
-        <span>Second Item</span>
-        <input type="text" ng-model="d3Data[1].score"></input>
-        <br />
-        <span>Third Item</span>
-        <input type="text" ng-model="d3Data[2].score"></input>
-      </div><!--closes column -->
-<!--     </div> --> <!--closes controller--> 
- 
+
+</div> <!--closes controller--> 

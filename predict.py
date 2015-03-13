@@ -30,35 +30,48 @@ def time_data_calc(user_predict, user_raw, user):
 	sex, age_range, region, income, education = user_raw
 	print "first raw", sex, age_range, region, income, education
 	# run queries for all data on habits
+
+	#query and new vars for exercise
+	time_db_ex = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region, m.Time.income, m.Time.education,
+		m.Time.exercise_habit_timemin).all()
+	ex_demo = [(time_db_ex[i][0], time_db_ex[i][1], time_db_ex[i][2], time_db_ex[i][3], 
+		time_db_ex[i][4]) for i in range(0, len(time_db_ex))]
+	ex_data = [(time_db_ex[i][5]) for i in range(0, len(time_db_ex))]
+
+
 	# note that summary data for work and sleep excluded '0' responses, keeping
 	# that consistent here as well
 
-	time_demo_exercise = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region, m.Time.income, m.Time.education).all()
-	time_demo_sleep = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region,
-		m.Time.income, m.Time.education).filter(m.Time.sleep_habit_timemin > 0).all()
-	time_demo_work = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region,
-		m.Time.income, m.Time.education).filter(m.Time.work_habit_timemin > 0).all()
+	# query and vars for sleep
+	time_db_sl = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region,
+		m.Time.income, m.Time.education, m.Time.sleep_habit_timemin).filter(m.Time.sleep_habit_timemin > 0).all()
+	sl_demo = [(time_db_sl[i][0], time_db_sl[i][1], time_db_sl[i][2], time_db_sl[i][3], 
+		time_db_sl[i][4]) for i in range(0, len(time_db_sl))]
+	sl_data = [(time_db_sl[i][5]) for i in range(0, len(time_db_sl))]
+
+	# query and vars for work
+	time_db_wk = m.session.query(m.Time.sex, m.Time.age_range, m.Time.region,
+		m.Time.income, m.Time.education, m.Time.work_habit_timemin).filter(m.Time.work_habit_timemin > 0).all()
+	wk_demo = [(time_db_wk[i][0], time_db_wk[i][1], time_db_wk[i][2], time_db_wk[i][3], 
+		time_db_wk[i][4]) for i in range(0, len(time_db_wk))]
+	wk_data = [(time_db_wk[i][5]) for i in range(0, len(time_db_wk))]
 
 	class TimeML:
 		def __init__(self, timedemos, timedata):
 			self.demos = timedemos
 			self.time = timedata
 
-	# get all of the needed data from the db
-	time_exercise = m.session.query(m.Time.exercise_habit_timemin).all()
-	time_sleep = m.session.query(m.Time.sleep_habit_timemin).filter(m.Time.sleep_habit_timemin > 0).all()
-	time_work = m.session.query(m.Time.work_habit_timemin).filter(m.Time.work_habit_timemin > 0).all()
 
 	# create instances of the class
-	exercise_data = TimeML(time_demo_exercise, time_exercise)
-	sleep_data = TimeML(time_demo_sleep, time_sleep)
-	work_data = TimeML(time_demo_work, time_work)
+	exercise_data = TimeML(ex_demo, ex_data)
+	sleep_data = TimeML(sl_demo, sl_data)
+	work_data = TimeML(wk_demo, wk_data)
 
 	## exercise data ##
 	# assign variables to lists and convert lists of
 	# tuples to numpy arrays -- feed in demo data and habit data from db
 	y = exercise_data.time
-	y = np.asarray([y[i][0] for i in range(0, len(y))])
+	y = np.asarray(y)
 	X = np.asarray(exercise_data.demos)
 
 	print "********** Exercise **********"
@@ -76,7 +89,7 @@ def time_data_calc(user_predict, user_raw, user):
 	# assign variables to lists and convert lists of
 	# tuples to numpy arrays -- feed in demo data and habit data from db
 	y = sleep_data.time
-	y = np.asarray([y[i][0] for i in range(0, len(y))])
+	y = np.asarray(y)
 	X = np.asarray(sleep_data.demos)
 
 
@@ -94,7 +107,7 @@ def time_data_calc(user_predict, user_raw, user):
 	# assign variables to lists and convert lists of
 	# tuples to numpy arrays -- feed in demo data and habit data from db
 	y = work_data.time
-	y = np.asarray([y[i][0] for i in range(0, len(y))])
+	y = np.asarray(y)
 	X = np.asarray(work_data.demos)
 
 
@@ -126,28 +139,36 @@ def money_data_calc(user_predict, user_raw, user):
 	# unpack the user variable
 	sex, age_range, region, income, education = user_raw
 
-	# set up query for demo data from table and class
-	money_demos = m.session.query(m.Money.sex, m.Money.age_range, m.Money.region, m.Money.income, m.Money.education).all()
+	# query and vars for clothing
+	money_db_cl = m.session.query(m.Money.sex, m.Money.age_range, m.Money.region,
+		m.Money.income, m.Money.education, m.Money.spending_habit_clothes_dollars).filter(m.Money.spending_habit_clothes_dollars > 25).all()
+	cl_demo = [(money_db_cl[i][0], money_db_cl[i][1], money_db_cl[i][2], money_db_cl[i][3], 
+		money_db_cl[i][4]) for i in range(0, len(money_db_cl))]
+	cl_data = [(money_db_cl[i][5]) for i in range(0, len(money_db_cl))]
+
+	# query and vars for eating out
+	money_db_eo = m.session.query(m.Money.sex, m.Money.age_range, m.Money.region,
+		m.Money.income, m.Money.education, m.Money.spending_habit_eatout_dollars).all()
+	eo_demo = [(money_db_eo[i][0], money_db_eo[i][1], money_db_eo[i][2], money_db_eo[i][3], 
+		money_db_eo[i][4]) for i in range(0, len(money_db_eo))]
+	eo_data = [(money_db_eo[i][5]) for i in range(0, len(money_db_eo))]
+
 
 	class MoneyML:
 		def __init__(self, moneydemos, moneydata):
 			self.demos = moneydemos
 			self.time = moneydata
 
-	# get all of the needed data from the db
-	money_clothing = m.session.query(m.Money.spending_habit_clothes_dollars).all()
-	money_eatout = m.session.query(m.Money.spending_habit_eatout_dollars).all()
-
 	# create instances of the class feeding in our data
-	clothes_data = MoneyML(money_demos, money_clothing)
-	eatout_data = MoneyML(money_demos, money_eatout)
+	clothes_data = MoneyML(cl_demo, cl_data)
+	eatout_data = MoneyML(eo_demo, eo_data)
 
 
 	## clothes data ##
 	# assign variables to lists and convert lists of
 	# tuples to numpy arrays -- feed in demo data and habit data from db
 	y = clothes_data.time
-	y = np.asarray([y[i][0] for i in range(0, len(y))])
+	y = np.asarray(y)
 	X = np.asarray(clothes_data.demos)
 
 
@@ -168,7 +189,7 @@ def money_data_calc(user_predict, user_raw, user):
 	# assign variables to lists and convert lists of
 	# tuples to numpy arrays -- feed in demo data and habit data from db
 	y = eatout_data.time
-	y = np.asarray([y[i][0] for i in range(0, len(y))])
+	y = np.asarray(y)
 	X = np.asarray(eatout_data.demos)
 
 
@@ -183,7 +204,8 @@ def money_data_calc(user_predict, user_raw, user):
 	if predict_eatout < 0:
 		predict_eatout = 0
 	if predict_eatout > 9750:
-		predict_clothing = 9750 # current max value from original dataset
+		predict_eatout = 9750 # current max value from original dataset
+
 	print "estimated dollars spent eating out $", predict_eatout, "versus an average of $9.37"
 
 	user_predict['clothing'] = predict_clothing

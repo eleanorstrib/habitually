@@ -7,8 +7,9 @@
 }
 
 .navbar a {
-	color:#9C9B7A !important;
+	color:#9C9B7A;
 	font-family: 'Unica One', helvetica, cursive;
+	font-size: 1.4em;
 }
 
  ul.nav a:hover {
@@ -29,8 +30,6 @@
 	max-height: 90%;
 }
 
-
-
 .getstarted {
 	padding: 5px;
 	margin: 5px;
@@ -38,15 +37,15 @@
 
 .btn-success {
   border-radius: 0px;
-  font-family: 'Oxygen', sans-serif;
   background: white !important;
   border-color: #405952;
-  font-family: 'Unica One', helvetica, cursive;
+  font-family: 'Unica One', helvetica, sans-serif;
   color: #405952;
 }
 
 .fancy-header {
 	font-family: 'Unica One', helvetica, cursive;
+	font-size: 1.6em;
 }
 
 .detail-column {
@@ -78,48 +77,76 @@ body {
 .prediction-stats {
 	font-family: 'Oxygen', sans-serif;
 	font-weight: 300;
-	font-size: 20px;
+	font-size: 30px;
+	color: white;
+	background-color: #405952;
 }
-.prediction-stats-white {
+
+.prediction-cap {
 	font-family: 'Oxygen', sans-serif;
 	font-weight: 300;
-	font-size: 20px;
+	font-size: 15px;
+	vertical-align: top;
+}
+
+.prediction-form-row {
+	line-height:1.5em;
+	margin: 10px;
+	background-color: #9C9B7A;
+}
+
+input {
+	text-align: center;
+	display: block;
+    margin : 0 auto;
+	width: 100px !important;
 	color: white;
+	background-color:#405952;
+}
+
+.prediction-form-input {
+	font-family: 'Oxygen', sans-serif;
+	font-size: 15px;
 }
 
 .work-habit {
 	background-image: url('./img/carousel_work.jpg');
 	background-repeat: no-repeat;
-	line-height:100px;
-	margin: 10px;
+	text-align: center;
+	line-height:3.25em;
+	margin: 5px;
 }
 
 .sleep-habit {
 	background-image: url('./img/carousel_sleep.jpg');
 	background-repeat: no-repeat;
-	line-height:100px;
-	margin: 10px;
+	text-align: center;
+	line-height:3.25em;
+	margin: 5px;
 }
 
 .exercise-habit {
 	background-image: url('./img/carousel_exercise.jpg');
 	background-repeat: no-repeat;
-	line-height:100px;
-	margin: 10px;
+	text-align: center;
+	line-height:3.25em;
+	margin: 5px;
 }
 
 .clothing-habit {
 	background-image: url('./img/carousel_clothes.jpg');
 	background-repeat: no-repeat;
-	line-height:100px;
-	margin: 10px;
+	text-align: center;
+	line-height:3.25em;
+	margin: 5px;
 }
 
 .eatout-habit {
 	background-image: url('./img/carousel_eatout.jpg');
 	background-repeat: no-repeat;
-	line-height:100px;
-	margin: 10px;
+	text-align: center;
+	line-height:3.25em;
+	margin: 5px;
 }
 .carousel-all {
 	max-height: 700px;
