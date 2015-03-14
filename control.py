@@ -115,6 +115,8 @@ def send_actual_data():
 	"""
 	#transform the actual data from the user via the form to a dict
 	actual_data = request.data
+	print actual_data
+	print type(actual_data)
 	actual_data = ast.literal_eval(actual_data)
 	
 	#define the actual variables
@@ -130,9 +132,10 @@ def send_actual_data():
 	print type(eatout_actual)
 	
 	#transform the demo data from the session to form to a dict
+	print usersess
 	user_demo = ast.literal_eval(usersess['user_data'])
 	user_demo = json.loads(user_demo)
-
+	print usersess
 	# define the demo variables
 	age = user_demo['queryAge']
 	sex = user_demo['queryGender']

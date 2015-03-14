@@ -150,7 +150,8 @@
 		$scope.wasSubmitted = false;
 		console.log("false was submitted");
 
-		$scope.submit = function() {
+		$scope.submitActual = function() {
+			console.log("in submit function");
 			var actualData = {};
 			console.log('trying aWork');
 			console.log($scope.formData.aWork);
@@ -159,7 +160,7 @@
 			actualData.exercise = $scope.formData.aEx;
 			actualData.clothes = $scope.formData.aClothes;
 			actualData.eatout = $scope.formData.aEatOut;
-			// actualData = JSON.stringify(actualData);
+
 			console.log(actualData);
 			$http.post("/actualData.json", JSON.stringify(actualData))
 				.success(function(data, status, headers, config){

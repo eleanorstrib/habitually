@@ -46,18 +46,57 @@ var today = new Date();
 
   //FIX ME -- ADD ALL STATES
 var regionCodes = {
+  CT: {code: 1, region: 'Northeastern'},
+  MA: {code: 1, region: 'Northeastern'},
+  ME: {code: 1, region: 'Northeastern'},
+  NH: {code: 1, region: 'Northeastern'},
+  NJ: {code: 1, region: 'Northeastern'},
+  NY: {code: 1, region: 'Northeastern'},
+  PA: {code: 1, region: 'Northeastern'},
+  RI: {code: 1, region: 'Northeastern'},
+  VT: {code: 1, region: 'Northeastern'},
+  IA: {code: 2, region: 'Midwestern'},
+  IL: {code: 2, region: 'Midwestern'},
+  IN: {code: 2, region: 'Midwestern'},
+  KS: {code: 2, region: 'Midwestern'},
+  MI: {code: 2, region: 'Midwestern'},
+  MN: {code: 2, region: 'Midwestern'},
+  MO: {code: 2, region: 'Midwestern'},
+  NB: {code: 2, region: 'Midwestern'},
+  ND: {code: 2, region: 'Midwestern'},
+  OH: {code: 2, region: 'Midwestern'},
+  SD: {code: 2, region: 'Midwestern'},
+  WI: {code: 2, region: 'Midwestern'},
+  AL: {code: 3, region: 'Southern'},
+  AK: {code: 3, region: 'Southern'},
+  DE: {code: 3, region: 'Southern'},
+  DC: {code: 3, region: 'Southern'},
+  FL: {code: 3, region: 'Southern'},
+  GA: {code: 3, region: 'Southern'},
+  KY: {code: 3, region: 'Southern'},
+  LA: {code: 3, region: 'Southern'},
+  MD: {code: 3, region: 'Southern'},
+  MI: {code: 3, region: 'Southern'},
+  NC: {code: 3, region: 'Southern'},
+  OK: {code: 3, region: 'Southern'},
+  SC: {code: 3, region: 'Southern'},
+  TN: {code: 3, region: 'Southern'},
+  TX: {code: 3, region: 'Southern'},
+  VA: {code: 3, region: 'Southern'},
+  WV: {code: 3, region: 'Southern'},
   AL: {code: 4, region: 'Western'},
   AZ: {code: 4, region: 'Western'},
   CA: {code: 4, region: 'Western'},
-  CO: {code: 4, region: 'Western'}
-
-  // 1: {Northeast:
-  //     ['CT', 'ME', 'MA', 'NH', 'NJ', 'NY', 'PA', 'RI', 'VT']},
-  // 2: {Midwest:
-  //     ['IL', 'IN', 'IA', 'KS', 'MI', 'MN', 'MO', 'NB', 'ND', 'OH', 'SD', 'WI']},
-  // 3 : {South: 
-  //     ['AL', 'AK', 'DE', 'DC', 'FL', 'GA', 'KY', 'LA', 'MD', 'MI', 'NC', 'OK', 'SC', 'TN', 'TX', 'VA', 'WV']},
-  // 4 : {West: ['AK', 'AZ', 'CA', 'CO', 'HI', 'ID', 'MT', 'NV', 'NM', 'OR', 'UT', 'WA', 'WI']},
+  CO: {code: 4, region: 'Western'},
+  // HI: {code: 4, region: 'Western'},
+  // ID: {code: 4, region: 'Western'},
+  // MT: {code: 4, region: 'Western'},
+  // NV: {code: 4, region: 'Western'},
+  // NM: {code: 4, region: 'Western'},
+  // OR: {code: 4, region: 'Western'},
+  // UT: {code: 4, region: 'Western'},
+  // WA: {code: 4, region: 'Western'},
+  // WI: {code: 4, region: 'Western'},
 };
 
 var userData = {};// this object will store the data that will be used to query the db
@@ -96,14 +135,16 @@ var userData = {};// this object will store the data that will be used to query 
   }
 
   window.fbAsyncInit = function() {
+
   FB.init({
     appId      : 418088358316146,
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
-  });
+    version    : 'v2.2', // use version 2.2
 
+  });
+    
 
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);

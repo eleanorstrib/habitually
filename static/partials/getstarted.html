@@ -14,7 +14,7 @@ Please select one of the two options below.</h3>
 	</div><!--  end row -->
 
 	<div ng-controller="userForm">
-	<form ng-submit="submit()" name="userform" method="post">
+	<form ng-submit="userform.$valid && submit()" name="userform" method="post" novalidate>
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-4"><br /><div id=“fb-root”></div> 
@@ -30,7 +30,7 @@ Please select one of the two options below.</h3>
 					<label>name</label>
 				</div>
 				<div class="col-md-9">
-					<input type="text" class="form-control" size="100" name="firstName" ng-model="formData.firstName" novalidate>
+					<input type="text" class="form-control" size="100" name="firstName" ng-model="formData.firstName" required>
 				</div>
 		</div>
 		<div class="col-md-3"><p>&nbsp;</p><p>&nbsp;</p><br/>{{ formData.firstName }}</div>
@@ -42,14 +42,14 @@ Please select one of the two options below.</h3>
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
+
 			<div class="col-md-3">
 				<label>age</label>
 			</div>
 			<div class="col-md-9">
 				<select class="form-control" ng-model="formData.ageRange"
-					ng-options="ageRange.description for ageRange in ageRange" novalidate>
-				</select>
-									
+					ng-options="ageRange.description for ageRange in ageRange" required>
+				</select>			
 			</div>
 		</div>
 		<div class="col-md-2">{{ formData.ageRange.decade }}</div> <!-- ??? -->
@@ -60,13 +60,15 @@ Please select one of the two options below.</h3>
 		</div>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
+
 			<div class="col-md-3">
 				<label>gender</label>
 			</div>
 			<div class="col-md-9">
-				<input type="radio" ng-model="formData.gender" value="You are a woman" novalidate>&nbsp;Female&nbsp;&nbsp;
-				<input type="radio" ng-model="formData.gender" value="You are a man" novalidate>&nbsp;Male <br/>
+				<input type="radio" ng-model="formData.gender" value="You are a woman" required>&nbsp;Female&nbsp;&nbsp;
+				<input type="radio" ng-model="formData.gender" value="You are a man" required>&nbsp;Male <br/>
 			</div>
+
 		</div>
 		<div class="col-md-3">{{ formData.gender }}</div> <!-- ??? -->
 	</div><!-- end row -->
@@ -80,7 +82,7 @@ Please select one of the two options below.</h3>
 				<label>region</label>
 			</div>
 			<div class="col-md-9">
-			<select class="form-control" ng-model="formData.region" ng-options="region.description for region in region" novalidate>
+			<select class="form-control" ng-model="formData.region" ng-options="region.description for region in region" required>
 			</select>
 			</div>
 		</div>
@@ -96,7 +98,7 @@ Please select one of the two options below.</h3>
 				<label>education</label>
 			</div>
 			<div class="col-md-9">
-			<select class="form-control" ng-model="formData.education" ng-options="education.description for education in education" novalidate>
+			<select class="form-control" ng-model="formData.education" ng-options="education.description for education in education" required>
 			</select>
 			</div>
 		</div>
@@ -112,7 +114,7 @@ Please select one of the two options below.</h3>
 				<label>income</label>
 			</div>
 			<div class="col-md-9">
-			<select class="form-control" ng-model="formData.income" ng-options="income.description for income in income" novalidate>
+			<select class="form-control" ng-model="formData.income" ng-options="income.description for income in income" required>
 			</select>
 			</div>
 		</div>
@@ -126,6 +128,7 @@ Please select one of the two options below.</h3>
 		<div class="col-md-4">
 			<div class="col-md-3"></div>
 			<div class="col-md-9">
+				<div> Form is {{ userform.$valid}}</div>
 				<input type="submit" value="analyze me" />
 				
 

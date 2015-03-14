@@ -18,12 +18,37 @@
 }
 
 
-.btn-success.active:hover {
-	background-color: #9C9B7A;
+.btn .btn-success a:hover {
+	background-color: #9C9B7A!important;
 	border-style: solid;
 	border-color: #9C9B7A;
 
 }
+
+input[type=submit] {
+	background-color: white;
+	border-style: solid;
+	border-color: #9C9B7A;
+	color: #9C9B7A !important;
+	font-family: 'Unica One', helvetica, cursive;
+}
+
+input[type=submit] a:hover {
+	background-color: #9C9B7A !important;
+	color: white !important;
+}
+
+.ng-invalid.ng-dirty {
+	border-color: red;
+	border-width: 3px;
+
+}
+
+.ng-valid.ng-dirty {
+	border-color: green;
+	border-width: 3px;
+}
+
 
 .item img {
 	max-width: 70%;
@@ -114,8 +139,19 @@ input[type=submit] {
 }
 
 input[type=radio] {
-	display:block;
+	text-align: left;
 }
+
+.ng-disabled {
+	color: gray !important ;
+	border-style: solid;
+	border-color: gray;
+
+}
+/*.pad-form {
+	padding: 3px;
+	margin: 3px;
+}*/
 
 .prediction-form-input {
 	font-family: 'Oxygen', sans-serif;
