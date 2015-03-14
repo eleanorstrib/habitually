@@ -82,7 +82,7 @@ def calc_clothes_spend_stats(habits_dict):
 	"""
 	habits_dict['clothing'] = {}
 	#### clothes spending overall -- whole population #####
-	overall_clothes_spending= m.session.query(m.Money.spending_habit_clothes_dollars).all()
+	overall_clothes_spending= m.session.query(m.Money.spending_habit_clothes_dollars).filter(m.Money.spending_habit_clothes_dollars>0).all()
 	overall_clothes_spending = [overall_clothes_spending[i][0] for i in range(0, len(overall_clothes_spending))]
 	#summary clothing stats #
 	habits_dict['clothing']['med_clothes_spending_all'] = numpy.median(overall_clothes_spending)
@@ -102,7 +102,7 @@ def calc_eatout_spend_stats(habits_dict):
 	"""
 	habits_dict['eatout'] = {}
 	#### Eat out spending averages -- whole population #####
-	overall_eatout_spending= m.session.query(m.Money.spending_habit_eatout_dollars).all()
+	overall_eatout_spending= m.session.query(m.Money.spending_habit_eatout_dollars).filter(m.Money.spending_habit_eatout_dollars >0).all()
 	overall_eatout_spending = [overall_eatout_spending[i][0] for i in range(0, len(overall_eatout_spending))]
 	#summary clothing stats #
 	habits_dict['eatout']['med_eatout_spending_all'] = numpy.median(overall_eatout_spending)

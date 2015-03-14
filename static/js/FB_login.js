@@ -97,7 +97,7 @@ var userData = {};// this object will store the data that will be used to query 
 
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : APP_ID,
+    appId      : 418088358316146,
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
