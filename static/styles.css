@@ -74,10 +74,9 @@ input[type=submit] a:hover {
 }
 
 .detail-column {
-
 	padding: 10px;
 	text-align: center;
-	    display:inline-block;
+	display:inline-block;
     float:none;
     margin-right:-4px;
 }
@@ -99,6 +98,10 @@ body {
 	font-size: 16px;
 }
 
+.prediction-pic img {
+	background: rgba(204, 204, 204, 0.5);
+}
+
 .prediction-stats {
 	font-family: 'Oxygen', sans-serif;
 	font-weight: 300;
@@ -112,6 +115,7 @@ body {
 	font-weight: 300;
 	font-size: 15px;
 	vertical-align: top;
+	color: black;
 }
 
 .prediction-form-row {
@@ -164,6 +168,7 @@ input[type=radio] {
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
+	padding: 0px;
 }
 
 .sleep-habit {
@@ -172,6 +177,7 @@ input[type=radio] {
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
+	padding: 0px;
 }
 
 .exercise-habit {
@@ -180,6 +186,7 @@ input[type=radio] {
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
+	padding:0px;
 }
 
 .clothing-habit {
@@ -188,6 +195,14 @@ input[type=radio] {
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
+	padding: 0px;
+}
+
+.habit-transparent {
+  background-color: rgba(234, 234, 234, 0.6);
+  position: relative;
+  width: 100%;
+
 }
 
 .eatout-habit {
@@ -196,23 +211,12 @@ input[type=radio] {
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
+	padding: 0px;
 }
+
+
 .carousel-all {
 	max-height: 700px;
 	max-width: 900px;
   	overflow: hidden;
-}
-
-.chart div {
-	display: inline-block;
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 10px;
-  margin: 1px;
-  color: white;
-}
-
-.chartname div {
-	display: inline-block;
 }
