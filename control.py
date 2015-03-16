@@ -114,6 +114,7 @@ def send_actual_data():
 	This function writes user data to the database for use in future predictions.
 	"""
 	#transform the actual data from the user via the form to a dict
+	print "*****THIS IS HOW IT LOOKS FROM FB********"
 	actual_data = request.data
 	print actual_data
 	print type(actual_data)
@@ -133,9 +134,8 @@ def send_actual_data():
 	
 	#transform the demo data from the session to form to a dict
 	print usersess
-	user_demo = ast.literal_eval(usersess['user_data'])
-	user_demo = json.loads(user_demo)
-	print usersess
+	user_demo = usersess['user_data']
+
 	# define the demo variables
 	age = user_demo['queryAge']
 	sex = user_demo['queryGender']

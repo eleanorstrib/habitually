@@ -18,24 +18,24 @@
 }
 
 
-.btn .btn-success a:hover {
-	background-color: #9C9B7A!important;
-	border-style: solid;
-	border-color: #9C9B7A;
-
-}
-
 input[type=submit] {
+	color: #405952;
+	background-color: #FFFFFF;
+	font-family: 'Unica One', helvetica, sans-serif !important;
 	background-color: white;
-	border-style: solid;
-	border-color: #9C9B7A;
-	color: #9C9B7A !important;
-	font-family: 'Unica One', helvetica, cursive;
+	border-style: solid !important;
+	border: 1px;
+	border-color: #405952 !important;
+	padding:0.4em;
 }
 
-input[type=submit] a:hover {
-	background-color: #9C9B7A !important;
-	color: white !important;
+input[type=submit]:hover {
+	color:white;
+	background-color: #405952;
+	padding: 0.4em;
+	border-style: solid !important;
+	border: 1px;
+	border-color: #405952 !important;
 }
 
 .ng-invalid.ng-dirty {
@@ -62,10 +62,38 @@ input[type=submit] a:hover {
 
 .btn-success {
   border-radius: 0px;
-  background: white !important;
+  background: white;
   border-color: #405952;
   font-family: 'Unica One', helvetica, sans-serif;
   color: #405952;
+}
+
+.btn-success:hover {
+  border-radius: 0px;
+  background: #405952;
+  border-color: #405952;
+  color: white;
+  font-family: 'Unica One', helvetica, sans-serif;
+  height: 2.3em;
+}
+
+button {
+  border-radius: 0px;
+  background: white;
+  border-color: #405952;
+  font-family: 'Unica One', helvetica, sans-serif !important;
+  vertical-align: center;
+  color: #405952;
+  height: 2.3em;
+}
+
+button:hover {
+  border-radius: 0px;
+  background: #405952;
+  border-color: #405952;
+  color: white;
+  font-family: 'Unica One', helvetica, sans-serif;
+/*  height: 2.3em;*/
 }
 
 .fancy-header {
@@ -82,7 +110,7 @@ input[type=submit] a:hover {
 }
 
 body {
-	padding: 75px;
+	padding-top: 75px;
 	font-family: 'Oxygen', sans-serif;
 }
 
@@ -99,7 +127,7 @@ body {
 }
 
 .prediction-pic img {
-	background: rgba(204, 204, 204, 0.5);
+	background: rgba(204, 204, 204, 0.6);
 }
 
 .prediction-stats {
@@ -124,22 +152,17 @@ body {
 	background-color: #9C9B7A;
 }
 
-input {
+input[type=number] {
 	text-align: center;
 	display: block;
     margin : 0 auto;
 	width: 50% !important;
-	background-color:#405952;
 }
 
 input[type=text] {
 	width: 100% !important;
-	text-align: left;
-}
 
-input[type=submit] {
-	color: white;
-	text-align: center;
+	text-align: left;
 }
 
 input[type=radio] {
@@ -152,10 +175,6 @@ input[type=radio] {
 	border-color: gray;
 
 }
-/*.pad-form {
-	padding: 3px;
-	margin: 3px;
-}*/
 
 .prediction-form-input {
 	font-family: 'Oxygen', sans-serif;
@@ -173,6 +192,7 @@ input[type=radio] {
 
 .sleep-habit {
 	background-image: url('./img/carousel_sleep.jpg');
+	background-position: right bottom;
 	background-repeat: no-repeat;
 	text-align: center;
 	line-height:3.25em;
@@ -182,6 +202,7 @@ input[type=radio] {
 
 .exercise-habit {
 	background-image: url('./img/carousel_exercise.jpg');
+	background-position: right bottom;
 	background-repeat: no-repeat;
 	text-align: center;
 	line-height:3.25em;
@@ -191,18 +212,12 @@ input[type=radio] {
 
 .clothing-habit {
 	background-image: url('./img/carousel_clothes.jpg');
+	background-position: right center;
 	background-repeat: no-repeat;
 	text-align: center;
 	line-height:3.25em;
 	margin: 5px;
 	padding: 0px;
-}
-
-.habit-transparent {
-  background-color: rgba(234, 234, 234, 0.6);
-  position: relative;
-  width: 100%;
-
 }
 
 .eatout-habit {
@@ -214,9 +229,27 @@ input[type=radio] {
 	padding: 0px;
 }
 
+.habit-transparent {
+  background-color: rgba(234, 234, 234, 0.6);
+  position: relative;
+  width: 100%;
+}
 
 .carousel-all {
 	max-height: 700px;
 	max-width: 900px;
   	overflow: hidden;
+}
+
+form.specialform {
+	margin:5px;
+}
+
+.formrow {
+	margin-bottom: 10px;
+	vertical-align: center;
+}
+
+.angmagic {
+	vertical-align: center !important;
 }
