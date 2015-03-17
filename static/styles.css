@@ -253,3 +253,24 @@ form.specialform {
 .angmagic {
 	vertical-align: center !important;
 }
+
+.about-data {
+	padding: 10px;
+	line-height: 190%;
+}
+
+.about-data img {
+	float:left;
+	width:500px;
+	padding-right:40px;
+	padding-bottom: 20px;
+}
+
+.about-data p {
+	margin: 10px;
+}
+.fancy-header-data {
+	font-family: 'Unica One', helvetica, cursive;
+	font-size: 1.6em;
+	color: #405952;
+}

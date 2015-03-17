@@ -1,8 +1,41 @@
-<h3 class="fancy-header">About this app</h3>
-<p>
-Habitually is a project by Eleanor Stribling developed as the capstone project for the Winter 2015 cohort of <a href="http://hackbrightacademy.com/">Hackbright Academy</a>.
-</p>
-<p>
-"INSERT BIO, SOCIAL MEDIA LINKS"
+<h3 class="fancy-header">About the data</h3>
+<div class="row">
+	<div class="col-md-12">
+	<p>
+	The base data for habitually comes from two large-scale studies by the Department of Labor's Bureau of Labor Statistics: the <a href="http://www.bls.gov/tus/home.htm" target="_blank">American Time Use Study</a> and the <a href="http://www.bls.gov/cex/pumdhome.htm" target="_blank">Consumer Expenditure Survey</a>.  This is how it all came together in four weeks, in four steps.<br /><br /></p>
+	</div>
+</div> <!-- closes intro row-->
 
-</p>
+<div class="row">
+	<div class="col-md-12 about-data">
+	<span class="fancy-header-data"><a name="step1"></a>Step 1: Understanding and cleaning the data</span><br/>
+		<img src="./static/img/rawdata.png" alt="raw data file opened in sublime"/>
+		<p>The first challenge was to sort through both studies, not only to find the demo and habit variables that were relevant, but to locate them in the dozens of files available for download.   It took about four days to look through codebooks, identify the right variables to use, find them in the relevant file, figure out how to summarize and collapse the demographic variables (which unfortunately were not always the same even though the same organization runs both surveys) into groups that were big enough to analyze, link multiple survey files together on simplified demo variables, and write the code to create and seed the SQL database.<br />
+		For specifics, check out the code for the iteration through the raw csv files <a href="https://github.com/eleanorstrib/habitually/blob/master/seed_ind.py" target="_blank">here</a>.</p>
+	</div>
+</div> <!-- closes first row -->
+
+<div class="row">
+	<div class="col-md-12  about-data">
+	<span class="fancy-header-data">Step 2: Verifying the data</span><br/>
+		<img src="./static/img/sqlite.png" alt="query results on the database from SQLite3"/>
+		<p>The next step was to make sure the data in the SQL database looked right.  It took about a day and a half to verify that the demo variables had been collapsed correctly and that every record in the database had habit data associated with it.  When it was clear, after testing with a couple of dozen SQLite3 queries that the data looked clean, it was time to use the machine learning algorithm to get predictions.</p><br />
+</div> <!-- closes second row -->
+
+
+<div class="row">
+	<div class="col-md-12  about-data">
+	<span class="fancy-header-data">Step 3: Selecting and running machine learning algorithms</span><br/>
+		<img src="./static/img/machinelearning.png" alt="raw output from linear regression model"/>
+		<p>Using the scikit-learn library for Python, the next step was to select a model and run the data through it.  A <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html" target="_blank">linear regression model</a> was used for this first iteration of the predictions.  The very first iterations of this revealed that the spending data was likely being skewed by zero values that probably should have been Nulls or blanks, as well as some pretty extreme outliers.  <br/>
+		The data was analyzed for this project using all five demographic variables (gender, age range, region (US only), income and education) as an array of independent variables.  In a future iteration, I will look at how combinations of a subset of these variables influence the predictions, and may adjust the data gathering and prediction calculations depending on the results.
+		My code (with lots of comments) is <a href="https://github.com/eleanorstrib/habitually/blob/master/predict.py" target="_blank">here</a>.</p><br />
+</div> <!-- closes third row -->
+
+<div class="row">
+	<div class="col-md-12  about-data">
+	<span class="fancy-header-data">Step 4: Piping output to the front end</span><br/>
+		<img src="./static/img/predictions.png" alt="raw output from linear regression model"/>
+		<p>The final step was to pipe the results of the Python script that derives the predictions to the front end.  This was done using Flask and JSON, for the result seen in the screenshot.<br />
+		Although there are thousands of records used to derive each predictions (there are about 16K total), more data might yield more accurate predictions.  To build the data set, users can add their actual habit data to the database.</p><br />
+</div> <!-- closes fourth row -->
