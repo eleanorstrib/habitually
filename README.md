@@ -36,19 +36,19 @@ The Data
 The base data for habitually comes from two large-scale studies by the Department of Labor's Bureau of Labor Statistics: the [American Time Use Study](http://www.bls.gov/tus/home.htm) and the [Consumer Expenditure Survey](http://www.bls.gov/cex/pumdhome.htm).  Here's how it all came together in four weeks, in four steps.
 
 
-STEP 1: Understanding and Cleaning the Data
+###### STEP 1: Understanding and Cleaning the Data
 The first challenge was to sort through both studies, not only to find the demo and habit variables that were relevant, but to locate them in the dozens of files available for download.   It took about four days to look through codebooks, identify the right variables to use, find them in the relevant file, figure out how to summarize and collapse the demographic variables (which unfortunately were not always the same even though the same organization runs both surveys) into groups that were big enough to analyze, link multiple survey files together on simplified demo variables, and write the code to create and seed the SQL database.
 ![image](https://github.com/eleanorstrib/habitually/blob/master/static/img/rawdata.png)
 
-STEP 2: Verifying the data
+###### STEP 2: Verifying the data
 The next step was to make sure the data in the SQL database looked right.  It took about a day and a half to verify that the demo variables had been collapsed correctly and that every record in the database had habit data associated with it.  When it was clear, after testing with a couple of dozen SQLite3 queries that the data looked clean, it was time to use the machine learning algorithm to get predictions.
 ![image](https://github.com/eleanorstrib/habitually/blob/master/static/img/sqlite.png)
 
-STEP 3: Selecting and running machine learning algorithms
+###### STEP 3: Selecting and running machine learning algorithms
 Using the scikit-learn library for Python, the next step was to select a model and run the data through it.  A [linear regression model](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) was used for this first iteration of the predictions.  The very first iterations of this revealed that the spending data was likely being skewed by zero values that probably should have been Nulls or blanks, as well as some pretty extreme outliers. 
 The data was analyzed for this project using all five demographic variables (gender, age range, region (US only), income and education) as an array of independent variables.  In a future iteration, I will look at how combinations of a subset of these variables influence the predictions, and may adjust the data gathering and prediction calculations depending on the results.
 ![image](https://github.com/eleanorstrib/habitually/blob/master/static/img/machinelearning.png)
 
-STEP 4: Piping output to the front end
+###### STEP 4: Piping output to the front end
 The final step was to pipe the results of the Python script that derives the predictions to the front end.  This was done using Flask and JSON, for the result seen in the screenshot.  Although there are thousands of records used to derive each predictions (there are about 16K total), more data might yield more accurate predictions.  To build the data set, users can add their actual habit data to the database.
 ![image](https://github.com/eleanorstrib/habitually/blob/master/static/img/predictionspage.png)
