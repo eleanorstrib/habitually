@@ -126,27 +126,23 @@ def send_actual_data():
 	exercise_actual = actual_data['exercise']
 	clothes_actual = actual_data['clothes']
 	eatout_actual = actual_data['eatout']
-	print type(work_actual)
-	print type(sleep_actual)
-	print type(exercise_actual)
-	print type(clothes_actual)
-	print type(eatout_actual)
+
 	
 	#transform the demo data from the session to form to a dict
 	print usersess
 	user_demo = usersess['user_data']
+	print user_demo
+	print type(user_demo)
+	user_demo_dict = ast.literal_eval(user_demo)
+	user_demo_dict = ast.literal_eval(user_demo_dict)
 
 	# define the demo variables
-	age = user_demo['queryAge']
-	sex = user_demo['queryGender']
-	region = user_demo['queryRegion']
-	income = user_demo['queryIncome']
-	education = user_demo['queryEducation']
-	print type(age)
-	print type(sex)
-	print type(region)
-	print type(income)
-	print type(education)
+	age = user_demo_dict['queryAge']
+	sex = user_demo_dict['queryGender']
+	region = user_demo_dict['queryRegion']
+	income = user_demo_dict['queryIncome']
+	education = user_demo_dict['queryEducation']
+
 
 	# create query to add data to the Time table, add to session
 	time_insert = m.Time(hhld_id='site', person_id='0', sex=sex, age_range=age, region=region, 
