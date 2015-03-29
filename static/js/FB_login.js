@@ -1,5 +1,4 @@
-
-//variables to calculate estimated income, baseline as of 2012
+var facebooklogin = function(){//variables to calculate estimated income, baseline as of 2012
 //http://www.usnews.com/education/best-graduate-schools/articles/2012/06/29/6-reasons-why-graduate-school-pays-off
 var salaryGrad = 55242;
 var salaryColl = 42877;
@@ -134,18 +133,7 @@ var userData = {};// this object will store the data that will be used to query 
     });
   }
 
-
-    // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
   window.fbAsyncInit = function() {
-
   FB.init({
     appId      : 418088358316146,
     cookie     : true,  // enable cookies to allow the server to access 
@@ -154,7 +142,6 @@ var userData = {};// this object will store the data that will be used to query 
     version    : 'v2.2', // use version 2.2
 
   });
-    
 
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
@@ -162,6 +149,15 @@ var userData = {};// this object will store the data that will be used to query 
 
   };
 
+ // Load the SDK asynchronously
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 
 
   // call social graph API
@@ -316,9 +312,12 @@ function callAPI() {
       // gets location data for the user, passes back a region code 
       //needed to query the database
       var queryRegion;
+      //Needs to be updated
       var userRegion = function() {
         $.when($.getJSON(locationURL)).done(function(data){
+          //Facebook removed this field
           var locationIn = data.location.located_in; // this is the id of the parent location
+          console.log(locationIn);
           var parentLocationURL = "http://graph.facebook.com/" + locationIn; //url for the object needed
           console.log(parentLocationURL);
           $.when($.getJSON(parentLocationURL)).done(function(moreData){
@@ -351,7 +350,7 @@ function callAPI() {
       }); //closes FB.api
       
 } //closes callAPI function
-
+}; // closes main function
     
   
 

@@ -1,8 +1,7 @@
 
 (function() { 
 
-	var app = angular.module('habitually', ['ngRoute',
-	 'habitually.controllers', 'habitually.directives']);
+	var app = angular.module('habitually', ['ngRoute']);
 
 	app.config(function($routeProvider){
 		$routeProvider
@@ -20,7 +19,8 @@
 			})
 
 			.when('/getstarted', {
-				templateUrl: '../static/partials/getstarted.html'
+				templateUrl: '../static/partials/getstarted.html',
+				controller: 'userForm'
 			})
 
 			.when('/predictions', {
@@ -31,6 +31,11 @@
 				templateUrl: '../static/partials/thankyou.html'
 			})
 	})
+
+	// app.controller('facebooklogin', ['$scope', function($scope) {
+
+	// }]);
+
 
 	app.controller('mainPage', ['$scope', '$http', function($scope, $http){
 		$http.get("/allhabits.json")
@@ -49,6 +54,11 @@
 	}])
 
 	app.controller('userForm', [ '$scope', '$http', '$location', function($scope, $http, $location) {
+		$scope.load = function() {
+			facebooklogin();
+			console.log("called facebooklogin");
+		};
+		$scope.load()
 		console.log($scope.userData);
 		$scope.wasSubmitted = false;
 		console.log("false was submitted");
@@ -175,11 +185,6 @@
 				})
 		};
 	}]) //closes actual data controller
-
-	// setup dependency injection for D3 - future version
-	angular.module('d3',[]);
-	angular.module('habitually.controllers', []);
-	angular.module('habitually.directives', ['d3']);
 
 
 }) (); //closes whole function
