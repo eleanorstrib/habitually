@@ -166,5 +166,5 @@ def send_actual_data():
 	print "*****" * 5
 	return redirect("/#/thankyou")
 
-if __name__ == "__main__":
-	app.run(debug=True)
+# if __name__ == "__main__":
+# 	app.run(debug=True)
