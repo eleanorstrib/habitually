@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 #db set-up, connection requiring explicit inclusion of adds and commits
-engine = create_engine("sqlite:///habit.db", echo=True)
+# engine = create_engine("sqlite:///habit.db", echo=True)
+engine = create_engine("/home/habitually/habitually/habit.db", echo=True)
 session = scoped_session(sessionmaker (bind=engine,
 										autocommit=False,
 										autoflush=False))
