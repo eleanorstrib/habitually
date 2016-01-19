@@ -87,15 +87,15 @@ var regionCodes = {
   AZ: {code: 4, region: 'Western'},
   CA: {code: 4, region: 'Western'},
   CO: {code: 4, region: 'Western'},
-  // HI: {code: 4, region: 'Western'},
-  // ID: {code: 4, region: 'Western'},
-  // MT: {code: 4, region: 'Western'},
-  // NV: {code: 4, region: 'Western'},
-  // NM: {code: 4, region: 'Western'},
-  // OR: {code: 4, region: 'Western'},
-  // UT: {code: 4, region: 'Western'},
-  // WA: {code: 4, region: 'Western'},
-  // WI: {code: 4, region: 'Western'},
+  HI: {code: 4, region: 'Western'},
+  ID: {code: 4, region: 'Western'},
+  MT: {code: 4, region: 'Western'},
+  NV: {code: 4, region: 'Western'},
+  NM: {code: 4, region: 'Western'},
+  OR: {code: 4, region: 'Western'},
+  UT: {code: 4, region: 'Western'},
+  WA: {code: 4, region: 'Western'},
+  WI: {code: 4, region: 'Western'},
 };
 
 var userData = {};// this object will store the data that will be used to query the db
@@ -311,8 +311,8 @@ function callAPI() {
 
       // gets location data for the user, passes back a region code 
       //needed to query the database
-      var queryRegion;
-      //Needs to be updated
+      var queryRegion = 4;
+      //Temp fix
       var userRegion = function() {
         $.when($.getJSON(locationURL)).done(function(data){
           //Facebook removed this field
